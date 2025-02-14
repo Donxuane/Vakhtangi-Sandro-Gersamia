@@ -1,4 +1,4 @@
-namespace BudgetingAndExpenseTracker.API
+namespace BudgetingExpense
 {
     public class WeatherForecast
     {
