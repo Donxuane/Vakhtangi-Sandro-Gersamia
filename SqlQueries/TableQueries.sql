@@ -44,6 +44,3 @@ LimitExpenseType nvarchar(50),
 LimitAmount decimal(18,2) Not Null,
 Constraint FK_ExpenseLimits_UserId Foreign Key (UserId) References [User](Id) On Delete Cascade
 );
-
-Create Unique Index IDX_UserMain_Email On [User](Email);
-Create Index IDX_UserIncome_UserId On UserIncome(Id);
