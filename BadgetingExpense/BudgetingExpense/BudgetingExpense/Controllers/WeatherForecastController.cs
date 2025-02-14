@@ -1,3 +1,6 @@
+using System.Runtime.CompilerServices;
+using BudgetingExpense.DataAccess;
+using BudgetingExpense.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetingExpense.Controllers
@@ -6,6 +9,7 @@ namespace BudgetingExpense.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
+        private readonly Test _test;
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -13,8 +17,9 @@ namespace BudgetingExpense.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger,Test test)
         {
+            _test = test;
             _logger = logger;
         }
 
@@ -29,5 +34,14 @@ namespace BudgetingExpense.Controllers
             })
             .ToArray();
         }
+        [HttpPost("addUser")]
+        public IActionResult addUser([FromForm]User user)
+        {
+            _test.AddUser(user);
+            return Ok("sagol");
+        }
     }
+
+
+
 }
