@@ -25,9 +25,6 @@ namespace BudgetingExpense.Domain.Models
         public string Password { get; set; }
         [Required]
         public DateTime RegisterDate { get; set; }
-    
         public bool? Notifications { get; set; }
-
-
     }
 }
