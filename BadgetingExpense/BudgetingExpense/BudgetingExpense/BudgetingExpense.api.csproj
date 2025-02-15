@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BadgetingExpense.DataAccess\BudgetingExpense.DataAccess.csproj" />
     <ProjectReference Include="..\BudgetingExpenses.Service\BudgetingExpenses.Service.csproj" />
   </ItemGroup>
 
