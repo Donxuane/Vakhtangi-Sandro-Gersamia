@@ -9,8 +9,6 @@ namespace BudgetingExpense.Domain.Models
 {
    public class User
     {
-        [Key]
-        public int Id { get; set; }
         [Length(2,50)]
         [Required]
         public string UserName { get; set; }

@@ -1,5 +1,11 @@
 using System.Data.Common;
+using BudgetingExpense.api.Configuration;
 using BudgetingExpense.DataAccess.Repository.Identity;
+using BudgetingExpense.DataAccess.UnitOfWork;
+using BudgetingExpense.Domain.Contracts;
+using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
+using BudgetingExpenses.Service.IServiceContracts;
+using BudgetingExpenses.Service.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +33,11 @@ builder.Services.AddIdentity<IdentityModel, IdentityRole>(options =>
 
 builder.Services.AddScoped<DbConnection>(sp =>
     new SqlConnection(builder.Configuration.GetConnectionString("default2")));
-
+builder.Services.ConfigureJWTBearerToken(builder.Configuration);
+builder.Services.AddScoped<IAuthentication, Authentication>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IConfiguration, ConfigurationManager>();
 
 var app = builder.Build();
 

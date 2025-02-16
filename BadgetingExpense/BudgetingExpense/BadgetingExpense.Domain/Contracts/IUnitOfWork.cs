@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
 
-namespace BudgetingExpense.Domain.Contracts
+namespace BudgetingExpense.Domain.Contracts;
+
+public interface IUnitOfWork
 {
-    internal class IUnitOfWork
-    {
-    }
+    public Task SaveChangesAsync();
+    public Task RollBackAsync();
+    public Task BeginTransactionAsync();
+    public IAuthentication Authentication { get; }
 }
