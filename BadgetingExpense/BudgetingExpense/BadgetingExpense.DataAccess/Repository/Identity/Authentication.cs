@@ -12,15 +12,56 @@ public class Authentication : IAuthentication
     {
         _userManager = userManager;
     }
+
+    public async Task AddUserRoleAsync(string email, string role)
+    {
+        var model = await GetUserPrivatelyForCheckingPurposes(email);
+        var test = await _userManager.AddToRoleAsync(model, role);
+        var check = "";
+    }
+    private async Task<IdentityModel> GetUserPrivatelyForCheckingPurposes(string email)
+    {
+        var model = await _userManager.FindByEmailAsync(email);
+        if (model != null)
+            return model;
+        return null;
+    }
     public async Task<bool> CheckUserAsync(string email,string password)
     {
-        var user = await _userManager.FindByEmailAsync(email);
-        var checkedPassword = _userManager.CheckPasswordAsync(user, password);
-        if (user == null || checkedPassword == null)
+        var user = await GetUserPrivatelyForCheckingPurposes(email);
+        if (user != null)
         {
-            return false;
+            var checkedPassword = _userManager.CheckPasswordAsync(user, password);
+            if (checkedPassword != null)
+                return true;
         }
-        return true;
+        return false;
+    }
+
+    public async Task<User?> GetUserByEmailAsync(string email)
+    {
+        var result =  await _userManager.FindByEmailAsync(email);
+        if (result != null)
+        {
+            var user = new User
+            {
+                Id = result.Id,
+                UserName = result.UserName,
+                UserSurname = result.UserSurname,
+                Email = result.Email,
+                Notifications = result.Notifications,
+                RegisterDate = result.RegisterDate
+            };
+            return user;
+        }
+        return null;
+    }
+
+    public async Task<IList<string>?> GetUserRolesAsync(string email)
+    {
+        var model = await GetUserPrivatelyForCheckingPurposes(email);
+        var roles = await _userManager.GetRolesAsync(model);
+        return roles;
     }
 
     public async Task<bool> RegisterUserAsync(User user)

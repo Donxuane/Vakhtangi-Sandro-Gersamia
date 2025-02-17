@@ -19,6 +19,19 @@ public class AuthenticationService : IAuthenticationService
         _unitOfWork = unitOfWork;
         _configuration = configuration;
     }
+
+    public async Task AddUserRolesAsync(string email, string role)
+    {
+        try
+        {
+            await _unitOfWork.Authentication.AddUserRoleAsync(email, role);
+        }
+        catch (Exception)
+        {
+
+        }
+    }
+
     public  Task<string> GenerateJwtTokenAsync(string userId, string userRole)
     {
         return Task.Run(() =>
@@ -44,29 +57,72 @@ public class AuthenticationService : IAuthenticationService
         });
     }
 
+    public async Task<IList<string>?> GetRoleAsync(string email)
+    {
+        try
+        {
+            var roles = await _unitOfWork.Authentication.GetUserRolesAsync(email);
+            return roles;
+        }
+        catch (Exception)
+        {
+
+        }
+        return null;
+    }
+
+    public async Task<User?> GetUserAsync(string email)
+    {
+        try
+        {
+            var user = await _unitOfWork.Authentication.GetUserByEmailAsync(email);
+            return user;
+        }
+        catch (Exception)
+        {
+
+        }
+        return null;
+    }
+
     public async Task<bool> LoginUserServiceAsync(LoginDto user)
     {
-        var check = await _unitOfWork.Authentication.CheckUserAsync(user.Email, user.Password);
-        if(check == true)
+        try
         {
-            return true;
+            var check = await _unitOfWork.Authentication.CheckUserAsync(user.Email, user.Password);
+
+            if (check == true)
+            {
+                return true;
+            }
+        }
+        catch(Exception)
+        { 
+
         }
         return false;
     }
 
     public async Task<bool> RegisterUserServiceAsync(RegisterDto user)
     {
-        var userMapped = new User
+        try
         {
-            Email = user.Email,
-            Password = user.Password,
-            UserSurname = user.UserSurname,
-            UserName = user.UserName
-        };
-        var result = await _unitOfWork.Authentication.RegisterUserAsync(userMapped);
-        if(result == true)
+            var userMapped = new User
+            {
+                Email = user.Email,
+                Password = user.Password,
+                UserSurname = user.UserSurname,
+                UserName = user.UserName
+            };
+            var result = await _unitOfWork.Authentication.RegisterUserAsync(userMapped);
+            if (result == true)
+            {
+                return true;
+            }
+        }
+        catch(Exception)
         {
-            return true;
+
         }
         return false;
     }

@@ -9,13 +9,36 @@ using BudgetingExpenses.Service.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Enter 'Bearer' [space] and then your token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 builder.Services.AddDbContext<AppDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("default2")));
 
@@ -33,13 +56,21 @@ builder.Services.AddIdentity<IdentityModel, IdentityRole>(options =>
 
 builder.Services.AddScoped<DbConnection>(sp =>
     new SqlConnection(builder.Configuration.GetConnectionString("default2")));
+
 builder.Services.ConfigureJWTBearerToken(builder.Configuration);
+
 builder.Services.AddScoped<IAuthentication, Authentication>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<ConfigureRoles>();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var roles = scope.ServiceProvider.GetRequiredService<ConfigureRoles>();
+    roles.RoleCeeder().Wait();
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
