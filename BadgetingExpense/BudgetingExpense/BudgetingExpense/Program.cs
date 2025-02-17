@@ -37,7 +37,6 @@ builder.Services.ConfigureJWTBearerToken(builder.Configuration);
 builder.Services.AddScoped<IAuthentication, Authentication>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-builder.Services.AddScoped<IConfiguration, ConfigurationManager>();
 
 var app = builder.Build();
 
