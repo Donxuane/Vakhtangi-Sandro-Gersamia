@@ -5,8 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BudgetingExpense.Domain.Models
-{
     public class ExpenseLimits
     {
      
@@ -20,5 +18,4 @@ namespace BudgetingExpense.Domain.Models
         public string LimitExpenseType { get; set;}
         [Required]
         public decimal LimitAmount { get; set;}
-}
 }
