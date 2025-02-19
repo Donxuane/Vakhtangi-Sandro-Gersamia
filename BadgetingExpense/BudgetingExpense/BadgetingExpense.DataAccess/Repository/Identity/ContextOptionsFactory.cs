@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.IdentityModel.Protocols;
 
 namespace BudgetingExpense.DataAccess.Repository.Identity;
 

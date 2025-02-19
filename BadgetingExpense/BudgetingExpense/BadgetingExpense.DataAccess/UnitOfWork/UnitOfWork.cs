@@ -18,10 +18,7 @@ public class UnitOfWork : IUnitOfWork, IAsyncDisposable
 
     public async Task BeginTransactionAsync()
     {
-        if (_connection.State != System.Data.ConnectionState.Open)
-        {
             await _connection.OpenAsync();
-        }
         _transaction = await _connection.BeginTransactionAsync();
     }
 

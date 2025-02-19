@@ -6,6 +6,5 @@ public interface IUnitOfWork
 {
     public Task SaveChangesAsync();
     public Task RollBackAsync();
-    public Task BeginTransactionAsync();
     public IAuthentication Authentication { get; }
 }
