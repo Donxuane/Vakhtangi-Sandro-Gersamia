@@ -1,43 +1,79 @@
-﻿using BudgetingExpense.Domain.Contracts;
+﻿using BudgetingExpense.DataAccess.Repository;
+using BudgetingExpense.Domain.Contracts;
+using BudgetingExpense.Domain.Contracts.IRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
+using BudgetingExpense.Domain.Models;
 using System.Data.Common;
 
 namespace BudgetingExpense.DataAccess.UnitOfWork;
 
-public class UnitOfWork : IUnitOfWork, IAsyncDisposable
+public class UnitOfWork : IUnitOfWork
 {
     private readonly IAuthentication _authentication;
+    private IManageFinances<UserExpenses> _expenseManage;
+    private IManageFinances<UserIncome> _incomeManage;
     private readonly DbConnection _connection;
     private DbTransaction _transaction;
     public UnitOfWork(IAuthentication authentication, DbConnection connection)
     {
         _authentication = authentication;
         _connection = connection;
+        _connection.Open();
+        _transaction = _connection.BeginTransaction();
     }
     public IAuthentication Authentication { get => _authentication; }
 
-    public async Task BeginTransactionAsync()
+    public IManageFinances<UserExpenses> ExpenseTypeManage
     {
-            await _connection.OpenAsync();
-        _transaction = await _connection.BeginTransactionAsync();
+        get
+        {
+            return _expenseManage = new ExpenseTypeManage(_connection, _transaction);
+        }
+    }
+
+    public IManageFinances<UserIncome> IncomeTypeManage
+    {
+        get
+        {
+            return _incomeManage = new IncomeTypeManage(_connection, _transaction);
+        }
     }
 
     public async ValueTask DisposeAsync()
     {
-        if(_transaction != null ) 
-            await _transaction.DisposeAsync();
-        await _connection.DisposeAsync();
+        try
+        {
+            if (_transaction != null)
+                await _transaction.DisposeAsync();
+        }
+        finally
+        {
+            await _connection.DisposeAsync();
+        }
     }
 
     public async Task RollBackAsync()
     {
-        if (_transaction != null)
-            await _transaction.RollbackAsync();
+        try
+        {
+            if (_transaction != null)
+                await _transaction.RollbackAsync();
+        }catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
     }
 
     public async Task SaveChangesAsync()
     {
-        if (_transaction != null)
-            await _transaction.CommitAsync();
+        try
+        {
+            if (_transaction != null)
+                await _transaction.CommitAsync();
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
     }
 }

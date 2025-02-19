@@ -1,9 +1,12 @@
 using System.Data.Common;
 using BudgetingExpense.api.Configuration;
+using BudgetingExpense.DataAccess.Repository;
 using BudgetingExpense.DataAccess.Repository.Identity;
 using BudgetingExpense.DataAccess.UnitOfWork;
 using BudgetingExpense.Domain.Contracts;
+using BudgetingExpense.Domain.Contracts.IRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
+using BudgetingExpense.Domain.Models;
 using BudgetingExpenses.Service.IServiceContracts;
 using BudgetingExpenses.Service.Service;
 using Microsoft.AspNetCore.Identity;
@@ -54,7 +57,7 @@ builder.Services.AddIdentity<IdentityModel, IdentityRole>(options =>
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddScoped<DbConnection>(sp =>
+builder.Services.AddTransient<DbConnection>(sp =>
     new SqlConnection(builder.Configuration.GetConnectionString("default2")));
 
 builder.Services.ConfigureJWTBearerToken(builder.Configuration);
@@ -62,7 +65,10 @@ builder.Services.ConfigureJWTBearerToken(builder.Configuration);
 builder.Services.AddScoped<IAuthentication, Authentication>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<IIncomeManageService, IncomeManageService>();
+
 builder.Services.AddScoped<ConfigureRoles>();
+
 
 var app = builder.Build();
 
