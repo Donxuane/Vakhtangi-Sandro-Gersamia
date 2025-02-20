@@ -20,6 +20,7 @@ public class IncomeTypeManage : IManageFinances<UserIncome>
     {
         _transaction ??= transaction;
     }
+
     public async Task Add(UserIncome model)
     {
         var query = "INSERT INTO UserIncome(Currency,IncomeType,UserId)Values(@Currency,@IncomeType,@UserId)";
