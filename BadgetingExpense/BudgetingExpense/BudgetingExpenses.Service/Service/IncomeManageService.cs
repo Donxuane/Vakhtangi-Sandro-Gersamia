@@ -31,6 +31,7 @@ public class IncomeManageService : IIncomeManageService
         {
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
+            var check = "";
             return false;
         }
         return true;

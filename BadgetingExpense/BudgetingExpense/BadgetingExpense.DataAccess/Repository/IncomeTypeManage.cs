@@ -10,17 +10,21 @@ namespace BudgetingExpense.DataAccess.Repository;
 public class IncomeTypeManage : IManageFinances<UserIncome>
 {
     private readonly DbConnection _connection;
-    private readonly DbTransaction _transaction;
+    private DbTransaction? _transaction;
 
-    public IncomeTypeManage(DbConnection connection, DbTransaction transaction)
+    public IncomeTypeManage(DbConnection connection)
     {
         _connection = connection;
-        _transaction = transaction;
+    }
+    public void SetTransaction(DbTransaction transaction)
+    {
+        _transaction ??= transaction;
     }
     public async Task Add(UserIncome model)
     {
-        var query = "INSERT INTO UserIncome(Currency,IncomeType,UserId)Values(@Currency,@IncomeType,UserId)";
+        var query = "INSERT INTO UserIncome(Currency,IncomeType,UserId)Values(@Currency,@IncomeType,@UserId)";
         await _connection.ExecuteAsync(query, new { model.Currency, model.IncomeType, model.UserId }, _transaction);
+        var check = "";
     }
 
     public async Task Delete(int Id)
@@ -35,7 +39,6 @@ public class IncomeTypeManage : IManageFinances<UserIncome>
         var collection = await _connection.QueryAsync<UserIncome>(query, new { UserId }, _transaction);
         return collection;
     }
-
     public async Task Update(UserIncome model)
     {
         if (model.UserId != null)

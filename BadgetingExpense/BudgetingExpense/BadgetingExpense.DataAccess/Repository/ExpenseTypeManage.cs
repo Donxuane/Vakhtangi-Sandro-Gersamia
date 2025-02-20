@@ -10,12 +10,15 @@ namespace BudgetingExpense.DataAccess.Repository;
 public class ExpenseTypeManage : IManageFinances<UserExpenses>
 {
     private readonly DbConnection _connection;
-    private readonly DbTransaction _transaction;
+    private DbTransaction? _transaction;
 
-    public ExpenseTypeManage(DbConnection connection, DbTransaction transaction)
+    public ExpenseTypeManage(DbConnection connection)
     {
         _connection = connection;
-        _transaction = transaction;
+    }
+    public void SetTransaction(DbTransaction transaction)
+    {
+        _transaction ??= transaction;
     }
 
     public async Task Add(UserExpenses model)
@@ -24,6 +27,7 @@ public class ExpenseTypeManage : IManageFinances<UserExpenses>
             "Values(@Currency,@ExpenseType,@UserId)";
         await _connection.ExecuteAsync(query, new {model.Currency, model.ExpenseType, 
             model.UserId},_transaction);
+        var check = "";
     }
 
     public async Task Delete(int Id)
@@ -38,7 +42,6 @@ public class ExpenseTypeManage : IManageFinances<UserExpenses>
         var collection = await _connection.QueryAsync<UserExpenses>(query, new {UserId}, _transaction);
         return collection;
     }
-
     public async Task Update(UserExpenses model)
     {
         if (model.UserId != null)

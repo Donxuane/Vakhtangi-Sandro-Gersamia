@@ -63,6 +63,8 @@ builder.Services.AddTransient<DbConnection>(sp =>
 builder.Services.ConfigureJWTBearerToken(builder.Configuration);
 
 builder.Services.AddScoped<IAuthentication, Authentication>();
+builder.Services.AddScoped<IManageFinances<UserExpenses>, ExpenseTypeManage>();
+builder.Services.AddScoped<IManageFinances<UserIncome>, IncomeTypeManage>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IIncomeManageService, IncomeManageService>();
