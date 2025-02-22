@@ -18,7 +18,6 @@ public class IncomeManageService : IIncomeManageService
     {
         var finalModel = new UserIncome
         {
-            IncomeType = model.IncomeType,
             Currency = model.Currency,
             UserId = model.UserId
         };
@@ -31,7 +30,6 @@ public class IncomeManageService : IIncomeManageService
         {
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
-            var check = "";
             return false;
         }
         return true;

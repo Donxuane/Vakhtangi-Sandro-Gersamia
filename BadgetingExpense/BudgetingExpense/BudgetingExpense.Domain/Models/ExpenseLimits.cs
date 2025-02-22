@@ -4,7 +4,6 @@ namespace BudgetingExpense.Domain.Models;
 
 public class ExpenseLimits
 {
- 
     [Key]
     public int Id { get; set; }
     [Required]

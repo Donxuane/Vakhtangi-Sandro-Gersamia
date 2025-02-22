@@ -1,9 +1,7 @@
 ﻿using BudgetingExpense.Domain.Contracts.IRepository;
 using BudgetingExpense.Domain.Models;
 using Dapper;
-using System.Data;
 using System.Data.Common;
-using System.Text;
 
 namespace BudgetingExpense.DataAccess.Repository;
 
