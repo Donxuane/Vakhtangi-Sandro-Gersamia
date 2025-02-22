@@ -25,7 +25,6 @@ public class ExpenseTypeManageRepo : IManageFinancesRepository<Expense>
             "Values(@Currency,@Amount,@CategoryId,@Date,@UserId)";
         await _connection.ExecuteAsync(query, new {model.Currency, model.Amount, Date = model.Date = DateTime.Now,
             model.UserId},_transaction);
-        var check = "";
     }
 
     public async Task Delete(int Id)
