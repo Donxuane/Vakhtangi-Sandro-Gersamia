@@ -43,7 +43,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 builder.Services.AddDbContext<AppDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("default2")));
+options.UseSqlServer(builder.Configuration.GetConnectionString("default2"), b=>b.MigrationsAssembly("BudgetingExpense.DataAccess")));
 
 builder.Services.AddIdentity<IdentityModel, IdentityRole>(options =>
 {

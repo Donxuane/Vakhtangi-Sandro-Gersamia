@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35707.178
@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetingExpense.api", "Bud
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetingExpenses.Service", "BudgetingExpenses.Service\BudgetingExpenses.Service.csproj", "{28CB7685-AA78-4F62-B8D9-A5D033D1725D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetingExpense.DataAccess", "BadgetingExpense.DataAccess\BudgetingExpense.DataAccess.csproj", "{D0FB4265-D600-4DE4-BE4C-46385F8CDD90}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetingExpense.DataAccess", "BudgetingExpense.DataAccess\BudgetingExpense.DataAccess.csproj", "{D0FB4265-D600-4DE4-BE4C-46385F8CDD90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetingExpense.Domain", "BadgetingExpense.Domain\BudgetingExpense.Domain.csproj", "{90B37D13-084F-4770-AC2D-C11981D79566}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetingExpense.Domain", "BudgetingExpense.Domain\BudgetingExpense.Domain.csproj", "{90B37D13-084F-4770-AC2D-C11981D79566}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

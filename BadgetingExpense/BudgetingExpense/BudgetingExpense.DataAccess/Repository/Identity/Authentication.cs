@@ -46,8 +46,8 @@ public class Authentication : IAuthentication
             var user = new User
             {
                 Id = result.Id,
-                UserName = result.UserName,
-                UserSurname = result.UserSurname,
+                UserName = result.Name,
+                UserSurname = result.Surname,
                 Email = result.Email,
                 Notifications = result.Notifications,
                 RegisterDate = result.RegisterDate
@@ -67,9 +67,10 @@ public class Authentication : IAuthentication
     public async Task<bool> RegisterUserAsync(User user)
     {
         var userDetails = new IdentityModel {
-            UserName = user.UserName, 
+            UserName = user.Email,
             Email = user.Email,
-            UserSurname = user.UserSurname,
+            Name = user.UserName, 
+            Surname = user.UserSurname,
             RegisterDate = DateTime.Now,
             Notifications = false
         };
