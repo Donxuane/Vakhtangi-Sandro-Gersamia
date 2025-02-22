@@ -5,10 +5,10 @@ namespace BudgetingExpense.Domain.Contracts.IRepository;
 
 public interface IManageFinancesRepository<T> where T : class
 {
-    public Task<int> AddCategory(Category category);
-    public Task Add(T model);
+    public Task<int> AddCategoryAsync(Category category);
+    public Task AddAsync(T model);
     public void SetTransaction(DbTransaction transaction);
-    public Task Delete(int Id);
-    public Task<IEnumerable<T>> GetAll(string UserId);
-    public Task<IEnumerable<Category>> GetCategories(string userId);
+    public Task DeleteAsync(int Id);
+    public Task<IEnumerable<T>> GetAllAsync(string UserId);
+    public Task<IEnumerable<Category>> GetCategoriesAsync(string userId);
 }

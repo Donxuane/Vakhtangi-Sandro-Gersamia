@@ -14,12 +14,12 @@ public class IncomeManageService : IIncomeManageService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<bool> AddIncomeCategory(string CategoryName)
+    public async Task<bool> AddIncomeCategoryAsync(string CategoryName)
     {
         try
         {
             var category = new Category { Name = CategoryName };
-            await _unitOfWork.IncomeTypeManage.AddCategory(category);
+            await _unitOfWork.IncomeTypeManage.AddCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
         }catch(Exception ex)
         {
@@ -29,7 +29,7 @@ public class IncomeManageService : IIncomeManageService
         return false;
     }
 
-    public async Task<bool> AddIncomeType(IncomeTypeDTO model)
+    public async Task<bool> AddIncomeAsync(IncomeDto model)
     {
         var finalModel = new Income
         {
@@ -41,7 +41,7 @@ public class IncomeManageService : IIncomeManageService
         };
         try
         {    
-            await _unitOfWork.IncomeTypeManage.Add(finalModel);
+            await _unitOfWork.IncomeTypeManage.AddAsync(finalModel);
             await _unitOfWork.SaveChangesAsync();
         }
         catch(Exception ex)
@@ -53,11 +53,11 @@ public class IncomeManageService : IIncomeManageService
         return true;
     }
 
-    public async Task<bool> DeleteIncomeType(int incomeTypeId)
+    public async Task<bool> DeleteIncomeAsync(int incomeTypeId)
     {
         try
         {
-            await _unitOfWork.IncomeTypeManage.Delete(incomeTypeId);
+            await _unitOfWork.IncomeTypeManage.DeleteAsync(incomeTypeId);
             await _unitOfWork.SaveChangesAsync();
         }
         catch(Exception ex)
@@ -69,11 +69,11 @@ public class IncomeManageService : IIncomeManageService
         return true;
     }
 
-    public async Task<IEnumerable<Category>?> GetAllIncomeCategoryRecords(string userId)
+    public async Task<IEnumerable<Category>?> GetAllIncomeCategoryRecordsAsync(string userId)
     {
         try
         {
-            var categories = await _unitOfWork.IncomeTypeManage.GetCategories(userId);
+            var categories = await _unitOfWork.IncomeTypeManage.GetCategoriesAsync(userId);
             if (categories.Any())
             {
                 return categories;
@@ -86,11 +86,11 @@ public class IncomeManageService : IIncomeManageService
         return null;
     }
 
-    public async Task<IEnumerable<Income>?> GetAllIncomeRecords(string userId)
+    public async Task<IEnumerable<Income>?> GetAllIncomeRecordsAsync(string userId)
     {
         try
         {
-            var incomeRecords = await _unitOfWork.IncomeTypeManage.GetAll(userId);
+            var incomeRecords = await _unitOfWork.IncomeTypeManage.GetAllAsync(userId);
             if (incomeRecords.Any())
             {
                 return incomeRecords;

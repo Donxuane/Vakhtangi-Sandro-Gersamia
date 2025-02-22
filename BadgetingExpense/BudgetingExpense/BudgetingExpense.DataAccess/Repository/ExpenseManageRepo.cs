@@ -5,12 +5,12 @@ using System.Data.Common;
 
 namespace BudgetingExpense.DataAccess.Repository;
 
-public class ExpenseTypeManageRepo : IManageFinancesRepository<Expense>
+public class ExpenseManageRepo : IManageFinancesRepository<Expense>
 {
     private readonly DbConnection _connection;
     private DbTransaction? _transaction;
 
-    public ExpenseTypeManageRepo(DbConnection connection)
+    public ExpenseManageRepo(DbConnection connection)
     {
         _connection = connection;
     }
@@ -19,7 +19,7 @@ public class ExpenseTypeManageRepo : IManageFinancesRepository<Expense>
         _transaction ??= transaction;
     }
 
-    public async Task Add(Expense model)
+    public async Task AddAsync(Expense model)
     {
         var query = "INSERT INTO Expenses(Currency,Amount,CategoryId,[Date],UserId)" +
             "Values(@Currency,@Amount,@CategoryId,@Date,@UserId)";
@@ -27,27 +27,27 @@ public class ExpenseTypeManageRepo : IManageFinancesRepository<Expense>
             model.UserId},_transaction);
     }
 
-    public async Task Delete(int Id)
+    public async Task DeleteAsync(int Id)
     {
         var query = "DELETE FROM Expenses WHERE Id = @Id";
         await _connection.ExecuteAsync(query, new { Id }, _transaction);
     }
 
-    public async Task<IEnumerable<Expense>> GetAll(string UserId)
+    public async Task<IEnumerable<Expense>> GetAllAsync(string UserId)
     {
         var query = "SELECT FROM Expenses WHERE UserId = @UserId";
         var collection = await _connection.QueryAsync<Expense>(query, new {UserId}, _transaction);
         return collection;
     }
     
-    public Task<int> AddCategory(Category category)
+    public Task<int> AddCategoryAsync(Category category)
     {
         var query = "INSERT INTO Categories(Name, Type) OUTPUT INSERTED.Id VALUES(@Name,@Type)";
         var id = _connection.QuerySingleAsync<int>(query, new { category.Name, Type = category.Type = 0 },_transaction);
         return id;
     }
 
-    public Task<IEnumerable<Category>> GetCategories(string userId)
+    public Task<IEnumerable<Category>> GetCategoriesAsync(string userId)
     {
         var query = @"SELECT DISTINCT c.Id,c.Name,c.Type                       
                       FROM Categories c

@@ -15,7 +15,7 @@ public class ManageUserFinancesController : ControllerBase
     }
 
     [HttpPost("AddIncomeType")]
-    public async Task<IActionResult> AddIncomeType([FromForm]IncomeTypeDTO model)
+    public async Task<IActionResult> AddIncomeType([FromForm]IncomeDTO model)
     {
         var result = await _incomeService.AddIncomeType(model);
         if(result == true)

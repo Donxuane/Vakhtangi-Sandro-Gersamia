@@ -1,6 +1,6 @@
 ﻿namespace BudgetingExpenses.Service.DtoModels;
 
-public class IncomeTypeDTO
+public class IncomeDto
 {
     public string UserId {  get; set; }
     public int Currency { get; set; }

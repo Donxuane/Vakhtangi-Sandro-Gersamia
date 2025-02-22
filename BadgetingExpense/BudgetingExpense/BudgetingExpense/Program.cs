@@ -63,8 +63,8 @@ builder.Services.AddScoped<DbConnection>(sp =>
 builder.Services.ConfigureJWTBearerToken(builder.Configuration);
 
 builder.Services.AddScoped<IAuthentication, Authentication>();
-builder.Services.AddScoped<IManageFinancesRepository<Expense>, ExpenseTypeManageRepo>();
-builder.Services.AddScoped<IManageFinancesRepository<Income>, IncomeTypeManageRepo>();
+builder.Services.AddScoped<IManageFinancesRepository<Expense>, ExpenseManageRepo>();
+builder.Services.AddScoped<IManageFinancesRepository<Income>, IncomeManageRepo>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IIncomeManageService, IncomeManageService>();

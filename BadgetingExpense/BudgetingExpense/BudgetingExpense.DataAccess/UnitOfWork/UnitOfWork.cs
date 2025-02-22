@@ -32,8 +32,8 @@ public class UnitOfWork : IUnitOfWork
 
     public IAuthentication Authentication => _authentication;
 
-    public IManageFinancesRepository<Expense> ExpenseTypeManage => _expenseManage;
-    public IManageFinancesRepository<Income> IncomeTypeManage => _incomeManage;
+    public IManageFinancesRepository<Expense> ExpenseManage => _expenseManage;
+    public IManageFinancesRepository<Income> IncomeManage => _incomeManage;
 
     public async ValueTask DisposeAsync()
     {
