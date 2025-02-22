@@ -46,8 +46,8 @@ public class Authentication : IAuthentication
             var user = new User
             {
                 Id = result.Id,
-                UserName = result.Name,
-                UserSurname = result.Surname,
+                Name = result.Name,
+                Surname = result.Surname,
                 Email = result.Email,
                 Notifications = result.Notifications,
                 RegisterDate = result.RegisterDate
@@ -69,8 +69,8 @@ public class Authentication : IAuthentication
         var userDetails = new IdentityModel {
             UserName = user.Email,
             Email = user.Email,
-            Name = user.UserName, 
-            Surname = user.UserSurname,
+            Name = user.Name, 
+            Surname = user.Surname,
             RegisterDate = DateTime.Now,
             Notifications = false
         };

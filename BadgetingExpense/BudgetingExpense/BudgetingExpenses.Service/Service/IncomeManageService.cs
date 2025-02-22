@@ -14,19 +14,23 @@ public class IncomeManageService : IIncomeManageService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<bool> AddIncomeCategoryAsync(string CategoryName)
+    public async Task<int> AddIncomeCategoryAsync(string CategoryName)
     {
         try
         {
             var category = new Category { Name = CategoryName };
-            await _unitOfWork.IncomeTypeManage.AddCategoryAsync(category);
+            var result = await _unitOfWork.IncomeManage.AddCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
+            if (result > 0)
+            {
+                return result;
+            }
         }catch(Exception ex)
         {
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
         }
-        return false;
+        return 0;
     }
 
     public async Task<bool> AddIncomeAsync(IncomeDto model)
@@ -41,7 +45,7 @@ public class IncomeManageService : IIncomeManageService
         };
         try
         {    
-            await _unitOfWork.IncomeTypeManage.AddAsync(finalModel);
+            await _unitOfWork.IncomeManage.AddAsync(finalModel);
             await _unitOfWork.SaveChangesAsync();
         }
         catch(Exception ex)
@@ -57,7 +61,7 @@ public class IncomeManageService : IIncomeManageService
     {
         try
         {
-            await _unitOfWork.IncomeTypeManage.DeleteAsync(incomeTypeId);
+            await _unitOfWork.IncomeManage.DeleteAsync(incomeTypeId);
             await _unitOfWork.SaveChangesAsync();
         }
         catch(Exception ex)
@@ -73,7 +77,7 @@ public class IncomeManageService : IIncomeManageService
     {
         try
         {
-            var categories = await _unitOfWork.IncomeTypeManage.GetCategoriesAsync(userId);
+            var categories = await _unitOfWork.IncomeManage.GetCategoriesAsync(userId);
             if (categories.Any())
             {
                 return categories;
@@ -90,7 +94,7 @@ public class IncomeManageService : IIncomeManageService
     {
         try
         {
-            var incomeRecords = await _unitOfWork.IncomeTypeManage.GetAllAsync(userId);
+            var incomeRecords = await _unitOfWork.IncomeManage.GetAllAsync(userId);
             if (incomeRecords.Any())
             {
                 return incomeRecords;

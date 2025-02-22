@@ -13,13 +13,41 @@ public class ExpenceManageService : IExpenseManageService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<bool> AddExpenseCategoryAsync(string categoryName)
+    public async Task<int> AddExpenseCategoryAsync(string categoryName)
     {
         try
         {
             var category = new Category { Name = categoryName };
-            await _unitOfWork.ExpenseTypeManage.AddCategoryAsync(category);
+            var result = await _unitOfWork.ExpenseManage.AddCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
+            if (result > 0)
+            {
+                return result;
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            await _unitOfWork.RollBackAsync();
+        }
+        return 0;
+    }
+
+    public async Task<bool> AddExpenseAsync(ExpenseDto model)
+    {
+        try
+        {
+            var expense = new Expense
+            {
+                Amount = model.Amount,
+                Currency = model.Currency,
+                CategoryId = model.CategoryId,
+                Date = model.Date,
+                UserId = model.UserId
+            };
+            await _unitOfWork.ExpenseManage.AddAsync(expense);
+            await _unitOfWork.SaveChangesAsync();
+            return true;
         }
         catch(Exception ex)
         {
@@ -29,23 +57,53 @@ public class ExpenceManageService : IExpenseManageService
         return false;
     }
 
-    public Task<bool> AddExpenseAsync(ExpenseDto model)
+    public async Task<bool> DeleteExpenseAsync(int expenseId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await _unitOfWork.ExpenseManage.DeleteAsync(expenseId);
+            await _unitOfWork.SaveChangesAsync();
+            return true;
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            await _unitOfWork.RollBackAsync();
+        }
+        return false;
     }
 
-    public Task<bool> DeleteExpenseAsync(int expenseId)
+    public async Task<IEnumerable<Category>?> GetAllExpenseCategoryRecordsAsync(string userId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var categories = await _unitOfWork.ExpenseManage.GetCategoriesAsync(userId);
+            if (categories.Any())
+            {
+                return categories;
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        return null;
     }
 
-    public Task<IEnumerable<Category>?> GetAllExpenseCategoryRecordsAsync(string userId)
+    public async Task<IEnumerable<Expense>?> GetAllExpenseRecordsAsync(string userId)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<IEnumerable<Income>?> GetAllExpenseRecordsAsync(string userId)
-    {
-        throw new NotImplementedException();
+        try
+        {
+            var records = await _unitOfWork.ExpenseManage.GetAllAsync(userId);
+            if (records.Any())
+            {
+                return records;
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        return null;
     }
 }

@@ -14,10 +14,21 @@ public class ManageUserFinancesController : ControllerBase
         _incomeService = incomeService;
     }
 
-    [HttpPost("AddIncomeType")]
-    public async Task<IActionResult> AddIncomeType([FromForm]IncomeDTO model)
+    [HttpPost("AddIncomeCategory")]
+    public async Task<IActionResult> AddIncomeCategory(string category)
     {
-        var result = await _incomeService.AddIncomeType(model);
+        var result = await _incomeService.AddIncomeCategoryAsync(category);
+        if(result >0)
+        {
+            return Ok($"{result} Category added Successfully");
+        }
+        return BadRequest();
+    }
+
+    [HttpPost("AddIncomeType")]
+    public async Task<IActionResult> AddIncomeType([FromForm]IncomeDto model)
+    {
+        var result = await _incomeService.AddIncomeAsync(model);
         if(result == true)
         {
             return Ok("Income Type Added Successfully");
@@ -28,7 +39,7 @@ public class ManageUserFinancesController : ControllerBase
     [HttpDelete("DeleteIncomeType")]
     public async Task<IActionResult> DeleteIncomeType(int incomeTypeId)
     {
-        var result = await _incomeService.DeleteIncomeType(incomeTypeId);
+        var result = await _incomeService.DeleteIncomeAsync(incomeTypeId);
         if(result == true)
         {
             return Ok("Income Source Deleted Successfully");

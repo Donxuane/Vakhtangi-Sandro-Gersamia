@@ -7,7 +7,7 @@ public interface IExpenseManageService
 {
     public Task<bool> AddExpenseAsync(ExpenseDto model);
     public Task<bool> DeleteExpenseAsync(int expenseId);
-    public Task<bool> AddExpenseCategoryAsync(string categoryName);
-    public Task<IEnumerable<Income>?> GetAllExpenseRecordsAsync(string userId);
+    public Task<int> AddExpenseCategoryAsync(string categoryName);
+    public Task<IEnumerable<Expense>?> GetAllExpenseRecordsAsync(string userId);
     public Task<IEnumerable<Category>?> GetAllExpenseCategoryRecordsAsync(string userId);
 }

@@ -43,7 +43,7 @@ public class IncomeManageRepo : IManageFinancesRepository<Income>
     public Task<int> AddCategoryAsync(Category category)
     {
         var query = "INSERT INTO Categories(Name,Type)OUTPUT INSERTED.Id VALUES(@Name,@Type)";
-        var id = _connection.QuerySingleAsync<int>(query, new { category.Name, Type = category.Type = 1 });
+        var id = _connection.QuerySingleAsync<int>(query, new { category.Name, Type = category.Type = 1 },_transaction);
         return id;
     }
 

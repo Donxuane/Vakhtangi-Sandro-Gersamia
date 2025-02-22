@@ -21,13 +21,15 @@ public class UnitOfWork : IUnitOfWork
         _expenseManage = expenseManage;
         _incomeManage = incomeManage;
 
-        _expenseManage.SetTransaction(_transaction);
-        _incomeManage.SetTransaction(_transaction);
 
         _authentication = authentication;
         _connection = connection;
         _connection.Open();
         _transaction = _connection.BeginTransaction();
+
+
+        _expenseManage.SetTransaction(_transaction);
+        _incomeManage.SetTransaction(_transaction);
     }
 
     public IAuthentication Authentication => _authentication;
@@ -75,6 +77,7 @@ public class UnitOfWork : IUnitOfWork
             if (_transaction != null)
             {
                 await _transaction.CommitAsync();
+                await _transaction.DisposeAsync();
                 _transaction = null;
             }
         }

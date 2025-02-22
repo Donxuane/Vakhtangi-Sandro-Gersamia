@@ -111,8 +111,8 @@ public class AuthenticationService : IAuthenticationService
             {
                 Email = user.Email,
                 Password = user.Password,
-                UserSurname = user.Surname,
-                UserName = user.Name
+                Surname = user.Surname,
+                Name = user.Name
             };
             var result = await _unitOfWork.Authentication.RegisterUserAsync(userMapped);
             if (result == true)

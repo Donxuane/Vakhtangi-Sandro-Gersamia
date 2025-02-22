@@ -13,10 +13,10 @@ namespace BudgetingExpense.Domain.Models
         public string Id { get; set; }
         [Length(2,50)]
         [Required]
-        public string UserName { get; set; }
+        public string Name { get; set; }
         [Length(2,50)]
         [Required]
-        public string UserSurname { get; set; }
+        public string Surname { get; set; }
         [EmailAddress]
         [Required]
         public string Email { get; set; }

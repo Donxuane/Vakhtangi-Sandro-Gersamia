@@ -7,7 +7,7 @@ public interface IIncomeManageService
 {
     public Task<bool> AddIncomeAsync(IncomeDto model);
     public Task<bool> DeleteIncomeAsync(int incomeTypeId);
-    public Task<bool> AddIncomeCategoryAsync(string CategoryName);
+    public Task<int> AddIncomeCategoryAsync(string CategoryName);
     public Task<IEnumerable<Income>?> GetAllIncomeRecordsAsync(string userId);
     public Task<IEnumerable<Category>?> GetAllIncomeCategoryRecordsAsync(string userId); 
 }
