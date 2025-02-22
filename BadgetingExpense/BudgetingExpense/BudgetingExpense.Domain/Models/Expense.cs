@@ -2,16 +2,17 @@
 
 namespace BudgetingExpense.Domain.Models;
 
-public class UserExpenses
+public class Expense
 {
     [Key]
     public int Id { get; set; }
     [Required]
-    [MaxLength(10)]
-    public string Currency { get; set; }
+    public int Currency { get; set; }
     [Required]
-    [MaxLength(50)]
-    public string ExpenseType { get; set; }
+    public double Amount {  get; set; } 
+    public int? CategoryId {  get; set; }
+    [Required]
+    public DateTime Date {  get; set; }
     [Required]
     public string UserId { get; set; }
 }

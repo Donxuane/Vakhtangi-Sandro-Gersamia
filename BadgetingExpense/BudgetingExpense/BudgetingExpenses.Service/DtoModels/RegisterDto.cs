@@ -5,9 +5,9 @@ namespace BudgetingExpenses.Service.DtoModels;
 public class RegisterDto
 {
     [Required]
-    public string UserName { get; set; }
+    public string Name { get; set; }
     [Required]
-    public string UserSurname {  get; set; }
+    public string Surname {  get; set; }
     [Required]
     [EmailAddress]
     public string Email { get; set; }

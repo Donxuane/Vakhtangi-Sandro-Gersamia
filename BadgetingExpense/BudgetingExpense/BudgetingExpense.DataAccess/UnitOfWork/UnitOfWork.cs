@@ -10,13 +10,13 @@ namespace BudgetingExpense.DataAccess.UnitOfWork;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly IAuthentication _authentication;
-    private IManageFinances<UserExpenses> _expenseManage;
-    private IManageFinances<UserIncome> _incomeManage;
+    private IManageFinancesRepository<Expense> _expenseManage;
+    private IManageFinancesRepository<Income> _incomeManage;
     private readonly DbConnection _connection;
     private DbTransaction _transaction;
 
     public UnitOfWork(IAuthentication authentication, DbConnection connection,
-        IManageFinances<UserExpenses> expenseManage, IManageFinances<UserIncome> incomeManage)
+        IManageFinancesRepository<Expense> expenseManage, IManageFinancesRepository<Income> incomeManage)
     {
         _expenseManage = expenseManage;
         _incomeManage = incomeManage;
@@ -28,16 +28,12 @@ public class UnitOfWork : IUnitOfWork
         _connection = connection;
         _connection.Open();
         _transaction = _connection.BeginTransaction();
-
-        
-
-        
     }
 
     public IAuthentication Authentication => _authentication;
 
-    public IManageFinances<UserExpenses> ExpenseTypeManage => _expenseManage;
-    public IManageFinances<UserIncome> IncomeTypeManage => _incomeManage;
+    public IManageFinancesRepository<Expense> ExpenseTypeManage => _expenseManage;
+    public IManageFinancesRepository<Income> IncomeTypeManage => _incomeManage;
 
     public async ValueTask DisposeAsync()
     {
@@ -79,7 +75,6 @@ public class UnitOfWork : IUnitOfWork
             if (_transaction != null)
             {
                 await _transaction.CommitAsync();
-                await _transaction.DisposeAsync();
                 _transaction = null;
             }
         }

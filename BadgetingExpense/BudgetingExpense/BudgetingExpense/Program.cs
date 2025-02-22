@@ -57,14 +57,14 @@ builder.Services.AddIdentity<IdentityModel, IdentityRole>(options =>
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddTransient<DbConnection>(sp =>
+builder.Services.AddScoped<DbConnection>(sp =>
     new SqlConnection(builder.Configuration.GetConnectionString("default2")));
 
 builder.Services.ConfigureJWTBearerToken(builder.Configuration);
 
 builder.Services.AddScoped<IAuthentication, Authentication>();
-builder.Services.AddScoped<IManageFinances<UserExpenses>, ExpenseTypeManage>();
-builder.Services.AddScoped<IManageFinances<UserIncome>, IncomeTypeManage>();
+builder.Services.AddScoped<IManageFinancesRepository<Expense>, ExpenseTypeManageRepo>();
+builder.Services.AddScoped<IManageFinancesRepository<Income>, IncomeTypeManageRepo>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IIncomeManageService, IncomeManageService>();

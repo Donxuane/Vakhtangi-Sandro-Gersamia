@@ -3,6 +3,8 @@
 public class IncomeTypeDTO
 {
     public string UserId {  get; set; }
-    public string IncomeType { get; set; }
-    public string Currency { get; set; }
+    public int Currency { get; set; }
+    public double Amount {  get; set; }
+    public int CategoryId {  get; set; }
+    public DateTime Date { get; set; }
 }

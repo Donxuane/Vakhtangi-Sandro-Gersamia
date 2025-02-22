@@ -14,12 +14,30 @@ public class IncomeManageService : IIncomeManageService
         _unitOfWork = unitOfWork;
     }
 
+    public async Task<bool> AddIncomeCategory(string CategoryName)
+    {
+        try
+        {
+            var category = new Category { Name = CategoryName };
+            await _unitOfWork.IncomeTypeManage.AddCategory(category);
+            await _unitOfWork.SaveChangesAsync();
+        }catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            await _unitOfWork.RollBackAsync();
+        }
+        return false;
+    }
+
     public async Task<bool> AddIncomeType(IncomeTypeDTO model)
     {
-        var finalModel = new UserIncome
+        var finalModel = new Income
         {
             Currency = model.Currency,
-            UserId = model.UserId
+            Amount = model.Amount,
+            CategoryId = model.CategoryId,
+            Date = model.Date,
+            UserId = model.UserId,
         };
         try
         {    
@@ -49,5 +67,39 @@ public class IncomeManageService : IIncomeManageService
             return false;
         }
         return true;
+    }
+
+    public async Task<IEnumerable<Category>?> GetAllIncomeCategoryRecords(string userId)
+    {
+        try
+        {
+            var categories = await _unitOfWork.IncomeTypeManage.GetCategories(userId);
+            if (categories.Any())
+            {
+                return categories;
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        return null;
+    }
+
+    public async Task<IEnumerable<Income>?> GetAllIncomeRecords(string userId)
+    {
+        try
+        {
+            var incomeRecords = await _unitOfWork.IncomeTypeManage.GetAll(userId);
+            if (incomeRecords.Any())
+            {
+                return incomeRecords;
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        return null;
     }
 }

@@ -8,10 +8,11 @@ public class ExpenseLimits
     public int Id { get; set; }
     [Required]
     public int UserId { get; set; }
+    public int CategoryId { get; set; }
     [Required]
-    public int LimitPeriod { get; set; }
+    public double Amount { get; set; }
     [Required]
-    public string LimitExpenseType { get; set;}
+    public int PeriodCategory {  get; set; }
     [Required]
-    public decimal LimitAmount { get; set;}
+    public DateTime DateAdded {  get; set; }
 }

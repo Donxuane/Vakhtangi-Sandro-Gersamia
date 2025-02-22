@@ -9,6 +9,6 @@ public interface IUnitOfWork : IAsyncDisposable
     public Task SaveChangesAsync();
     public Task RollBackAsync();
     public IAuthentication Authentication { get; }
-    public IManageFinances<UserExpenses> ExpenseTypeManage { get; }
-    public IManageFinances<UserIncome> IncomeTypeManage {  get; }
+    public IManageFinancesRepository<Expense> ExpenseTypeManage { get; }
+    public IManageFinancesRepository<Income> IncomeTypeManage {  get; }
 }
