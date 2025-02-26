@@ -27,8 +27,10 @@ public class ExpenseManageRepository : IManageFinancesRepository<Expense>
         {
             model.Currency,
             model.Amount,
+            model.CategoryId,
             Date = model.Date = DateTime.Now,
             model.UserId
+            
         }, _transaction);
     }
 
@@ -77,8 +79,8 @@ public class ExpenseManageRepository : IManageFinancesRepository<Expense>
 
     public async Task UpdateAsync(Expense model)
     {
-        var query = "Update Expenses SET Currency = @Currency,Amount =@Amount,Date=@Date WHERE UserId = @Id";
-        await _connection.ExecuteAsync(query, new { model.Currency, model.Amount, model.Date, Id = model.UserId },
+        var query = "Update Expenses SET Currency = @Currency,Amount =@Amount,Date=@Date WHERE UserId = @Id AND Id = @ExpenseId";
+        await _connection.ExecuteAsync(query, new { model.Currency, model.Amount, model.Date, UserId = model.UserId,model.Id },
             _transaction);
     }
 }

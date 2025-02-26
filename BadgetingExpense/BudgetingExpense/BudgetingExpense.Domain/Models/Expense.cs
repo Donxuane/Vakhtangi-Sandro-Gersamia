@@ -5,7 +5,7 @@ namespace BudgetingExpense.Domain.Models;
 public class Expense
 {
     [Key]
-    public int Id { get; set; }
+    public int? Id { get; set; }
     [Required]
     public int Currency { get; set; }
     [Required]

@@ -4,6 +4,7 @@ using BudgetingExpense.Domain.Models.DtoModels;
 using BudgetingExpenses.Service.DtoModels;
 using BudgetingExpenses.Service.IServiceContracts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 
 namespace BudgetingExpense.api.Controllers;
 [ApiController]
@@ -11,10 +12,12 @@ namespace BudgetingExpense.api.Controllers;
 public class ManageUserFinancesController : ControllerBase
 {
     private readonly IIncomeManageService _incomeService;
+    private readonly IExpenseManageService _expenseManageService;
     
-    public ManageUserFinancesController(IIncomeManageService incomeService)
+    public ManageUserFinancesController(IIncomeManageService incomeService,IExpenseManageService expenseManageService)
     {
         _incomeService = incomeService;
+        _expenseManageService = expenseManageService;
     }
 
     [HttpPost("AddIncomeCategory")]
@@ -61,16 +64,58 @@ public class ManageUserFinancesController : ControllerBase
          {
              return Ok("Successfully updated");
 
-        }
+         }
          else
          {
              return BadRequest("something went wrong");
          }
 
-       
 
+    }
+
+    [HttpPost("addExpenses")]
+    public  async Task<IActionResult> AddExepenses(ExpenseDto expenseDto)
+    {
+        var result = await _expenseManageService.AddExpenseAsync(expenseDto);
+        if (result == true)
+        {
+            return Ok("added successfully");
+        }
+        else
+        {
+            return BadRequest("something went wrong");
+        }
+    }
+
+    [HttpDelete("deleteExpenses")]
+    public async Task<IActionResult> deleteExpenses(int expenseId)
+    {
+        var result = await _expenseManageService.DeleteExpenseAsync(expenseId);
+        if (result == true)
+        {
+            return Ok("deleted successfully");
+        }
+        else
+        {
+            return BadRequest("something went wrong");
+        }
+    }
+
+    [HttpPut("updateExpenses")]
+    public async Task<IActionResult> UpdateExpenses(UpdateExpenseDto expenseDto)
+    {
+        var result = await _expenseManageService.UpdateExpenseAsync(expenseDto);
+        if (result == true)
+        {
+            return Ok("updates successfully");
+        }
+        else
+        {
+            return BadRequest("something went wrong");
+        }
 
     }
 
 
-}
+     
+    }

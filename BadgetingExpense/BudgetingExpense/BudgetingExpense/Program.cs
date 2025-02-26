@@ -70,6 +70,7 @@ builder.Services.AddScoped<IManageFinancesRepository<Income>, IncomeManageReposi
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IIncomeManageService, IncomeManageService>();
+builder.Services.AddScoped<IExpenseManageService, ExpenseManageService>();
 
 builder.Services.AddScoped<ConfigureRoles>();
 

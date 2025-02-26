@@ -35,16 +35,17 @@ public class ExpenseManageService : IExpenseManageService
 
     public async Task<bool> AddExpenseAsync(ExpenseDto model)
     {
+        var expense = new Expense()
+        {
+            Amount = model.Amount,
+            Currency = model.Currency,
+            CategoryId = model.CategoryId,
+            Date = model.Date,
+            UserId = model.UserId
+        };
         try
         {
-            var expense = new Expense
-            {
-                Amount = model.Amount,
-                Currency = model.Currency,
-                CategoryId = model.CategoryId,
-                Date = model.Date,
-                UserId = model.UserId
-            };
+           
             await _unitOfWork.ExpenseManage.AddAsync(expense);
             await _unitOfWork.SaveChangesAsync();
             return true;
@@ -90,10 +91,11 @@ public class ExpenseManageService : IExpenseManageService
         return null;
     }
 
-    public async Task UpdateExpenseAsync(ExpenseDto expenseDto)
+    public async Task<bool> UpdateExpenseAsync(UpdateExpenseDto expenseDto)
     {
         var expense = new Expense()
         {
+            Id = expenseDto.Id,
             Amount = expenseDto.Amount,
             CategoryId = expenseDto.CategoryId,
             Date = expenseDto.Date,
@@ -104,15 +106,19 @@ public class ExpenseManageService : IExpenseManageService
         {
             await _unitOfWork.ExpenseManage.UpdateAsync(expense);
             await _unitOfWork.SaveChangesAsync();
+            
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             await _unitOfWork.RollBackAsync();
+            return false;
         }
+
+        return true;
     }
 
-    public  async Task UpdateCategoryAsync(string categoryName)
+    public  async Task<bool> UpdateCategoryAsync(string categoryName)
     {
         var category = new Category()
         {
@@ -123,14 +129,17 @@ public class ExpenseManageService : IExpenseManageService
         {
             await _unitOfWork.ExpenseManage.UpdateCategoryAsync(category);
                 await _unitOfWork.SaveChangesAsync();
+               
 
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             await _unitOfWork.RollBackAsync();
+            return false;
         }
 
+        return true;
     }
 
     public async Task<IEnumerable<Expense>?> GetAllExpenseRecordsAsync(string userId)
