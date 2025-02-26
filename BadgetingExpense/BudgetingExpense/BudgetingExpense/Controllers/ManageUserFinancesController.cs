@@ -1,4 +1,7 @@
-﻿using BudgetingExpenses.Service.DtoModels;
+﻿using BudgetingExpense.api.ViewModels;
+using BudgetingExpense.Domain.Models;
+using BudgetingExpense.Domain.Models.DtoModels;
+using BudgetingExpenses.Service.DtoModels;
 using BudgetingExpenses.Service.IServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,10 +43,34 @@ public class ManageUserFinancesController : ControllerBase
     public async Task<IActionResult> DeleteIncomeType(int incomeTypeId)
     {
         var result = await _incomeService.DeleteIncomeAsync(incomeTypeId);
-        if(result == true)
+        if (result == true)
         {
             return Ok("Income Source Deleted Successfully");
         }
+
         return BadRequest("Something went wrong contact the site owner");
+
     }
+
+    [HttpPut("UpdateIncome")]
+    public async Task<IActionResult> Update(UpdateIncomeViewModel updateIncomeViewModel)
+    {
+        var category = await _incomeService.UpdateIncomeCategoryAsync(updateIncomeViewModel.CategoryDto);
+         var incomeResult = await _incomeService.UpdateIncomeAsync(updateIncomeViewModel.Income);
+         if ( incomeResult ==true)
+         {
+             return Ok("Successfully updated");
+
+        }
+         else
+         {
+             return BadRequest("something went wrong");
+         }
+
+       
+
+
+    }
+
+
 }

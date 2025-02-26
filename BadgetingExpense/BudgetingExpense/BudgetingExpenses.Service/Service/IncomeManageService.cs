@@ -1,5 +1,6 @@
 ﻿using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models;
+using BudgetingExpense.Domain.Models.DtoModels;
 using BudgetingExpenses.Service.DtoModels;
 using BudgetingExpenses.Service.IServiceContracts;
 
@@ -88,6 +89,56 @@ public class IncomeManageService : IIncomeManageService
             Console.WriteLine(ex.Message);
         }
         return null;
+    }
+
+    public async Task<bool> UpdateIncomeAsync(Income income)
+    {
+        //var income = new Income()
+        //{
+        //    //Id = 1,
+        //    //Amount = incomeDto.Amount,
+        //    //CategoryId = incomeDto.CategoryId,
+        //    //Currency = incomeDto.Currency,
+        //    //Date = incomeDto.Date,
+        //    //UserId = incomeDto.UserId
+        //};
+        try
+        {
+            await _unitOfWork.IncomeManage.UpdateAsync(income);
+            await _unitOfWork.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            await _unitOfWork.RollBackAsync();
+          
+        }
+
+        return false;
+    }
+
+    public async Task<bool> UpdateIncomeCategoryAsync(CategoryDto categoryDto)
+    {
+        var category = new Category()
+
+        {
+            Id = categoryDto.Id,
+            Name = categoryDto.Name,
+            Type = 1
+        };
+        try
+        {
+            await _unitOfWork.IncomeManage.UpdateCategoryAsync(category);
+            await _unitOfWork.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            await _unitOfWork.RollBackAsync();
+        }
+        return false;
     }
 
     public async Task<IEnumerable<Income>?> GetAllIncomeRecordsAsync(string userId)

@@ -5,10 +5,10 @@ using BudgetingExpenses.Service.IServiceContracts;
 
 namespace BudgetingExpenses.Service.Service;
 
-public class ExpenceManageService : IExpenseManageService
+public class ExpenseManageService : IExpenseManageService
 {
     private readonly IUnitOfWork _unitOfWork;
-    public ExpenceManageService(IUnitOfWork unitOfWork)
+    public ExpenseManageService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
@@ -88,6 +88,49 @@ public class ExpenceManageService : IExpenseManageService
             Console.WriteLine(ex.Message);
         }
         return null;
+    }
+
+    public async Task UpdateExpenseAsync(ExpenseDto expenseDto)
+    {
+        var expense = new Expense()
+        {
+            Amount = expenseDto.Amount,
+            CategoryId = expenseDto.CategoryId,
+            Date = expenseDto.Date,
+            UserId = expenseDto.UserId,
+            Currency = expenseDto.Currency
+        };
+        try
+        {
+            await _unitOfWork.ExpenseManage.UpdateAsync(expense);
+            await _unitOfWork.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            await _unitOfWork.RollBackAsync();
+        }
+    }
+
+    public  async Task UpdateCategoryAsync(string categoryName)
+    {
+        var category = new Category()
+        {
+            Name = categoryName,
+            Type = 0
+        };
+        try
+        {
+            await _unitOfWork.ExpenseManage.UpdateCategoryAsync(category);
+                await _unitOfWork.SaveChangesAsync();
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            await _unitOfWork.RollBackAsync();
+        }
+
     }
 
     public async Task<IEnumerable<Expense>?> GetAllExpenseRecordsAsync(string userId)

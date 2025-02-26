@@ -1,4 +1,4 @@
-﻿using BudgetingExpense.Domain.Contracts.IRepository;
+﻿using BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
 using BudgetingExpense.Domain.Models;
 using Dapper;
 using System.Data.Common;
@@ -60,5 +60,20 @@ public class IncomeManageRepository : IManageFinancesRepository<Income>
                       JOIN Incomes i ON c.Id = i.CategoryId WHERE i.UserId = @userId";
         var incomeCategories = _connection.QueryAsync<Category>(query, new { userId }, _transaction);
         return incomeCategories;
+    }
+
+    public async Task UpdateCategoryAsync(Category category)
+    {
+
+      
+        var query = "UPDATE Categories SET Name = @Name ,Type = @Type WHERE Id = @Id ";
+        await _connection.ExecuteAsync(query, new { category.Name,Type =category.Type = 1,Id = category.Id }, _transaction);
+
+    }
+
+    public async Task UpdateAsync(Income model)
+    {
+        var query = "UPDATE Incomes SET Currency =@Currency,Amount =@Amount,Date =@Date  WHERE UserId = @Id  ";
+        await _connection.ExecuteAsync(query, new { model.Currency, model.Amount, model.Date, Id = model.UserId },_transaction);
     }
 }
