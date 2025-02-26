@@ -3,14 +3,14 @@ using BudgetingExpense.Domain.Models;
 using Dapper;
 using System.Data.Common;
 
-namespace BudgetingExpense.DataAccess.Repository;
+namespace BudgetingExpense.DataAccess.Repository.FinanceManageRepository;
 
-public class ExpenseManageRepo : IManageFinancesRepository<Expense>
+public class ExpenseManageRepository : IManageFinancesRepository<Expense>
 {
     private readonly DbConnection _connection;
     private DbTransaction? _transaction;
 
-    public ExpenseManageRepo(DbConnection connection)
+    public ExpenseManageRepository(DbConnection connection)
     {
         _connection = connection;
     }
@@ -23,8 +23,13 @@ public class ExpenseManageRepo : IManageFinancesRepository<Expense>
     {
         var query = "INSERT INTO Expenses(Currency,Amount,CategoryId,[Date],UserId)" +
             "Values(@Currency,@Amount,@CategoryId,@Date,@UserId)";
-        await _connection.ExecuteAsync(query, new {model.Currency, model.Amount, Date = model.Date = DateTime.Now,
-            model.UserId},_transaction);
+        await _connection.ExecuteAsync(query, new
+        {
+            model.Currency,
+            model.Amount,
+            Date = model.Date = DateTime.Now,
+            model.UserId
+        }, _transaction);
     }
 
     public async Task DeleteAsync(int Id)
@@ -36,14 +41,14 @@ public class ExpenseManageRepo : IManageFinancesRepository<Expense>
     public async Task<IEnumerable<Expense>> GetAllAsync(string UserId)
     {
         var query = "SELECT FROM Expenses WHERE UserId = @UserId";
-        var collection = await _connection.QueryAsync<Expense>(query, new {UserId}, _transaction);
+        var collection = await _connection.QueryAsync<Expense>(query, new { UserId }, _transaction);
         return collection;
     }
-    
+
     public Task<int> AddCategoryAsync(Category category)
     {
         var query = "INSERT INTO Categories(Name, Type) OUTPUT INSERTED.Id VALUES(@Name,@Type)";
-        var id = _connection.QuerySingleAsync<int>(query, new { category.Name, Type = category.Type = 0 },_transaction);
+        var id = _connection.QuerySingleAsync<int>(query, new { category.Name, Type = category.Type = 0 }, _transaction);
         return id;
     }
 

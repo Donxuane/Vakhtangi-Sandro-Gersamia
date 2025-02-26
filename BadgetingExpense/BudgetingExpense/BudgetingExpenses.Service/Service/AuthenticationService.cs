@@ -1,4 +1,4 @@
-﻿using BudgetingExpense.Domain.Contracts;
+﻿using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models;
 using BudgetingExpenses.Service.DtoModels;
 using BudgetingExpenses.Service.IServiceContracts;

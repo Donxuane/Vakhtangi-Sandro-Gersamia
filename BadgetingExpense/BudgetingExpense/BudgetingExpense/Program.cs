@@ -1,11 +1,11 @@
 using System.Data.Common;
 using BudgetingExpense.api.Configuration;
-using BudgetingExpense.DataAccess.Repository;
+using BudgetingExpense.DataAccess.Repository.FinanceManageRepository;
 using BudgetingExpense.DataAccess.Repository.Identity;
 using BudgetingExpense.DataAccess.UnitOfWork;
-using BudgetingExpense.Domain.Contracts;
 using BudgetingExpense.Domain.Contracts.IRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
+using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models;
 using BudgetingExpenses.Service.IServiceContracts;
 using BudgetingExpenses.Service.Service;
@@ -63,8 +63,8 @@ builder.Services.AddScoped<DbConnection>(sp =>
 builder.Services.ConfigureJWTBearerToken(builder.Configuration);
 
 builder.Services.AddScoped<IAuthentication, Authentication>();
-builder.Services.AddScoped<IManageFinancesRepository<Expense>, ExpenseManageRepo>();
-builder.Services.AddScoped<IManageFinancesRepository<Income>, IncomeManageRepo>();
+builder.Services.AddScoped<IManageFinancesRepository<Expense>, ExpenseManageRepository>();
+builder.Services.AddScoped<IManageFinancesRepository<Income>, IncomeManageRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IIncomeManageService, IncomeManageService>();

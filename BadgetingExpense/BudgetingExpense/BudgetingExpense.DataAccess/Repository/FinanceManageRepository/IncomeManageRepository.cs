@@ -3,14 +3,14 @@ using BudgetingExpense.Domain.Models;
 using Dapper;
 using System.Data.Common;
 
-namespace BudgetingExpense.DataAccess.Repository;
+namespace BudgetingExpense.DataAccess.Repository.FinanceManageRepository;
 
-public class IncomeManageRepo : IManageFinancesRepository<Income>
+public class IncomeManageRepository : IManageFinancesRepository<Income>
 {
     private readonly DbConnection _connection;
     private DbTransaction? _transaction;
 
-    public IncomeManageRepo(DbConnection connection)
+    public IncomeManageRepository(DbConnection connection)
     {
         _connection = connection;
     }
@@ -23,8 +23,14 @@ public class IncomeManageRepo : IManageFinancesRepository<Income>
     {
         var query = "INSERT INTO Incomes(Currency,Amount,CategoryId,[Date],UserId)" +
             "Values(@Currency,@Amount,@CategoryId,@Date,@UserId)";
-        await _connection.ExecuteAsync(query, new { model.Currency, model.Amount,
-            model.CategoryId, model.Date, model.UserId }, _transaction);
+        await _connection.ExecuteAsync(query, new
+        {
+            model.Currency,
+            model.Amount,
+            model.CategoryId,
+            model.Date,
+            model.UserId
+        }, _transaction);
     }
 
     public async Task DeleteAsync(int Id)
@@ -43,7 +49,7 @@ public class IncomeManageRepo : IManageFinancesRepository<Income>
     public Task<int> AddCategoryAsync(Category category)
     {
         var query = "INSERT INTO Categories(Name,Type)OUTPUT INSERTED.Id VALUES(@Name,@Type)";
-        var id = _connection.QuerySingleAsync<int>(query, new { category.Name, Type = category.Type = 1 },_transaction);
+        var id = _connection.QuerySingleAsync<int>(query, new { category.Name, Type = category.Type = 1 }, _transaction);
         return id;
     }
 

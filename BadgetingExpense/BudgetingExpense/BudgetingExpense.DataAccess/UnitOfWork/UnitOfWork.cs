@@ -1,7 +1,7 @@
 ﻿using BudgetingExpense.DataAccess.Repository;
-using BudgetingExpense.Domain.Contracts;
 using BudgetingExpense.Domain.Contracts.IRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
+using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models;
 using System.Data.Common;
 
