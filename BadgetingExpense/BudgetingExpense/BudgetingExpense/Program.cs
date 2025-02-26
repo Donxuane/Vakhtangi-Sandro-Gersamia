@@ -38,12 +38,12 @@ builder.Services.AddSwaggerGen(options =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            Array.Empty<string>()
         }
     });
 });
 builder.Services.AddDbContext<AppDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("default2"), b=>b.MigrationsAssembly("BudgetingExpense.DataAccess")));
+options.UseSqlServer(builder.Configuration.GetConnectionString("default"), b=>b.MigrationsAssembly("BudgetingExpense.DataAccess")));
 
 builder.Services.AddIdentity<IdentityModel, IdentityRole>(options =>
 {
@@ -58,7 +58,7 @@ builder.Services.AddIdentity<IdentityModel, IdentityRole>(options =>
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<DbConnection>(sp =>
-    new SqlConnection(builder.Configuration.GetConnectionString("default2")));
+    new SqlConnection(builder.Configuration.GetConnectionString("default")));
 
 builder.Services.ConfigureJWTBearerToken(builder.Configuration);
 
@@ -77,7 +77,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var roles = scope.ServiceProvider.GetRequiredService<ConfigureRoles>();
-    roles.RoleCeeder().Wait();
+    roles.RoleCeeder().GetAwaiter().GetResult();
 }
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
