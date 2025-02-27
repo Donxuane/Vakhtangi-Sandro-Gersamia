@@ -2,7 +2,6 @@
 
 public class IncomeDto
 {
-    public string UserId {  get; set; }
     public int Currency { get; set; }
     public double Amount {  get; set; }
     public int CategoryId {  get; set; }

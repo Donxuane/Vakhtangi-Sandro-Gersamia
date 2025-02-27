@@ -1,5 +1,4 @@
 ﻿using BudgetingExpense.Domain.Contracts.IUnitOfWork;
-using BudgetingExpense.Domain.Models;
 using BudgetingExpense.Domain.Models.DtoModels;
 using BudgetingExpenses.Service.DtoModels;
 using BudgetingExpenses.Service.IServiceContracts;
@@ -93,15 +92,6 @@ public class IncomeManageService : IIncomeManageService
 
     public async Task<bool> UpdateIncomeAsync(Income income)
     {
-        //var income = new Income()
-        //{
-        //    //Id = 1,
-        //    //Amount = incomeDto.Amount,
-        //    //CategoryId = incomeDto.CategoryId,
-        //    //Currency = incomeDto.Currency,
-        //    //Date = incomeDto.Date,
-        //    //UserId = incomeDto.UserId
-        //};
         try
         {
             await _unitOfWork.IncomeManage.UpdateAsync(income);
@@ -121,7 +111,6 @@ public class IncomeManageService : IIncomeManageService
     public async Task<bool> UpdateIncomeCategoryAsync(CategoryDto categoryDto)
     {
         var category = new Category()
-
         {
             Id = categoryDto.Id,
             Name = categoryDto.Name,
