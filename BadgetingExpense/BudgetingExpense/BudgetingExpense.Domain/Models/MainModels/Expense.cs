@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BudgetingExpense.Domain.Models;
+namespace BudgetingExpense.Domain.Models.MainModels;
 
 public class Expense
 {
@@ -9,10 +9,10 @@ public class Expense
     [Required]
     public int Currency { get; set; }
     [Required]
-    public double Amount {  get; set; } 
-    public int? CategoryId {  get; set; }
+    public double Amount { get; set; }
+    public int? CategoryId { get; set; }
     [Required]
-    public DateTime Date {  get; set; }
+    public DateTime Date { get; set; }
     [Required]
     public string UserId { get; set; }
 }

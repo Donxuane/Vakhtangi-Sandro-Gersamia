@@ -1,4 +1,4 @@
-﻿using BudgetingExpense.Domain.Models;
+﻿using BudgetingExpense.Domain.Models.MainModels;
 
 namespace BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
 

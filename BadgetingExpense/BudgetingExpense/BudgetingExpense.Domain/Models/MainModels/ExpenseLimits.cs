@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BudgetingExpense.Domain.Models;
+namespace BudgetingExpense.Domain.Models.MainModels;
 
 public class ExpenseLimits
 {
@@ -12,7 +12,7 @@ public class ExpenseLimits
     [Required]
     public double Amount { get; set; }
     [Required]
-    public int PeriodCategory {  get; set; }
+    public int PeriodCategory { get; set; }
     [Required]
-    public DateTime DateAdded {  get; set; }
+    public DateTime DateAdded { get; set; }
 }

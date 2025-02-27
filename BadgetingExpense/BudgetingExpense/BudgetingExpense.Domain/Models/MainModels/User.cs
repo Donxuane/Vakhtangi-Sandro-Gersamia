@@ -5,22 +5,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BudgetingExpense.Domain.Models
+namespace BudgetingExpense.Domain.Models.MainModels
 {
-   public class User
+    public class User
     {
         [Key]
         public string Id { get; set; }
-        [Length(2,50)]
+        [Length(2, 50)]
         [Required]
         public string Name { get; set; }
-        [Length(2,50)]
+        [Length(2, 50)]
         [Required]
         public string Surname { get; set; }
         [EmailAddress]
         [Required]
         public string Email { get; set; }
-        [Length(8,255)]
+        [Length(8, 255)]
         public string? Password { get; set; }
         [Required]
         public DateTime RegisterDate { get; set; }

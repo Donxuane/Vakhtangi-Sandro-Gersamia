@@ -1,6 +1,5 @@
 ﻿using BudgetingExpense.Domain.Contracts.IUnitOfWork;
-using BudgetingExpense.Domain.Models.DtoModels;
-using BudgetingExpenses.Service.DtoModels;
+using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.IServiceContracts;
 
 namespace BudgetingExpenses.Service.Service;
@@ -33,19 +32,11 @@ public class IncomeManageService : IIncomeManageService
         return 0;
     }
 
-    public async Task<bool> AddIncomeAsync(IncomeDto model)
+    public async Task<bool> AddIncomeAsync(Income model)
     {
-        var finalModel = new Income
-        {
-            Currency = model.Currency,
-            Amount = model.Amount,
-            CategoryId = model.CategoryId,
-            Date = model.Date,
-            UserId = model.UserId,
-        };
         try
         {    
-            await _unitOfWork.IncomeManage.AddAsync(finalModel);
+            await _unitOfWork.IncomeManage.AddAsync(model);
             await _unitOfWork.SaveChangesAsync();
         }
         catch(Exception ex)
@@ -108,16 +99,11 @@ public class IncomeManageService : IIncomeManageService
         return false;
     }
 
-    public async Task<bool> UpdateIncomeCategoryAsync(CategoryDto categoryDto)
+    public async Task<bool> UpdateIncomeCategoryAsync(Category category)
     {
-        var category = new Category()
-        {
-            Id = categoryDto.Id,
-            Name = categoryDto.Name,
-            Type = 1
-        };
         try
         {
+            category.Type = 1;
             await _unitOfWork.IncomeManage.UpdateCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
             return true;

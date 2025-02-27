@@ -2,7 +2,7 @@
 using BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
-using BudgetingExpense.Domain.Models;
+using BudgetingExpense.Domain.Models.MainModels;
 using System.Data.Common;
 
 namespace BudgetingExpense.DataAccess.UnitOfWork;

@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BudgetingExpenses.Service.DtoModels;
+namespace BudgetingExpense.Domain.Models.AuthenticationModels;
 
-public class LoginDto
+public class Login
 {
-    [Required(AllowEmptyStrings = false,ErrorMessage ="Email Is Required!")]
+    [Required(AllowEmptyStrings = false, ErrorMessage = "Email Is Required!")]
     [EmailAddress]
-    public string Email {  get; set; }
+    public string Email { get; set; }
     [Required(AllowEmptyStrings = false, ErrorMessage = "Password Is Required!")]
     [DataType(DataType.Password)]
     public string Password { get; set; }

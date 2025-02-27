@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BudgetingExpenses.Service.DtoModels;
+namespace BudgetingExpense.Domain.Models.MainModels;
 
-public class UpdateExpenseDto
+public class Income
 {
     [Key]
     public int Id { get; set; }

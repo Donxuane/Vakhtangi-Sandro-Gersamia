@@ -1,5 +1,5 @@
 ﻿using BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
-using BudgetingExpense.Domain.Models;
+using BudgetingExpense.Domain.Models.MainModels;
 using Dapper;
 using System.Data.Common;
 
@@ -30,7 +30,6 @@ public class ExpenseManageRepository : IManageFinancesRepository<Expense>
             model.CategoryId,
             Date = model.Date = DateTime.Now,
             model.UserId
-            
         }, _transaction);
     }
 
@@ -79,8 +78,8 @@ public class ExpenseManageRepository : IManageFinancesRepository<Expense>
 
     public async Task UpdateAsync(Expense model)
     {
-        var query = "Update Expenses SET Currency = @Currency,Amount =@Amount,Date=@Date WHERE UserId = @Id AND Id = @ExpenseId";
-        await _connection.ExecuteAsync(query, new { model.Currency, model.Amount, model.Date, UserId = model.UserId,model.Id },
+        var query = "Update Expenses SET Currency = @Currency,Amount =@Amount,Date=@Date WHERE UserId = @UserId AND Id = @Id";
+        await _connection.ExecuteAsync(query, new { model.Currency, model.Amount, model.Date, model.UserId,model.Id},
             _transaction);
     }
 }

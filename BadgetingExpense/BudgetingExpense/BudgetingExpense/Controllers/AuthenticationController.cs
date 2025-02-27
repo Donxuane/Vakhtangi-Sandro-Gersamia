@@ -1,4 +1,4 @@
-﻿using BudgetingExpenses.Service.DtoModels;
+﻿using BudgetingExpense.Domain.Models.AuthenticationModels;
 using BudgetingExpenses.Service.IServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,21 +14,21 @@ public class AuthenticationController : ControllerBase
         _auth = auth;
     }
     [HttpPost("LoginUser")]
-    public async Task<IActionResult> LogInUserAync([FromForm] LoginDto user)
+    public async Task<IActionResult> LogInUserAync([FromForm] Login user)
     {
         var logedUser = await _auth.LoginUserServiceAsync(user);
         if(logedUser == true)
         {
             var loggedUser = await _auth.GetUserAsync(user.Email);
             var roles = await _auth.GetRoleAsync(user.Email);
-            var token = await _auth.GenerateJwtTokenAsync(loggedUser.Id, roles.FirstOrDefault());
-            return Ok($"Bearer : {token}");
+            var generateToken = await _auth.GenerateJwtTokenAsync(loggedUser.Id, roles.FirstOrDefault());
+            return Ok(new {token = generateToken});
         }
         return BadRequest();
     }
 
     [HttpPost("RegisterUser")]
-    public async Task<IActionResult> RegisterUserAsync([FromForm]RegisterDto user)
+    public async Task<IActionResult> RegisterUserAsync([FromForm]Register user)
     {
         var register = await _auth.RegisterUserServiceAsync(user);
         if(register == true)

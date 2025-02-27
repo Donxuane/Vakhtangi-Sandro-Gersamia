@@ -12,6 +12,4 @@ public class ExpenseDto
     public int? CategoryId {  get; set; }
     [Required]
     public DateTime Date {  get; set; }
-    [Required]
-    public string UserId {  get; set; }
 }

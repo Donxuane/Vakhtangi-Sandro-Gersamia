@@ -1,5 +1,5 @@
 ﻿using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
-using BudgetingExpense.Domain.Models;
+using BudgetingExpense.Domain.Models.MainModels;
 using Microsoft.AspNetCore.Identity;
 
 namespace BudgetingExpense.DataAccess.Repository.Identity;
@@ -16,8 +16,7 @@ public class Authentication : IAuthentication
     public async Task AddUserRoleAsync(string email, string role)
     {
         var model = await GetUserPrivatelyForCheckingPurposes(email);
-        var test = await _userManager.AddToRoleAsync(model, role);
-        var check = "";
+        await _userManager.AddToRoleAsync(model, role);
     }
     private async Task<IdentityModel> GetUserPrivatelyForCheckingPurposes(string email)
     {

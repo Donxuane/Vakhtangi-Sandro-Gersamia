@@ -1,12 +1,13 @@
 using System.Data.Common;
 using BudgetingExpense.api.Configuration;
+using BudgetingExpense.api.CustomMiddleware;
 using BudgetingExpense.DataAccess.Repository.FinanceManageRepository;
 using BudgetingExpense.DataAccess.Repository.Identity;
 using BudgetingExpense.DataAccess.UnitOfWork;
 using BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
-using BudgetingExpense.Domain.Models;
+using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.IServiceContracts;
 using BudgetingExpenses.Service.Service;
 using Microsoft.AspNetCore.Identity;
@@ -92,7 +93,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+app.UseMiddleware<UserItemsMiddleware>();
 app.UseAuthorization();
+
 app.MapControllers();
 
 app.Run();

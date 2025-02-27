@@ -1,7 +1,8 @@
 ﻿using BudgetingExpense.Domain.Contracts.IUnitOfWork;
-using BudgetingExpense.Domain.Models;
+using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.DtoModels;
 using BudgetingExpenses.Service.IServiceContracts;
+using Microsoft.AspNetCore.Http;
 
 namespace BudgetingExpenses.Service.Service;
 
@@ -33,20 +34,11 @@ public class ExpenseManageService : IExpenseManageService
         return 0;
     }
 
-    public async Task<bool> AddExpenseAsync(ExpenseDto model)
+    public async Task<bool> AddExpenseAsync(Expense model)
     {
-        var expense = new Expense()
-        {
-            Amount = model.Amount,
-            Currency = model.Currency,
-            CategoryId = model.CategoryId,
-            Date = model.Date,
-            UserId = model.UserId
-        };
         try
         {
-           
-            await _unitOfWork.ExpenseManage.AddAsync(expense);
+            await _unitOfWork.ExpenseManage.AddAsync(model);
             await _unitOfWork.SaveChangesAsync();
             return true;
         }
@@ -91,22 +83,13 @@ public class ExpenseManageService : IExpenseManageService
         return null;
     }
 
-    public async Task<bool> UpdateExpenseAsync(UpdateExpenseDto expenseDto)
+    public async Task<bool> UpdateExpenseAsync(Expense expense)
     {
-        var expense = new Expense()
-        {
-            Id = expenseDto.Id,
-            Amount = expenseDto.Amount,
-            CategoryId = expenseDto.CategoryId,
-            Date = expenseDto.Date,
-            UserId = expenseDto.UserId,
-            Currency = expenseDto.Currency
-        };
         try
         {
             await _unitOfWork.ExpenseManage.UpdateAsync(expense);
             await _unitOfWork.SaveChangesAsync();
-            
+            return true;
         }
         catch (Exception e)
         {
@@ -114,11 +97,9 @@ public class ExpenseManageService : IExpenseManageService
             await _unitOfWork.RollBackAsync();
             return false;
         }
-
-        return true;
     }
 
-    public  async Task<bool> UpdateCategoryAsync(string categoryName)
+    public async Task<bool> UpdateCategoryAsync(string categoryName)
     {
         var category = new Category()
         {
@@ -128,9 +109,8 @@ public class ExpenseManageService : IExpenseManageService
         try
         {
             await _unitOfWork.ExpenseManage.UpdateCategoryAsync(category);
-                await _unitOfWork.SaveChangesAsync();
-               
-
+            await _unitOfWork.SaveChangesAsync();
+            return true;
         }
         catch (Exception e)
         {
@@ -139,7 +119,6 @@ public class ExpenseManageService : IExpenseManageService
             return false;
         }
 
-        return true;
     }
 
     public async Task<IEnumerable<Expense>?> GetAllExpenseRecordsAsync(string userId)
@@ -158,4 +137,5 @@ public class ExpenseManageService : IExpenseManageService
         }
         return null;
     }
+
 }

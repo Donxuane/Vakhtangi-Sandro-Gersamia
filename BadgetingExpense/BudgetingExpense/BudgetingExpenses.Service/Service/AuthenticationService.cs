@@ -1,5 +1,4 @@
 ﻿using BudgetingExpense.Domain.Contracts.IUnitOfWork;
-using BudgetingExpense.Domain.Models;
 
 using BudgetingExpenses.Service.IServiceContracts;
 using Microsoft.Extensions.Configuration;
@@ -7,7 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using BudgetingExpenses.Service.DtoModels;
+using BudgetingExpense.Domain.Models.MainModels;
+using BudgetingExpense.Domain.Models.AuthenticationModels;
 
 namespace BudgetingExpenses.Service.Service;
 
@@ -42,7 +42,7 @@ public class AuthenticationService : IAuthenticationService
 
             var claims = new[]
             {
-            new Claim(JwtRegisteredClaimNames.Sub, userId),
+            new Claim(ClaimTypes.Name, userId),
             new Claim(ClaimTypes.Role, userRole)
             };
             var token = new JwtSecurityToken(
@@ -86,7 +86,7 @@ public class AuthenticationService : IAuthenticationService
         return null;
     }
 
-    public async Task<bool> LoginUserServiceAsync(LoginDto user)
+    public async Task<bool> LoginUserServiceAsync(Login user)
     {
         try
         {
@@ -104,7 +104,7 @@ public class AuthenticationService : IAuthenticationService
         return false;
     }
 
-    public async Task<bool> RegisterUserServiceAsync(RegisterDto user)
+    public async Task<bool> RegisterUserServiceAsync(Register user)
     {
         try
         {

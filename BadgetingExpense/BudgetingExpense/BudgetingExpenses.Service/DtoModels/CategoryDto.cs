@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BudgetingExpense.Domain.Models.DtoModels
+namespace BudgetingExpenses.Service.DtoModels
 {
-  public class CategoryDto
+    public class CategoryDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        
+
     }
 }
