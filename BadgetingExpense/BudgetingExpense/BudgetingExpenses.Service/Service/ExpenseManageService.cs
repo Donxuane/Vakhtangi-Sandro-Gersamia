@@ -99,16 +99,15 @@ public class ExpenseManageService : IExpenseManageService
         }
     }
 
-    public async Task<bool> UpdateCategoryAsync(string categoryName)
+ 
+
+    public async Task<bool> UpdateCategoryAsync(Category Category)
     {
-        var category = new Category()
-        {
-            Name = categoryName,
-            Type = 0
-        };
+       
         try
         {
-            await _unitOfWork.ExpenseManage.UpdateCategoryAsync(category);
+            Category.Type = 0;
+            await _unitOfWork.ExpenseManage.UpdateCategoryAsync(Category);
             await _unitOfWork.SaveChangesAsync();
             return true;
         }

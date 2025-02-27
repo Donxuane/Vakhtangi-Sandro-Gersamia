@@ -10,5 +10,6 @@ public interface IExpenseManageService
     public Task<IEnumerable<Expense>?> GetAllExpenseRecordsAsync(string userId);
     public Task<IEnumerable<Category>?> GetAllExpenseCategoryRecordsAsync(string userId);
     public Task<bool> UpdateExpenseAsync(Expense expenseDto);
-    public Task<bool> UpdateCategoryAsync(string categoryName);
+    public Task<bool> UpdateCategoryAsync(Category Category);
+    
 }

@@ -1,4 +1,5 @@
-﻿using BudgetingExpense.api.ViewModels.IncomeViewModels;
+﻿using BudgetingExpense.api.ViewModels.ExpenseViewModel;
+using BudgetingExpense.api.ViewModels.IncomeViewModels;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.DtoModels;
 using BudgetingExpenses.Service.IServiceContracts;
@@ -67,13 +68,17 @@ public class ManageUserFinancesController : ControllerBase
     [HttpPut("UpdateIncome")]
     public async Task<IActionResult> Update(UpdateIncomeViewModel model)
     {
-        var category = new Category
+        var Income = new Income()
         {
-            Id = model.CategoryDto.Id,
-            Name = model.CategoryDto.Name,
+            Id = model.Income.Id,
+            Amount = model.Income.Amount,
+            CategoryId = model.Income.CategoryId,
+            Currency = model.Income.Currency,
+            Date = model.Income.Date,
+            UserId = HttpContext.Items["UserId"].ToString()
         };
-        var categoryUpdated = await _incomeService.UpdateIncomeCategoryAsync(category);
-        var incomeUpdated = await _incomeService.UpdateIncomeAsync(model.Income);
+        var categoryUpdated = await _incomeService.UpdateIncomeCategoryAsync(model.Category);
+        var incomeUpdated = await _incomeService.UpdateIncomeAsync(Income);
         if (incomeUpdated == true && categoryUpdated == true)
         {
             return Ok("Successfully updated");
@@ -124,20 +129,20 @@ public class ManageUserFinancesController : ControllerBase
     }
 
     [HttpPut("updateExpenses")]
-    public async Task<IActionResult> UpdateExpenses(UpdateExpenseDto expenseDto)
+    public async Task<IActionResult> UpdateExpenses(UpdateExpenseViewModel updateExpenseViewModel)
     {
-        var expense = new Expense
+        var expenses = new Expense()
         {
-            Id = expenseDto.Id,
-            CategoryId = expenseDto.CategoryId,
-            Amount = expenseDto.Amount,
-            Date = expenseDto.Date,
-            Currency = expenseDto.Currency,
+            Id = updateExpenseViewModel.expenses.Id,
+            Currency = updateExpenseViewModel.expenses.Currency,
+            Amount = updateExpenseViewModel.expenses.Amount,
+            CategoryId = updateExpenseViewModel.expenses.CategoryId,
+            Date = updateExpenseViewModel.expenses.Date,
             UserId = HttpContext.Items["UserId"].ToString()
         };
-
-        var result = await _expenseManageService.UpdateExpenseAsync(expense);
-        if (result == true)
+        var category = await _expenseManageService.UpdateCategoryAsync(updateExpenseViewModel.category);
+        var result = await _expenseManageService.UpdateExpenseAsync(expenses);
+        if (result == true && category == true )
         {
             return Ok("updates successfully");
         }
@@ -145,6 +150,18 @@ public class ManageUserFinancesController : ControllerBase
         {
             return BadRequest("something went wrong");
         }
+
+    }
+
+    [HttpPost("Add Expense Category")]
+    public async Task<IActionResult> AddExpenseCategory(string category)
+    {
+        var result = await _expenseManageService.AddExpenseCategoryAsync(category);
+        if (result > 0)
+        {
+            return Ok($"{result} Category added Successfully");
+        }
+        return BadRequest();
 
     }
 }

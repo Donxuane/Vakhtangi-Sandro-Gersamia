@@ -5,7 +5,7 @@ namespace BudgetingExpense.api.ViewModels.IncomeViewModels
 {
     public class UpdateIncomeViewModel
     {
-        public Income? Income { get; set; }
-        public CategoryDto? CategoryDto { get; set; }
+        public UpdateIncomeDto? Income { get; set; }
+        public Category? Category { get; set; }
     }
 }
