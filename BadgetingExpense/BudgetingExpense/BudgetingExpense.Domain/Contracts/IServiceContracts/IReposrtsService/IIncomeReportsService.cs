@@ -6,3 +6,4 @@ public interface IIncomeReportsService
 {
     public Task<IncomeRecords> RecordsBasedCurrecncyPeriod(int currency, int period);
 }
+ 
