@@ -2,7 +2,6 @@
 using BudgetingExpense.api.ViewModels.IncomeViewModels;
 using BudgetingExpense.Domain.Models.Models.MainModels;
 using BudgetingExpenses.Service.DtoModels;
-using BudgetingExpenses.Service.IServiceContracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

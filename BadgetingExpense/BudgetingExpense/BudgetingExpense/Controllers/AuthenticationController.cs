@@ -1,5 +1,4 @@
 ﻿using BudgetingExpense.Domain.Models.AuthenticationModels;
-using BudgetingExpenses.Service.IServiceContracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetingExpense.api.Controllers;
