@@ -1,8 +1,8 @@
-﻿using BudgetingExpense.Domain.Contracts.IUnitOfWork;
+﻿using BudgetingExpense.Domain.Contracts.IServiceContracts.IFinanceManageServices;
+using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
-using BudgetingExpenses.Service.IServiceContracts;
 
-namespace BudgetingExpenses.Service.Service;
+namespace BudgetingExpenses.Service.Service.ManageFinanceServices;
 
 public class IncomeManageService : IIncomeManageService
 {
@@ -25,7 +25,8 @@ public class IncomeManageService : IIncomeManageService
             {
                 return result;
             }
-        }catch(Exception ex)
+        }
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
@@ -41,7 +42,7 @@ public class IncomeManageService : IIncomeManageService
             await _unitOfWork.IncomeManage.AddAsync(model);
             await _unitOfWork.SaveChangesAsync();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
@@ -58,7 +59,7 @@ public class IncomeManageService : IIncomeManageService
             await _unitOfWork.IncomeManage.DeleteAsync(incomeTypeId);
             await _unitOfWork.SaveChangesAsync();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
@@ -78,7 +79,7 @@ public class IncomeManageService : IIncomeManageService
                 return categories;
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
@@ -98,7 +99,7 @@ public class IncomeManageService : IIncomeManageService
         {
             Console.WriteLine(e);
             await _unitOfWork.RollBackAsync();
-          
+
         }
 
         return false;
@@ -133,7 +134,7 @@ public class IncomeManageService : IIncomeManageService
                 return incomeRecords;
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }

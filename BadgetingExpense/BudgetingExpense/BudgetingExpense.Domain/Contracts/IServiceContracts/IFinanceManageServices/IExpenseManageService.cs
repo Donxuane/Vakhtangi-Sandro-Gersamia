@@ -1,6 +1,6 @@
 ﻿using BudgetingExpense.Domain.Models.MainModels;
 
-namespace BudgetingExpenses.Service.IServiceContracts;
+namespace BudgetingExpense.Domain.Contracts.IServiceContracts.IFinanceManageServices;
 
 public interface IExpenseManageService
 {
@@ -11,5 +11,5 @@ public interface IExpenseManageService
     public Task<IEnumerable<Category>?> GetAllExpenseCategoryRecordsAsync(string userId);
     public Task<bool> UpdateExpenseAsync(Expense expenseDto);
     public Task<bool> UpdateCategoryAsync(Category Category);
-    
+
 }

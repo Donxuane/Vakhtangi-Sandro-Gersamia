@@ -6,10 +6,12 @@ using BudgetingExpense.DataAccess.Repository.Identity;
 using BudgetingExpense.DataAccess.UnitOfWork;
 using BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
+using BudgetingExpense.Domain.Contracts.IServiceContracts.IAuthenticationService;
+using BudgetingExpense.Domain.Contracts.IServiceContracts.IFinanceManageServices;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
-using BudgetingExpenses.Service.IServiceContracts;
-using BudgetingExpenses.Service.Service;
+using BudgetingExpenses.Service.Service.AuthenticationService;
+using BudgetingExpenses.Service.Service.ManageFinanceServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +47,7 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("default"), b=>b.MigrationsAssembly("BudgetingExpense.DataAccess")));
 

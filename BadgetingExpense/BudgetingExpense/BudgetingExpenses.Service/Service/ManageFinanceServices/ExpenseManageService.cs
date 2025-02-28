@@ -1,10 +1,10 @@
-﻿using BudgetingExpense.Domain.Contracts.IUnitOfWork;
+﻿using BudgetingExpense.Domain.Contracts.IServiceContracts.IFinanceManageServices;
+using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.DtoModels;
-using BudgetingExpenses.Service.IServiceContracts;
 using Microsoft.AspNetCore.Http;
 
-namespace BudgetingExpenses.Service.Service;
+namespace BudgetingExpenses.Service.Service.ManageFinanceServices;
 
 public class ExpenseManageService : IExpenseManageService
 {
@@ -27,7 +27,7 @@ public class ExpenseManageService : IExpenseManageService
                 return result;
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
@@ -44,7 +44,7 @@ public class ExpenseManageService : IExpenseManageService
             await _unitOfWork.SaveChangesAsync();
             return true;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
@@ -61,7 +61,7 @@ public class ExpenseManageService : IExpenseManageService
             await _unitOfWork.SaveChangesAsync();
             return true;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
@@ -80,7 +80,7 @@ public class ExpenseManageService : IExpenseManageService
                 return categories;
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
@@ -104,11 +104,11 @@ public class ExpenseManageService : IExpenseManageService
         }
     }
 
- 
+
 
     public async Task<bool> UpdateCategoryAsync(Category Category)
     {
-       
+
         try
         {
             Category.Type = 0;
@@ -137,7 +137,7 @@ public class ExpenseManageService : IExpenseManageService
                 return records;
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }

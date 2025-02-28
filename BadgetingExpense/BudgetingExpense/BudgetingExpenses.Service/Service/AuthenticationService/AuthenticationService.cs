@@ -1,5 +1,4 @@
 ﻿using BudgetingExpense.Domain.Contracts.IUnitOfWork;
-using BudgetingExpenses.Service.IServiceContracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -7,8 +6,9 @@ using System.Security.Claims;
 using System.Text;
 using BudgetingExpense.Domain.Models.AuthenticationModels;
 using BudgetingExpense.Domain.Models.MainModels;
+using BudgetingExpense.Domain.Contracts.IServiceContracts.IAuthenticationService;
 
-namespace BudgetingExpenses.Service.Service;
+namespace BudgetingExpenses.Service.Service.AuthenticationService;
 
 public class AuthenticationService : IAuthenticationService
 {
@@ -32,7 +32,7 @@ public class AuthenticationService : IAuthenticationService
         }
     }
 
-    public  Task<string> GenerateJwtTokenAsync(string userId, string userRole)
+    public Task<string> GenerateJwtTokenAsync(string userId, string userRole)
     {
         return Task.Run(() =>
         {
@@ -50,7 +50,7 @@ public class AuthenticationService : IAuthenticationService
                 claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(Jwt["ExpiryMinutes"])),
                 signingCredentials: new SigningCredentials(JwtKey, SecurityAlgorithms.HmacSha256)
-               
+
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -96,8 +96,8 @@ public class AuthenticationService : IAuthenticationService
                 return true;
             }
         }
-        catch(Exception)
-        { 
+        catch (Exception)
+        {
 
         }
         return false;
@@ -120,7 +120,7 @@ public class AuthenticationService : IAuthenticationService
                 return true;
             }
         }
-        catch(Exception)
+        catch (Exception)
         {
 
         }

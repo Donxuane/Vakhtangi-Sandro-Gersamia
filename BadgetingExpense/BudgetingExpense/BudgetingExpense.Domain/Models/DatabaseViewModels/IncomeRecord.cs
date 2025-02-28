@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 namespace BudgetingExpense.Domain.Models.DatabaseViewModels;
 
-public class IncomeRecords
+public class IncomeRecord
 {
     public string UserId { get; set; }
     public DateTime IncomeDate { get; set; }
