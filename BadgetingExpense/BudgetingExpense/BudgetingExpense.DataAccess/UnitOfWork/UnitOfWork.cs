@@ -20,8 +20,6 @@ public class UnitOfWork : IUnitOfWork
     {
         _expenseManage = expenseManage;
         _incomeManage = incomeManage;
-
-
         _authentication = authentication;
         _connection = connection;
         _connection.Open();
