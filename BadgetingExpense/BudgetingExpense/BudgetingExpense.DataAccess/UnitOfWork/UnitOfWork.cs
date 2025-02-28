@@ -1,6 +1,6 @@
-﻿using BudgetingExpense.DataAccess.Repository;
-using BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
+﻿using BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
+using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 using System.Data.Common;
@@ -10,30 +10,50 @@ namespace BudgetingExpense.DataAccess.UnitOfWork;
 public class UnitOfWork : IUnitOfWork
 {
     private readonly IAuthentication _authentication;
-    private IManageFinancesRepository<Expense> _expenseManage;
-    private IManageFinancesRepository<Income> _incomeManage;
+    private readonly IManageFinancesRepository<Expense> _expenseManage;
+    private readonly IManageFinancesRepository<Income> _incomeManage;
+    private readonly IIncomeRecordsRepository _incomerecords;
     private readonly DbConnection _connection;
-    private DbTransaction _transaction;
+    private DbTransaction? _transaction;
 
     public UnitOfWork(IAuthentication authentication, DbConnection connection,
-        IManageFinancesRepository<Expense> expenseManage, IManageFinancesRepository<Income> incomeManage)
+        IManageFinancesRepository<Expense> expenseManage, IManageFinancesRepository<Income> incomeManage,
+        IIncomeRecordsRepository incomeRecords)
     {
         _expenseManage = expenseManage;
         _incomeManage = incomeManage;
         _authentication = authentication;
+        _incomerecords = incomeRecords;
+
         _connection = connection;
-        _connection.Open();
-        _transaction = _connection.BeginTransaction();
-
-
-        _expenseManage.SetTransaction(_transaction);
-        _incomeManage.SetTransaction(_transaction);
     }
 
     public IAuthentication Authentication => _authentication;
 
-    public IManageFinancesRepository<Expense> ExpenseManage => _expenseManage;
-    public IManageFinancesRepository<Income> IncomeManage => _incomeManage;
+    public IManageFinancesRepository<Expense> ExpenseManage 
+    {
+        get 
+        {
+            if (_transaction != null)
+            {
+                _expenseManage.SetTransaction(_transaction);
+            }
+            return _expenseManage;
+        } 
+    }
+    public IManageFinancesRepository<Income> IncomeManage 
+    {
+        get
+        {
+            if (_transaction != null)
+            {
+                _incomeManage.SetTransaction(_transaction);
+            }
+            return _incomeManage;
+        } 
+    }
+
+    public IIncomeRecordsRepository IncomeRecords => _incomerecords;
 
     public async ValueTask DisposeAsync()
     {
@@ -82,6 +102,23 @@ public class UnitOfWork : IUnitOfWork
         catch (Exception ex)
         {
             Console.WriteLine(ex.ToString());
+        }
+    }
+
+    public async Task BeginTransaction()
+    {
+        try
+        {
+            if(_connection != null) 
+            {
+                await _connection.OpenAsync();
+                _transaction = await _connection.BeginTransactionAsync();
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            throw new InvalidOperationException("Database Connection Lost");
         }
     }
 }

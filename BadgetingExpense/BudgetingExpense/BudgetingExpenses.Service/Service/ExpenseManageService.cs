@@ -19,6 +19,7 @@ public class ExpenseManageService : IExpenseManageService
         try
         {
             var category = new Category { Name = categoryName };
+            await _unitOfWork.BeginTransaction();
             var result = await _unitOfWork.ExpenseManage.AddCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
             if (result > 0)
@@ -38,6 +39,7 @@ public class ExpenseManageService : IExpenseManageService
     {
         try
         {
+            await _unitOfWork.BeginTransaction();
             await _unitOfWork.ExpenseManage.AddAsync(model);
             await _unitOfWork.SaveChangesAsync();
             return true;
@@ -54,6 +56,7 @@ public class ExpenseManageService : IExpenseManageService
     {
         try
         {
+            await _unitOfWork.BeginTransaction();
             await _unitOfWork.ExpenseManage.DeleteAsync(expenseId);
             await _unitOfWork.SaveChangesAsync();
             return true;
@@ -70,6 +73,7 @@ public class ExpenseManageService : IExpenseManageService
     {
         try
         {
+            await _unitOfWork.BeginTransaction();
             var categories = await _unitOfWork.ExpenseManage.GetCategoriesAsync(userId);
             if (categories.Any())
             {
@@ -87,6 +91,7 @@ public class ExpenseManageService : IExpenseManageService
     {
         try
         {
+            await _unitOfWork.BeginTransaction();
             await _unitOfWork.ExpenseManage.UpdateAsync(expense);
             await _unitOfWork.SaveChangesAsync();
             return true;
@@ -107,6 +112,7 @@ public class ExpenseManageService : IExpenseManageService
         try
         {
             Category.Type = 0;
+            await _unitOfWork.BeginTransaction();
             await _unitOfWork.ExpenseManage.UpdateCategoryAsync(Category);
             await _unitOfWork.SaveChangesAsync();
             return true;
@@ -124,6 +130,7 @@ public class ExpenseManageService : IExpenseManageService
     {
         try
         {
+            await _unitOfWork.BeginTransaction();
             var records = await _unitOfWork.ExpenseManage.GetAllAsync(userId);
             if (records.Any())
             {

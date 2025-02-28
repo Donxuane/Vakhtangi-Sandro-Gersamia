@@ -1,13 +1,12 @@
 ﻿using BudgetingExpense.Domain.Contracts.IUnitOfWork;
-
 using BudgetingExpenses.Service.IServiceContracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpense.Domain.Models.AuthenticationModels;
+using BudgetingExpense.Domain.Models.MainModels;
 
 namespace BudgetingExpenses.Service.Service;
 

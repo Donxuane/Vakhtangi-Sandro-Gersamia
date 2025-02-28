@@ -1,12 +1,14 @@
 ﻿using BudgetingExpense.api.ViewModels.ExpenseViewModel;
 using BudgetingExpense.api.ViewModels.IncomeViewModels;
-using BudgetingExpense.Domain.Models.MainModels;
+using BudgetingExpense.Domain.Models.Models.MainModels;
 using BudgetingExpenses.Service.DtoModels;
 using BudgetingExpenses.Service.IServiceContracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetingExpense.api.Controllers;
+
+[Authorize(Roles = "User")]
 [ApiController]
 [Route("api/[controller]")]
 public class ManageUserFinancesController : ControllerBase
@@ -32,8 +34,8 @@ public class ManageUserFinancesController : ControllerBase
     }
 
     [Authorize(Roles = "User")]
-    [HttpPost("AddIncomeType")]
-    public async Task<IActionResult> AddIncomeType([FromForm] IncomeDto dtoModel)
+    [HttpPost("AddIncome")]
+    public async Task<IActionResult> AddIncome([FromForm] IncomeDto dtoModel)
     {
         string userId = HttpContext.Items["UserId"].ToString();
         var model = new Income
@@ -52,8 +54,8 @@ public class ManageUserFinancesController : ControllerBase
         return BadRequest();
     }
 
-    [HttpDelete("DeleteIncomeType")]
-    public async Task<IActionResult> DeleteIncomeType(int incomeTypeId)
+    [HttpDelete("DeleteIncome")]
+    public async Task<IActionResult> DeleteIncome(int incomeTypeId)
     {
         var result = await _incomeService.DeleteIncomeAsync(incomeTypeId);
         if (result == true)
@@ -66,9 +68,9 @@ public class ManageUserFinancesController : ControllerBase
     }
 
     [HttpPut("UpdateIncome")]
-    public async Task<IActionResult> Update(UpdateIncomeViewModel model)
+    public async Task<IActionResult> UpdateIncome(UpdateIncomeViewModel model)
     {
-        var Income = new Income()
+        var income = new Income()
         {
             Id = model.Income.Id,
             Amount = model.Income.Amount,
@@ -78,7 +80,7 @@ public class ManageUserFinancesController : ControllerBase
             UserId = HttpContext.Items["UserId"].ToString()
         };
         var categoryUpdated = await _incomeService.UpdateIncomeCategoryAsync(model.Category);
-        var incomeUpdated = await _incomeService.UpdateIncomeAsync(Income);
+        var incomeUpdated = await _incomeService.UpdateIncomeAsync(income);
         if (incomeUpdated == true && categoryUpdated == true)
         {
             return Ok("Successfully updated");
@@ -91,8 +93,8 @@ public class ManageUserFinancesController : ControllerBase
 
 
     }
-    [Authorize(Roles ="User")]
-    [HttpPost("addExpenses")]
+   
+    [HttpPost("AddExpenses")]
     public async Task<IActionResult> AddExepenses(ExpenseDto expenseDto)
     {
         var expense = new Expense
@@ -114,8 +116,8 @@ public class ManageUserFinancesController : ControllerBase
         }
     }
 
-    [HttpDelete("deleteExpenses")]
-    public async Task<IActionResult> deleteExpenses(int expenseId)
+    [HttpDelete("DeleteExpenses")]
+    public async Task<IActionResult> DeleteExpenses(int expenseId)
     {
         var result = await _expenseManageService.DeleteExpenseAsync(expenseId);
         if (result == true)
@@ -128,7 +130,7 @@ public class ManageUserFinancesController : ControllerBase
         }
     }
 
-    [HttpPut("updateExpenses")]
+    [HttpPut("UpdateExpenses")]
     public async Task<IActionResult> UpdateExpenses(UpdateExpenseViewModel updateExpenseViewModel)
     {
         var expenses = new Expense()
@@ -153,7 +155,7 @@ public class ManageUserFinancesController : ControllerBase
 
     }
 
-    [HttpPost("Add Expense Category")]
+    [HttpPost("AddExpenseCategory")]
     public async Task<IActionResult> AddExpenseCategory(string category)
     {
         var result = await _expenseManageService.AddExpenseCategoryAsync(category);

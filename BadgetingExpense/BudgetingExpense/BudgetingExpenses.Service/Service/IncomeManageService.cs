@@ -18,6 +18,7 @@ public class IncomeManageService : IIncomeManageService
         try
         {
             var category = new Category { Name = CategoryName };
+            await _unitOfWork.BeginTransaction();
             var result = await _unitOfWork.IncomeManage.AddCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
             if (result > 0)
@@ -35,7 +36,8 @@ public class IncomeManageService : IIncomeManageService
     public async Task<bool> AddIncomeAsync(Income model)
     {
         try
-        {    
+        {
+            await _unitOfWork.BeginTransaction();
             await _unitOfWork.IncomeManage.AddAsync(model);
             await _unitOfWork.SaveChangesAsync();
         }
@@ -52,6 +54,7 @@ public class IncomeManageService : IIncomeManageService
     {
         try
         {
+            await _unitOfWork.BeginTransaction();
             await _unitOfWork.IncomeManage.DeleteAsync(incomeTypeId);
             await _unitOfWork.SaveChangesAsync();
         }
@@ -68,6 +71,7 @@ public class IncomeManageService : IIncomeManageService
     {
         try
         {
+            await _unitOfWork.BeginTransaction();
             var categories = await _unitOfWork.IncomeManage.GetCategoriesAsync(userId);
             if (categories.Any())
             {
@@ -85,6 +89,7 @@ public class IncomeManageService : IIncomeManageService
     {
         try
         {
+            await _unitOfWork.BeginTransaction();
             await _unitOfWork.IncomeManage.UpdateAsync(income);
             await _unitOfWork.SaveChangesAsync();
             return true;
@@ -104,6 +109,7 @@ public class IncomeManageService : IIncomeManageService
         try
         {
             category.Type = 1;
+            await _unitOfWork.BeginTransaction();
             await _unitOfWork.IncomeManage.UpdateCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
             return true;
@@ -120,6 +126,7 @@ public class IncomeManageService : IIncomeManageService
     {
         try
         {
+            await _unitOfWork.BeginTransaction();
             var incomeRecords = await _unitOfWork.IncomeManage.GetAllAsync(userId);
             if (incomeRecords.Any())
             {
