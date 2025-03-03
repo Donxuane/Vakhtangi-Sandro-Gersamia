@@ -68,7 +68,7 @@ public class ManageUserFinancesController : ControllerBase
     }
 
     [HttpPut("UpdateIncome")]
-    public async Task<IActionResult> UpdateIncome(UpdateIncomeViewModel model)
+    public async Task<IActionResult> UpdateIncome([FromForm]UpdateIncomeViewModel model)
     {
         var income = new Income()
         {
@@ -95,7 +95,7 @@ public class ManageUserFinancesController : ControllerBase
     }
    
     [HttpPost("AddExpenses")]
-    public async Task<IActionResult> AddExepenses(ExpenseDto expenseDto)
+    public async Task<IActionResult> AddExepenses([FromForm]ExpenseDto expenseDto)
     {
         var expense = new Expense
         {
@@ -131,7 +131,7 @@ public class ManageUserFinancesController : ControllerBase
     }
 
     [HttpPut("UpdateExpenses")]
-    public async Task<IActionResult> UpdateExpenses(UpdateExpenseViewModel updateExpenseViewModel)
+    public async Task<IActionResult> UpdateExpenses([FromForm]UpdateExpenseViewModel updateExpenseViewModel)
     {
         var expenses = new Expense()
         {

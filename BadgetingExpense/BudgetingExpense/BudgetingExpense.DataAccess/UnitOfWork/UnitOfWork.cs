@@ -1,10 +1,10 @@
 ﻿using BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
-using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository;
+using BudgetingExpense.Domain.Contracts.IRepository.ILimitsRepository;
+using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository.IIncomeReportsRepository;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 using System.Data.Common;
-using BudgetingExpense.Domain.Contracts.IRepository.ILimitsRepository;
 
 namespace BudgetingExpense.DataAccess.UnitOfWork;
 
@@ -20,13 +20,13 @@ public class UnitOfWork : IUnitOfWork
 
     public UnitOfWork(IAuthentication authentication, DbConnection connection,
         IManageFinancesRepository<Expense> expenseManage, IManageFinancesRepository<Income> incomeManage,
-        IIncomeRecordsRepository incomeRecords,ILimitsRepository limits)
+        IIncomeRecordsRepository incomeRecords, ILimitsRepository limits)
     {
         _expenseManage = expenseManage;
         _incomeManage = incomeManage;
         _authentication = authentication;
         _incomeRecords = incomeRecords;
-        _limits  = limits;
+        _limits = limits;
         _connection = connection;
     }
 
@@ -57,15 +57,12 @@ public class UnitOfWork : IUnitOfWork
 
     public IIncomeRecordsRepository IncomeRecords => _incomeRecords;
 
-    public ILimitsRepository LimitsRepository
-    {
-        get
+    public ILimitsRepository LimitsRepository { get
         {
             if (_transaction != null)
             {
                 _limits.SetTransaction(_transaction);
             }
-
             return _limits;
         }
     }

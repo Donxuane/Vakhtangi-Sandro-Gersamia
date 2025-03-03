@@ -28,7 +28,7 @@ public class ExpenseManageRepository : IManageFinancesRepository<Expense>
             model.Currency,
             model.Amount,
             model.CategoryId,
-            Date = model.Date = DateTime.Now,
+            model.Date,
             model.UserId
         }, _transaction);
     }
