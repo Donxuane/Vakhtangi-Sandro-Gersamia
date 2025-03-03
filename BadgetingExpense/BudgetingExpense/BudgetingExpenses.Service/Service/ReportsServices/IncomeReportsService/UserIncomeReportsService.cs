@@ -10,7 +10,7 @@ public class UserIncomeReportsService : IIncomeReportsService
     private readonly IUnitOfWork _unitOfWork;
 
     public UserIncomeReportsService(IUnitOfWork unitOfWork)
-    {
+    { 
         _unitOfWork = unitOfWork;
     }
 
