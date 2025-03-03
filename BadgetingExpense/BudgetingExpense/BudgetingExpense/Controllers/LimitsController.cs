@@ -36,5 +36,38 @@ namespace BudgetingExpense.api.Controllers
             return BadRequest();
         }
 
+        [HttpDelete("deleteLimit")]
+        public async Task<IActionResult> deleteLimit(int limitId)
+        {
+            var result = await _limitsManageService.DeleteLimits(limitId);
+            if (result == true)
+            {
+                return Ok("Limit deleted succesfully");
+            }
+
+            return BadRequest("something went wrong");
+        }
+
+        [HttpPut("UpdateLimits")]
+        public async Task<IActionResult> UpdateLimit(UpdateLimitDto updateLimitDto)
+        {
+            var updateLimits = new Limits()
+            {
+                Id = updateLimitDto.Id,
+                Amount = updateLimitDto.Amount,
+                CategoryId = updateLimitDto.CategoryId,
+                PeriodCategory = updateLimitDto.PeriodCategory,
+             
+                UserId = HttpContext.Items["UserId"].ToString()
+                
+            };
+            var result = await _limitsManageService.UpdateLimits(updateLimits);
+            if (result == true)
+            {
+                return Ok("updated");
+            }
+
+            return BadRequest();
+        }
     }
 }
