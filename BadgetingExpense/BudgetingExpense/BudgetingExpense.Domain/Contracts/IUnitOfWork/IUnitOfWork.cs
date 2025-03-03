@@ -1,5 +1,6 @@
 ﻿using BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
+using BudgetingExpense.Domain.Contracts.IRepository.ILimitsRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository;
 using BudgetingExpense.Domain.Models.MainModels;
 
@@ -14,4 +15,5 @@ public interface IUnitOfWork : IAsyncDisposable
     public IManageFinancesRepository<Expense> ExpenseManage { get; }
     public IManageFinancesRepository<Income> IncomeManage { get; }
     public IIncomeRecordsRepository IncomeRecords {  get; }
+    public ILimitsRepository LimitsRepository { get; }
 }

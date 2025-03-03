@@ -3,16 +3,20 @@ using BudgetingExpense.api.Configuration;
 using BudgetingExpense.api.CustomMiddleware;
 using BudgetingExpense.DataAccess.Repository.FinanceManageRepository;
 using BudgetingExpense.DataAccess.Repository.Identity;
+using BudgetingExpense.DataAccess.Repository.LimitsRepository;
 using BudgetingExpense.DataAccess.Repository.ReportsRepository;
 using BudgetingExpense.DataAccess.UnitOfWork;
 using BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
+using BudgetingExpense.Domain.Contracts.IRepository.ILimitsRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IAuthenticationService;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IFinanceManageServices;
+using BudgetingExpense.Domain.Contracts.IServiceContracts.ILimitsManageService;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IReposrtsService;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
+using BudgetingExpenses.Service.Service;
 using BudgetingExpenses.Service.Service.AuthenticationService;
 using BudgetingExpenses.Service.Service.ManageFinanceServices;
 using BudgetingExpenses.Service.Service.ReportsServices;
@@ -81,7 +85,8 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IIncomeManageService, IncomeManageService>();
 builder.Services.AddScoped<IExpenseManageService, ExpenseManageService>();
 builder.Services.AddScoped<IIncomeReportsService, UserIncomeReportsService>();
-
+builder.Services.AddScoped<ILimitsRepository, LimitsRepository>();
+builder.Services.AddScoped<ILimitsManageService, LimitsService>();
 builder.Services.AddScoped<ConfigureRoles>();
 
 
