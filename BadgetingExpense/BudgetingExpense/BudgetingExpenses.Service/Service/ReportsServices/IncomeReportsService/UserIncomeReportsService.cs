@@ -37,20 +37,16 @@ public class UserIncomeReportsService : IIncomeReportsService
         try
         {
             var records = await _unitOfWork.IncomeRecords.GetUserIncomeRecords(model.UserId);
-            var period = DateTime.UtcNow.AddMonths(-model.Period);
-            if (model.Period > 0 && model.Category == null)
+            if (records != null)
             {
-                return records.Where(x => x.IncomeDate >= period);
-            }
-            if (model.Category != null && model.Period > 0)
-            {
+                var period = DateTime.UtcNow.AddMonths(-model.Period);
+                if (model.Period == 0 && model.Category != null)
+                {
+                    return records.Where(x => x.CategoryName == model.Category);
+                }
                 return records.Where(x => x.CategoryName == model.Category && x.IncomeDate >= period);
             }
-            if (model.Category != null)
-            {
-                return records.Where(x => x.CategoryName == model.Category);
-            }
-            return records;
+            return null;
         }
         catch(Exception ex)
         {
@@ -64,20 +60,16 @@ public class UserIncomeReportsService : IIncomeReportsService
         try
         {
             var records = await _unitOfWork.IncomeRecords.GetUserIncomeRecords(model.UserId);
-            var period = DateTime.UtcNow.AddMonths(-model.Period);
-            if (records == null)
+            if (records != null)
             {
-                return null;
+                var period = DateTime.UtcNow.AddMonths(-model.Period);
+                if (model.Period == 0 && model.Currency > 0)
+                {
+                    return records.Where(x => x.Currency == model.Currency);
+                }
+                return records.Where(x => x.Currency == model.Currency && x.IncomeDate >= period);
             }
-            if (model.Period == 0 && model.Currency == 0)
-            {
-                return records;
-            }
-            if (model.Period > 0)
-            {
-                return records.Where(x => x.IncomeDate >= period);
-            }
-            return records.Where(x => x.Currency == model.Currency && x.IncomeDate >= period);
+            return null;
         }
         catch (Exception ex)
         {

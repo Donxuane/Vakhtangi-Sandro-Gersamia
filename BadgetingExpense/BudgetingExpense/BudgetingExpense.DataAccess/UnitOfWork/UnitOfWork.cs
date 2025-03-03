@@ -1,6 +1,7 @@
 ﻿using BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
 using BudgetingExpense.Domain.Contracts.IRepository.ILimitsRepository;
+using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository.IExpenseReportsRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository.IIncomeReportsRepository;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
@@ -14,20 +15,25 @@ public class UnitOfWork : IUnitOfWork
     private readonly IManageFinancesRepository<Expense> _expenseManage;
     private readonly IManageFinancesRepository<Income> _incomeManage;
     private readonly IIncomeRecordsRepository _incomeRecords;
+    private readonly IExpenseRecordsRepository _expenseRecords;
     private readonly ILimitsRepository _limits;
     private readonly DbConnection _connection;
     private DbTransaction? _transaction;
 
     public UnitOfWork(IAuthentication authentication, DbConnection connection,
         IManageFinancesRepository<Expense> expenseManage, IManageFinancesRepository<Income> incomeManage,
-        IIncomeRecordsRepository incomeRecords, ILimitsRepository limits)
+        IIncomeRecordsRepository incomeRecords, ILimitsRepository limits,
+        IExpenseRecordsRepository expenseRecords)
     {
         _expenseManage = expenseManage;
         _incomeManage = incomeManage;
         _authentication = authentication;
         _incomeRecords = incomeRecords;
         _limits = limits;
+        _expenseRecords = expenseRecords;
+
         _connection = connection;
+        
     }
 
     public IAuthentication Authentication => _authentication;
@@ -66,6 +72,8 @@ public class UnitOfWork : IUnitOfWork
             return _limits;
         }
     }
+
+    public IExpenseRecordsRepository ExpenseRecords => _expenseRecords;
 
     public async ValueTask DisposeAsync()
     {

@@ -29,7 +29,7 @@ public class IncomeReportsController : ControllerBase
             Period = model.Period
         };
         var result = await _service.RecordsBasedCurrecncyPeriod(record);
-        if (result != null)
+        if (result != null && result.Any())
         {
             var finalRecords = result.Select(x => new RecordsDto
             {
@@ -53,7 +53,7 @@ public class IncomeReportsController : ControllerBase
             UserId = HttpContext.Items["UserId"].ToString()
         };
         var result = await _service.RecordsBasedCategoryPeriod(record);
-        if (result != null)
+        if (result != null && result.Any())
         {
             var finalRecords = result.Select(x => new RecordsDto
             {
@@ -71,7 +71,7 @@ public class IncomeReportsController : ControllerBase
     public async Task<IActionResult> GetAllIncomeRecords()
     {
         var result = await _service.GetAllRecords(HttpContext.Items["UserId"].ToString());
-        if(result != null)
+        if(result != null && result.Any())
         {
             var records = result.Select(x => new RecordsDto
             {
