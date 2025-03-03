@@ -20,7 +20,6 @@ public class UserIncomeReportsService : IIncomeReportsService
             var records = await _unitOfWork.IncomeRecords.GetUserIncomeRecords(model.UserId);
             var period = DateTime.UtcNow.AddMonths(-model.Period);
             return records.Where(x => x.Currency == model.Currency && x.IncomeDate >= period);
-            
         }
         catch (Exception ex)
         {
