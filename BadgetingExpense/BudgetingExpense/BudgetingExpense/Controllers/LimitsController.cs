@@ -57,7 +57,7 @@ namespace BudgetingExpense.api.Controllers
                 Amount = updateLimitDto.Amount,
                 CategoryId = updateLimitDto.CategoryId,
                 PeriodCategory = updateLimitDto.PeriodCategory,
-             
+                DateAdded = DateTime.UtcNow,
                 UserId = HttpContext.Items["UserId"].ToString()
                 
             };
