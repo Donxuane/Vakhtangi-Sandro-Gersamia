@@ -1,17 +1,21 @@
 using System.Data.Common;
 using BudgetingExpense.api.Configuration;
 using BudgetingExpense.api.CustomMiddleware;
+using BudgetingExpense.DataAccess.Repository.BudgetPlaningRepository;
 using BudgetingExpense.DataAccess.Repository.FinanceManageRepository;
 using BudgetingExpense.DataAccess.Repository.Identity;
 using BudgetingExpense.DataAccess.Repository.LimitsRepository;
 using BudgetingExpense.DataAccess.Repository.ReportsRepository;
 using BudgetingExpense.DataAccess.UnitOfWork;
+using BudgetingExpense.Domain.Contracts.IRepository.IBudgetPlaningRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
 using BudgetingExpense.Domain.Contracts.IRepository.ILimitsRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository.IExpenseReportsRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository.IIncomeReportsRepository;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IAuthenticationService;
+using BudgetingExpense.Domain.Contracts.IServiceContracts.IBudgetPlanningService;
+using BudgetingExpense.Domain.Contracts.IServiceContracts.IEmailService;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IFinanceManageServices;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.ILimitsManageService;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IReposrtsServices.IExpenseReportsService;
@@ -19,10 +23,12 @@ using BudgetingExpense.Domain.Contracts.IServiceContracts.IReposrtsServices.IInc
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.Service.AuthenticationService;
+using BudgetingExpenses.Service.Service.BudgetPlaningService;
 using BudgetingExpenses.Service.Service.LimitsService;
 using BudgetingExpenses.Service.Service.ManageFinanceServices;
 using BudgetingExpenses.Service.Service.ReportsServices.ExpenseReportsService;
 using BudgetingExpenses.Service.Service.ReportsServices.IncomeReportsService;
+using BudgetingExpenses.Service.Service.SendMessageService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -92,6 +98,9 @@ builder.Services.AddScoped<IIncomeReportsService, UserIncomeReportsService>();
 builder.Services.AddScoped<IExpenseManageService, ExpenseManageService>();
 builder.Services.AddScoped<IExpenseReportsService, UserExpenseReportsService>();
 builder.Services.AddScoped<ILimitsManageService, LimitsService>();
+builder.Services.AddScoped<IEmailService, SendMailService>();
+builder.Services.AddScoped<IBudgetPlaningRepository, BudgetPlaningRepository>();
+builder.Services.AddScoped<IBudgetPlanningService, BudgetPlanningService>();
 builder.Services.AddScoped<ConfigureRoles>();
 
 

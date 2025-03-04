@@ -1,4 +1,5 @@
-﻿using BudgetingExpense.Domain.Contracts.IServiceContracts.ILimitsManageService;
+﻿using BudgetingExpense.Domain.Contracts.IServiceContracts.IBudgetPlanningService;
+using BudgetingExpense.Domain.Contracts.IServiceContracts.ILimitsManageService;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.DtoModels;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +13,12 @@ namespace BudgetingExpense.api.Controllers
     public class LimitsController : ControllerBase
     {
         private readonly ILimitsManageService _limitsManageService;
+        private readonly IBudgetPlanningService _budgetPlanningService;
 
-        public LimitsController(ILimitsManageService limitsManageService)
+        public LimitsController(ILimitsManageService limitsManageService,IBudgetPlanningService budgetPlanningService)
         {
             _limitsManageService = limitsManageService;
+            _budgetPlanningService = budgetPlanningService;
         }
         [HttpPost("AddLimit")]
         public async Task<IActionResult> AddLimit(LimitsDto limitDto)
@@ -68,6 +71,13 @@ namespace BudgetingExpense.api.Controllers
             }
 
             return BadRequest();
+        }
+
+        [HttpPost("send email")]
+        public async Task<IActionResult> sendEmail(int CategoryId)
+        {
+            await _budgetPlanningService.AllExpenses(HttpContext.Items["UserId"].ToString(), CategoryId);
+            return Ok("sg");
         }
     }
 }

@@ -6,6 +6,7 @@ using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository.IIncomeRe
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 using System.Data.Common;
+using BudgetingExpense.Domain.Contracts.IRepository.IBudgetPlaningRepository;
 
 namespace BudgetingExpense.DataAccess.UnitOfWork;
 
@@ -17,13 +18,14 @@ public class UnitOfWork : IUnitOfWork
     private readonly IIncomeRecordsRepository _incomeRecords;
     private readonly IExpenseRecordsRepository _expenseRecords;
     private readonly ILimitsRepository _limits;
+    private readonly IBudgetPlaningRepository _budgetPlaning;
     private readonly DbConnection _connection;
     private DbTransaction? _transaction;
 
     public UnitOfWork(IAuthentication authentication, DbConnection connection,
         IManageFinancesRepository<Expense> expenseManage, IManageFinancesRepository<Income> incomeManage,
         IIncomeRecordsRepository incomeRecords, ILimitsRepository limits,
-        IExpenseRecordsRepository expenseRecords)
+        IExpenseRecordsRepository expenseRecords, IBudgetPlaningRepository budgetPlaning)
     {
         _expenseManage = expenseManage;
         _incomeManage = incomeManage;
@@ -33,7 +35,7 @@ public class UnitOfWork : IUnitOfWork
         _expenseRecords = expenseRecords;
 
         _connection = connection;
-        
+        _budgetPlaning = budgetPlaning;
     }
 
     public IAuthentication Authentication => _authentication;
@@ -74,6 +76,7 @@ public class UnitOfWork : IUnitOfWork
     }
 
     public IExpenseRecordsRepository ExpenseRecords => _expenseRecords;
+    public IBudgetPlaningRepository BudgetPlanning => _budgetPlaning;
 
     public async ValueTask DisposeAsync()
     {
@@ -129,13 +132,13 @@ public class UnitOfWork : IUnitOfWork
     {
         try
         {
-            if(_connection != null) 
+            if (_connection.State != System.Data.ConnectionState.Open)
             {
                 await _connection.OpenAsync();
-                _transaction = await _connection.BeginTransactionAsync();
             }
+            _transaction = await _connection.BeginTransactionAsync();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             throw new InvalidOperationException("Database Connection Lost");
