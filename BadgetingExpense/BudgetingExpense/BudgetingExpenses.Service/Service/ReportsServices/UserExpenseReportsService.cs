@@ -50,7 +50,7 @@ public class UserExpenseReportsService : IExpenseReportsService
             var records = await _unitOfWork.ExpenseRecords.GetUserExpenseRecords(userId);
             if (records != null && records.Any())
             {
-                return records;
+                return records.OrderByDescending(x=>x.Date);
             }
             return null;
         }
@@ -71,9 +71,9 @@ public class UserExpenseReportsService : IExpenseReportsService
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
                 if (model.Period == 0 && model.Category != null)
                 {
-                    return records.Where(x => x.CategoryName == model.Category);
+                    return records.Where(x => x.CategoryName == model.Category).OrderByDescending(x=>x.Date);
                 }
-                return records.Where(x => x.CategoryName == model.Category && x.Date >= period);
+                return records.Where(x => x.CategoryName == model.Category && x.Date >= period).OrderByDescending(x => x.Date);
             }
             return null;
         }
@@ -94,9 +94,9 @@ public class UserExpenseReportsService : IExpenseReportsService
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
                 if (model.Currency > 0 && model.Period == 0)
                 {
-                    return records.Where(x => x.Currency == model.Currency);
+                    return records.Where(x => x.Currency == model.Currency).OrderByDescending(x => x.Date);
                 }
-                return records.Where(x => x.Currency == model.Currency && x.Date >= period);
+                return records.Where(x => x.Currency == model.Currency && x.Date >= period).OrderByDescending(x => x.Date);
             }
             return null;
         }

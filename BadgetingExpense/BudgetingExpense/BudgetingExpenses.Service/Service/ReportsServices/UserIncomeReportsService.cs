@@ -21,7 +21,7 @@ public class UserIncomeReportsService : IIncomeReportsService
             var records = await _unitOfWork.IncomeRecords.GetUserIncomeRecords(userId);
             if (records != null)
             {
-                return records;
+                return records.OrderByDescending(x=>x.IncomeDate);
             }
             return null;
         }
@@ -42,9 +42,9 @@ public class UserIncomeReportsService : IIncomeReportsService
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
                 if (model.Period == 0 && model.Category != null)
                 {
-                    return records.Where(x => x.CategoryName == model.Category);
+                    return records.Where(x => x.CategoryName == model.Category).OrderByDescending(x=>x.IncomeDate);
                 }
-                return records.Where(x => x.CategoryName == model.Category && x.IncomeDate >= period);
+                return records.Where(x => x.CategoryName == model.Category && x.IncomeDate >= period).OrderByDescending(x=>x.IncomeDate);
             }
             return null;
         }
@@ -65,9 +65,9 @@ public class UserIncomeReportsService : IIncomeReportsService
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
                 if (model.Period == 0 && model.Currency >= 0)
                 {
-                    return records.Where(x => x.Currency == model.Currency);
+                    return records.Where(x => x.Currency == model.Currency).OrderByDescending(x => x.IncomeDate);
                 }
-                return records.Where(x => x.Currency == model.Currency && x.IncomeDate >= period);
+                return records.Where(x => x.Currency == model.Currency && x.IncomeDate >= period).OrderByDescending(x => x.IncomeDate);
             }
             return null;
         }

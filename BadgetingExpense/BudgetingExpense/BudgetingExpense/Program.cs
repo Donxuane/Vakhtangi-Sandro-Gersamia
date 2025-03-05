@@ -1,6 +1,7 @@
 using System.Data.Common;
 using BudgetingExpense.api.Configuration;
 using BudgetingExpense.api.CustomMiddleware;
+using BudgetingExpense.DataAccess.Configuration;
 using BudgetingExpense.DataAccess.Repository.FinanceManageRepository;
 using BudgetingExpense.DataAccess.Repository.Identity;
 using BudgetingExpense.DataAccess.Repository.LimitsRepository;
@@ -13,12 +14,15 @@ using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IAuthenticationService;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IFinanceManageServices;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.ILimitsManageService;
+using BudgetingExpense.Domain.Contracts.IServiceContracts.IMessageService;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IReposrtsServices;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
+using BudgetingExpenses.Service.Configuration;
 using BudgetingExpenses.Service.Service.AuthenticationService;
 using BudgetingExpenses.Service.Service.LimitsService;
 using BudgetingExpenses.Service.Service.ManageFinanceServices;
+using BudgetingExpenses.Service.Service.MessageService;
 using BudgetingExpenses.Service.Service.ReportsServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
@@ -31,66 +35,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.AddSecurityDefinition("Bearer",new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Enter 'Bearer' [space] and then your token",
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey
-    });
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
-});
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("default"), b=>b.MigrationsAssembly("BudgetingExpense.DataAccess")));
-
-builder.Services.AddIdentity<IdentityModel, IdentityRole>(options =>
-{
-    options.Password.RequiredUniqueChars = 0;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 6;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireLowercase = false;
-})
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();
-
-builder.Services.AddScoped<DbConnection>(sp =>
-    new SqlConnection(builder.Configuration.GetConnectionString("default")));
-
+builder.Services.AddSwaggerAuthorization();
+builder.Services.ConfigureDatabaseRules(builder.Configuration);
 builder.Services.ConfigureJWTBearerToken(builder.Configuration);
-
-builder.Services.AddScoped<IAuthentication, Authentication>();
-builder.Services.AddScoped<IManageFinancesRepository<Expense>, ExpenseManageRepository>();
-builder.Services.AddScoped<IManageFinancesRepository<Income>, IncomeManageRepository>();
-builder.Services.AddScoped<IIncomeRecordsRepository, IncomeReportsRepository>();
-builder.Services.AddScoped<IExpenseRecordsRepository, ExpenseReportsRepository>();
-builder.Services.AddScoped<IBudgetLimitsRepository, LimitsRepository>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
-builder.Services.AddScoped<IIncomeManageService, IncomeManageService>();
-builder.Services.AddScoped<IIncomeReportsService, UserIncomeReportsService>();
-builder.Services.AddScoped<IExpenseManageService, ExpenseManageService>();
-builder.Services.AddScoped<IExpenseReportsService, UserExpenseReportsService>();
-builder.Services.AddScoped<ILimitsManageService, LimitsService>();
-builder.Services.AddScoped<IEmailService, SendMailService>();
-builder.Services.AddScoped<IBudgetPlanningService, BudgetPlanningService>();
+builder.Services.AddRepositoryInstances();
+builder.Services.AddServiceInstances();
 builder.Services.AddScoped<ConfigureRoles>();
 
 
@@ -111,7 +60,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-app.UseMiddleware<UserItemsMiddleware>();
+app.UseMiddleware<UserCredentialsMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();
