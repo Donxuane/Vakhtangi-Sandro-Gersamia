@@ -1,9 +1,9 @@
-﻿using BudgetingExpense.Domain.Contracts.IServiceContracts.IReposrtsServices.IExpenseReportsService;
+﻿using BudgetingExpense.Domain.Contracts.IServiceContracts.IReposrtsServices;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 
-namespace BudgetingExpenses.Service.Service.ReportsServices.ExpenseReportsService;
+namespace BudgetingExpenses.Service.Service.ReportsServices;
 
 public class UserExpenseReportsService : IExpenseReportsService
 {
@@ -19,14 +19,14 @@ public class UserExpenseReportsService : IExpenseReportsService
         try
         {
             var records = await _unitOfWork.ExpenseRecords.GetUserExpenseRecords(model.UserId);
-            if(records != null)
+            if (records != null)
             {
                 List<ExpenseRecord> final = [];
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
-                var filteredBasedPeriod = records.Where(x => x.Date >= period).OrderByDescending(x=>x.Amount);
-                foreach(var item in filteredBasedPeriod)
+                var filteredBasedPeriod = records.Where(x => x.Date >= period).OrderByDescending(x => x.Amount);
+                foreach (var item in filteredBasedPeriod)
                 {
-                    if(filteredBasedPeriod.Count() == 10)
+                    if (filteredBasedPeriod.Count() == 10)
                     {
                         break;
                     }
@@ -36,7 +36,7 @@ public class UserExpenseReportsService : IExpenseReportsService
             }
             return null;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             return null;
@@ -48,13 +48,13 @@ public class UserExpenseReportsService : IExpenseReportsService
         try
         {
             var records = await _unitOfWork.ExpenseRecords.GetUserExpenseRecords(userId);
-            if(records!=null && records.Any())
+            if (records != null && records.Any())
             {
                 return records;
             }
             return null;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             return null;
@@ -69,7 +69,7 @@ public class UserExpenseReportsService : IExpenseReportsService
             if (records != null)
             {
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
-                if(model.Period == 0 && model.Category != null)
+                if (model.Period == 0 && model.Category != null)
                 {
                     return records.Where(x => x.CategoryName == model.Category);
                 }
@@ -77,7 +77,7 @@ public class UserExpenseReportsService : IExpenseReportsService
             }
             return null;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             return null;
@@ -89,10 +89,10 @@ public class UserExpenseReportsService : IExpenseReportsService
         try
         {
             var records = await _unitOfWork.ExpenseRecords.GetUserExpenseRecords(model.UserId);
-            if(records != null)
+            if (records != null)
             {
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
-                if(model.Currency>0 && model.Period == 0)
+                if (model.Currency > 0 && model.Period == 0)
                 {
                     return records.Where(x => x.Currency == model.Currency);
                 }
@@ -100,7 +100,7 @@ public class UserExpenseReportsService : IExpenseReportsService
             }
             return null;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             return null;

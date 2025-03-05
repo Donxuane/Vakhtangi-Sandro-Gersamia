@@ -8,23 +8,20 @@ using BudgetingExpense.DataAccess.Repository.ReportsRepository;
 using BudgetingExpense.DataAccess.UnitOfWork;
 using BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
-using BudgetingExpense.Domain.Contracts.IRepository.ILimitsRepository;
-using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository.IExpenseReportsRepository;
-using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository.IIncomeReportsRepository;
+using BudgetingExpense.Domain.Contracts.IRepository.ILimitationsRepository;
+using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IAuthenticationService;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IEmailService;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IFinanceManageServices;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.ILimitsManageService;
-using BudgetingExpense.Domain.Contracts.IServiceContracts.IReposrtsServices.IExpenseReportsService;
-using BudgetingExpense.Domain.Contracts.IServiceContracts.IReposrtsServices.IIncomeReportsService;
+using BudgetingExpense.Domain.Contracts.IServiceContracts.IReposrtsServices;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.Service.AuthenticationService;
 using BudgetingExpenses.Service.Service.BudgetPlaningService;
 using BudgetingExpenses.Service.Service.LimitsService;
 using BudgetingExpenses.Service.Service.ManageFinanceServices;
-using BudgetingExpenses.Service.Service.ReportsServices.ExpenseReportsService;
-using BudgetingExpenses.Service.Service.ReportsServices.IncomeReportsService;
+using BudgetingExpenses.Service.Service.ReportsServices;
 using BudgetingExpenses.Service.Service.SendMessageService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
@@ -39,7 +36,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    options.AddSecurityDefinition("Bearer",new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
         Description = "Enter 'Bearer' [space] and then your token",
@@ -87,7 +84,7 @@ builder.Services.AddScoped<IManageFinancesRepository<Expense>, ExpenseManageRepo
 builder.Services.AddScoped<IManageFinancesRepository<Income>, IncomeManageRepository>();
 builder.Services.AddScoped<IIncomeRecordsRepository, IncomeReportsRepository>();
 builder.Services.AddScoped<IExpenseRecordsRepository, ExpenseReportsRepository>();
-builder.Services.AddScoped<ILimitsRepository, LimitsRepository>();
+builder.Services.AddScoped<IBudgetLimitsRepository, LimitsRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IIncomeManageService, IncomeManageService>();

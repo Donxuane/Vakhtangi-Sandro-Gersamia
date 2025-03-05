@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BudgetingExpense.Domain.Contracts.IRepository.ILimitsRepository
+namespace BudgetingExpense.Domain.Contracts.IRepository.ILimitationsRepository
 {
-    public interface ILimitsRepository
+    public interface IBudgetLimitsRepository
     {
         public Task SetLimitAsync(Limits limits);
         public void SetTransaction(DbTransaction transaction);

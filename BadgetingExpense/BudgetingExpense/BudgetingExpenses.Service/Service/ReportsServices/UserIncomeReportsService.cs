@@ -1,16 +1,16 @@
-﻿using BudgetingExpense.Domain.Contracts.IServiceContracts.IReposrtsServices.IIncomeReportsService;
+﻿using BudgetingExpense.Domain.Contracts.IServiceContracts.IReposrtsServices;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 
-namespace BudgetingExpenses.Service.Service.ReportsServices.IncomeReportsService;
+namespace BudgetingExpenses.Service.Service.ReportsServices;
 
 public class UserIncomeReportsService : IIncomeReportsService
 {
     private readonly IUnitOfWork _unitOfWork;
 
     public UserIncomeReportsService(IUnitOfWork unitOfWork)
-    { 
+    {
         _unitOfWork = unitOfWork;
     }
 
@@ -25,7 +25,7 @@ public class UserIncomeReportsService : IIncomeReportsService
             }
             return null;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex);
             return null;
@@ -48,7 +48,7 @@ public class UserIncomeReportsService : IIncomeReportsService
             }
             return null;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             return null;
@@ -63,7 +63,7 @@ public class UserIncomeReportsService : IIncomeReportsService
             if (records != null)
             {
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
-                if (model.Period == 0 && model.Currency > 0)
+                if (model.Period == 0 && model.Currency >= 0)
                 {
                     return records.Where(x => x.Currency == model.Currency);
                 }

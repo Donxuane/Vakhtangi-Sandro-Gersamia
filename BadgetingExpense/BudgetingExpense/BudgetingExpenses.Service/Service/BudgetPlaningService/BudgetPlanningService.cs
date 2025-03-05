@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BudgetingExpense.Domain.Contracts.IServiceContracts.IBudgetPlanningService;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IEmailService;
+using BudgetingExpense.Domain.Contracts.IServiceContracts.IFinanceManageServices;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 

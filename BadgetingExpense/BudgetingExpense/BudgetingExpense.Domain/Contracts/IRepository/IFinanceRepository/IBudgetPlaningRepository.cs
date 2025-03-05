@@ -6,15 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 
-namespace BudgetingExpense.Domain.Contracts.IRepository.IBudgetPlaningRepository
+namespace BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository
 {
     public interface IBudgetPlaningRepository
     {
-        public Task<IEnumerable<BudgetPlanning>> GetAll(string UserId,int CategoryId);
-
+        public Task<IEnumerable<BudgetPlanning>> GetAll(string UserId, int CategoryId);
         public Task<string> GetEmail(string UserId);
-        
-
-     
     }
 }
