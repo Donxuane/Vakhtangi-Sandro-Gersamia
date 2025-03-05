@@ -2,8 +2,6 @@
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
 using BudgetingExpense.Domain.Contracts.IRepository.ILimitationsRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository;
-using BudgetingExpense.Domain.Contracts.IServiceContracts.IEmailService;
-using BudgetingExpense.Domain.Contracts.IServiceContracts.IFinanceManageServices;
 using BudgetingExpense.Domain.Models.MainModels;
 
 namespace BudgetingExpense.Domain.Contracts.IUnitOfWork;
