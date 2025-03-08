@@ -18,8 +18,8 @@ public class IncomeReportsController : ControllerBase
         _service = service;
     }
 
-    [HttpPost("IncomeRecordsBasedCurrency")]
-    public async Task<IActionResult> IncomeRecordsBasedCurrency([FromForm]GetRecordsCurrencyDto model)
+    [HttpGet("IncomeRecordsBasedCurrency")]
+    public async Task<IActionResult> IncomeRecordsBasedCurrency([FromQuery]GetRecordsCurrencyDto model)
     {
         var record = new GetRecordCurrency
         {

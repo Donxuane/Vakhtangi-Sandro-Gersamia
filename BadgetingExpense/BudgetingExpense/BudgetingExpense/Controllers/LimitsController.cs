@@ -77,7 +77,7 @@ namespace BudgetingExpense.api.Controllers
         public async Task<IActionResult> sendEmail(int CategoryId)
         {
             await _budgetPlanningService.AllExpenses(HttpContext.Items["UserId"].ToString(), CategoryId);
-            return Ok("sg");
+            return Ok("email was sent");
         }
     }
 }

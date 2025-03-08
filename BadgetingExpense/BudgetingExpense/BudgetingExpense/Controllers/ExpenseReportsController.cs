@@ -17,7 +17,7 @@ public class ExpenseReportsController : ControllerBase
         _service = service;
     }
 
-    [HttpPost("TopExpenses")]
+    [HttpGet("TopExpenses")]
     public async Task<IActionResult> GetMostExpenseRecords(int period)
     {
         var model = new GetRecordsPeriod

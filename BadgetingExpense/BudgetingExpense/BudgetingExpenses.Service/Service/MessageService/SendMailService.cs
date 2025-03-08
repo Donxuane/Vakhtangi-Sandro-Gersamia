@@ -13,7 +13,7 @@ namespace BudgetingExpenses.Service.Service.MessageService
         {
             var Email = new MailMessage
             {
-                From = new MailAddress("vakhtangichitashvili55@gmail.com", "Admin"),
+                From = new MailAddress("budgetingandexpensetracker12@gmail.com", "Admin"),
                 Subject = emailModel.Subject,
                 Body = emailModel.Message,
                 IsBodyHtml = false
@@ -21,7 +21,7 @@ namespace BudgetingExpenses.Service.Service.MessageService
             };
             Email.To.Add(emailModel.Email);
             using var smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new NetworkCredential("vakhtangichitashvili55@gmail.com", "cevowsvrortigggg");
+            smtp.Credentials = new NetworkCredential("budgetingandexpensetracker12@gmail.com", "mnyteecfzwylmqoo");
             smtp.EnableSsl = true;
 
             await smtp.SendMailAsync(Email);

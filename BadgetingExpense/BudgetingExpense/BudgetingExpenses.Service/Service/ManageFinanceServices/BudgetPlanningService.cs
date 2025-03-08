@@ -9,6 +9,7 @@ public class BudgetPlanningService : IBudgetPlanningService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEmailService _emailService;
+    
 
     public BudgetPlanningService(IUnitOfWork unitOfWork, IEmailService emailService)
     {
@@ -31,7 +32,7 @@ public class BudgetPlanningService : IBudgetPlanningService
         if (Limit < result)
         {
             _emailService.SendEmail(new EmailModel()
-            { Email = User, Message = "limit exceeded", Subject = "haxe" });
+            { Email = User, Message = "limit exceeded", Subject = "limit exceeded" });
         }
         else
         {
