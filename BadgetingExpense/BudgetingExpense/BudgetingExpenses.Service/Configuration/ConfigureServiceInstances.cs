@@ -24,5 +24,6 @@ public static class ConfigureServiceInstances
         services.AddScoped<ILimitsManageService, LimitsService>();
         services.AddScoped<IEmailService, SendMailService>();
         services.AddScoped<IBudgetPlanningService, BudgetPlanningService>();
+        services.AddScoped<ISavingsAnalyticService, SavingsAnalyticService>();
     }
 }
