@@ -1,4 +1,5 @@
 ﻿using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
+using BudgetingExpense.Domain.Contracts.IServices.INotifyUser;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 
@@ -7,10 +8,12 @@ namespace BudgetingExpenses.Service.Service.ManageFinances;
 public class IncomeManageService : IIncomeManageService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IIncomeRecieveNotificationService _notificationService;
 
-    public IncomeManageService(IUnitOfWork unitOfWork)
+    public IncomeManageService(IUnitOfWork unitOfWork, IIncomeRecieveNotificationService notificationService)
     {
         _unitOfWork = unitOfWork;
+        _notificationService = notificationService;
     }
 
     public async Task<int> AddIncomeCategoryAsync(string CategoryName)
@@ -38,6 +41,11 @@ public class IncomeManageService : IIncomeManageService
             await _unitOfWork.BeginTransaction();
             await _unitOfWork.IncomeManage.AddAsync(model);
             await _unitOfWork.SaveChangesAsync();
+            var sendEmail = await _notificationService.NotifyIncomeAsync(model);
+            if (sendEmail)
+            {
+                return true;
+            }
             return true;
         }
         catch (Exception ex)

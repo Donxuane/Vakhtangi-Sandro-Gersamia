@@ -1,4 +1,5 @@
 ﻿using BudgetingExpense.Domain.Contracts.IRepository.IFinance;
+using BudgetingExpense.Domain.Contracts.IRepository.IGet;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
 using BudgetingExpense.Domain.Contracts.IRepository.ILimitations;
 using BudgetingExpense.Domain.Contracts.IRepository.IReports;
@@ -17,13 +18,15 @@ public class UnitOfWork : IUnitOfWork
     private readonly IExpenseRecordsRepository _expenseRecords;
     private readonly IBudgetLimitsRepository _limits;
     private readonly IBudgetPlaningRepository _budgetPlaning;
+    private readonly IGetRepository _getRepository;
     private readonly DbConnection _connection;
     private DbTransaction? _transaction;
 
     public UnitOfWork(IAuthentication authentication, DbConnection connection,
         IManageFinancesRepository<Expense> expenseManage, IManageFinancesRepository<Income> incomeManage,
         IIncomeRecordsRepository incomeRecords, IBudgetLimitsRepository limits,
-        IExpenseRecordsRepository expenseRecords, IBudgetPlaningRepository budgetPlaning)
+        IExpenseRecordsRepository expenseRecords, IBudgetPlaningRepository budgetPlaning,
+        IGetRepository getRepository)
     {
         _expenseManage = expenseManage;
         _incomeManage = incomeManage;
@@ -33,6 +36,7 @@ public class UnitOfWork : IUnitOfWork
         _expenseRecords = expenseRecords;
         _connection = connection;
         _budgetPlaning = budgetPlaning;
+        _getRepository = getRepository;
     }
 
     public IAuthentication Authentication => _authentication;
@@ -74,6 +78,8 @@ public class UnitOfWork : IUnitOfWork
 
     public IExpenseRecordsRepository ExpenseRecords => _expenseRecords;
     public IBudgetPlaningRepository BudgetPlanning => _budgetPlaning;
+
+    public IGetRepository GetRepository => _getRepository;
 
     public async ValueTask DisposeAsync()
     {

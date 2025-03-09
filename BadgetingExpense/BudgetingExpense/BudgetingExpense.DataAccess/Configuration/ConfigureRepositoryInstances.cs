@@ -1,8 +1,10 @@
 ﻿using BudgetingExpense.DataAccess.Repository.FinanceManageRepository;
+using BudgetingExpense.DataAccess.Repository.Get;
 using BudgetingExpense.DataAccess.Repository.Identity;
 using BudgetingExpense.DataAccess.Repository.LimitsRepository;
 using BudgetingExpense.DataAccess.Repository.ReportsRepository;
 using BudgetingExpense.Domain.Contracts.IRepository.IFinance;
+using BudgetingExpense.Domain.Contracts.IRepository.IGet;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
 using BudgetingExpense.Domain.Contracts.IRepository.ILimitations;
 using BudgetingExpense.Domain.Contracts.IRepository.IReports;
@@ -24,5 +26,6 @@ public static class ConfigureRepositoryInstances
         services.AddScoped<IBudgetLimitsRepository, LimitsRepository>();
         services.AddScoped<IBudgetPlaningRepository, BudgetPlaningRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
+        services.AddScoped<IGetRepository, GetRepository>();
     }
 }

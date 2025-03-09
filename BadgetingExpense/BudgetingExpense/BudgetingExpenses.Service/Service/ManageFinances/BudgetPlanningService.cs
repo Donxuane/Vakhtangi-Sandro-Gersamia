@@ -10,7 +10,6 @@ public class BudgetPlanningService : IBudgetPlanningService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEmailService _emailService;
 
-
     public BudgetPlanningService(IUnitOfWork unitOfWork, IEmailService emailService)
     {
         _unitOfWork = unitOfWork;

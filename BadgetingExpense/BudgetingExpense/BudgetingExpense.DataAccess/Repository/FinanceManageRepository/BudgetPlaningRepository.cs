@@ -28,6 +28,5 @@ public class BudgetPlaningRepository : IBudgetPlaningRepository
     {
         var query = "SELECT Email FROM AspNetUsers Where Id =@UserId";
         return await _connection.QuerySingleAsync<string>(query, new { UserId });
-
     }
 }

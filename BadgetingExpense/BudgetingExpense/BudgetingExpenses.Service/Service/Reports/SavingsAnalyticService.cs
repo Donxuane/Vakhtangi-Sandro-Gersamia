@@ -56,15 +56,17 @@ public class SavingsAnalyticService : ISavingsAnalyticService
         {
             var expense = await _unitOfWork.ExpenseRecords.GetUserExpenseRecords(userId);
             var income = await _unitOfWork.IncomeRecords.GetUserIncomeRecords(userId);
-            if (expense != null && income != null)
+            if (income != null)
             {
                 var period = DateTime.UtcNow.AddMonths(-month);
+                var sumOfIncomes = income.Where(x => x.IncomeDate >= period).Sum(x => x.Amount);
+                double sumOfExpenses = 0;
                 if (expense.Any())
                 {
-                    var sumOfIncomes = income.Where(x => x.IncomeDate >= period).Sum(x => x.Amount);
-                    var sumOfExpenses = expense.Where(x => x.Date >= period).Sum(x => x.Amount);
-                    return (sumOfExpenses, sumOfIncomes);
+                    sumOfExpenses = expense.Where(x => x.Date >= period).Sum(x => x.Amount);
                 }
+                return (sumOfExpenses, sumOfIncomes);
+            }
             return (0, 0);
         }
         catch (Exception e)

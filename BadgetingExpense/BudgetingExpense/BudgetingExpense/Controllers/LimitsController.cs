@@ -15,19 +15,20 @@ public class LimitsController : ControllerBase
     private readonly ILimitsManageService _limitsManageService;
     private readonly IBudgetPlanningService _budgetPlanningService;
 
-    public LimitsController(ILimitsManageService limitsManageService,IBudgetPlanningService budgetPlanningService)
+    public LimitsController(ILimitsManageService limitsManageService,
+        IBudgetPlanningService budgetPlanningService)
     {
         _limitsManageService = limitsManageService;
         _budgetPlanningService = budgetPlanningService;
     }
     [HttpPost("AddLimit")]
-    public async Task<IActionResult> AddLimit(LimitsDto limitDto)
+    public async Task<IActionResult> AddLimit([FromForm]LimitsDto limitDto)
     {
         var limits = new Limits()
         {
-            CategoryId = limitDto.CategoryDtoId,
+            CategoryId = limitDto.CategoryId,
             Amount = limitDto.Amount,
-            PeriodCategory = limitDto.PeriodCategory,
+            PeriodCategory = limitDto.Period,
             DateAdded = limitDto.DateAdded,
             UserId = HttpContext.Items["UserId"].ToString()
         };

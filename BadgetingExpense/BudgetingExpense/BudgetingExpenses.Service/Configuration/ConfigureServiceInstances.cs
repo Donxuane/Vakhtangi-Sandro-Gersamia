@@ -2,11 +2,13 @@
 using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
 using BudgetingExpense.Domain.Contracts.IServices.ILimitations;
 using BudgetingExpense.Domain.Contracts.IServices.IMessaging;
+using BudgetingExpense.Domain.Contracts.IServices.INotifyUser;
 using BudgetingExpense.Domain.Contracts.IServices.IReposrts;
 using BudgetingExpenses.Service.Service.Authentication;
 using BudgetingExpenses.Service.Service.Limitations;
 using BudgetingExpenses.Service.Service.ManageFinances;
 using BudgetingExpenses.Service.Service.Messaging;
+using BudgetingExpenses.Service.Service.NotifyUser;
 using BudgetingExpenses.Service.Service.Reports;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,5 +27,6 @@ public static class ConfigureServiceInstances
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IBudgetPlanningService, BudgetPlanningService>();
         services.AddScoped<ISavingsAnalyticService, SavingsAnalyticService>();
+        services.AddScoped<IIncomeRecieveNotificationService, IncomeRecieveNotificationService>();
     }
 }
