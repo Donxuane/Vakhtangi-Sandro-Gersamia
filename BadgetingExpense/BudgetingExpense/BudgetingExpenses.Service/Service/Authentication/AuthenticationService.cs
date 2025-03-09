@@ -7,6 +7,7 @@ using System.Text;
 using BudgetingExpense.Domain.Models.AuthenticationModels;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpense.Domain.Contracts.IServices.IAuthentication;
+using Microsoft.Extensions.Logging;
 
 namespace BudgetingExpenses.Service.Service.Authentication;
 
@@ -14,10 +15,13 @@ public class AuthenticationService : IAuthenticationService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IConfiguration _configuration;
-    public AuthenticationService(IUnitOfWork unitOfWork, IConfiguration configuration)
+    private readonly ILogger<AuthenticationService> _logger;
+    public AuthenticationService(IUnitOfWork unitOfWork, IConfiguration configuration,
+        ILogger<AuthenticationService> logger)
     {
         _unitOfWork = unitOfWork;
         _configuration = configuration;
+        _logger = logger;
     }
 
     public async Task AddUserRolesAsync(string email, string role)
@@ -25,14 +29,16 @@ public class AuthenticationService : IAuthenticationService
         try
         {
             await _unitOfWork.Authentication.AddUserRoleAsync(email, role);
+            _logger.LogInformation("Added role to new user email:{email} role:{role}", email, role);
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+            _logger.LogError("Exception: {ex}", ex.Message);
         }
     }
 
-    public Task<string> GenerateJwtTokenAsync(string userId, string userRole)
+    public Task<string>? GenerateJwtTokenAsync(string userId, string userRole)
     {
         try
         {
@@ -54,12 +60,16 @@ public class AuthenticationService : IAuthenticationService
                     expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(tokenConfiguration["ExpiryMinutes"])),
                     signingCredentials: new SigningCredentials(tokenKey, SecurityAlgorithms.HmacSha256)
                 );
+                throw new Exception();
+                _logger.LogInformation("Token generated for {userId}", userId);
                 return new JwtSecurityTokenHandler().WriteToken(token);
             });
+            
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+            _logger.LogError("Exception {ex}", ex.Message);
             return null;
         }
     }
@@ -74,6 +84,7 @@ public class AuthenticationService : IAuthenticationService
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+            _logger.LogError("Getting roles {ex}", ex.Message);
         }
         return null;
     }
@@ -88,6 +99,7 @@ public class AuthenticationService : IAuthenticationService
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+            _logger.LogError("Getting user {ex}", ex.Message);
         }
         return null;
     }
@@ -99,12 +111,14 @@ public class AuthenticationService : IAuthenticationService
             var check = await _unitOfWork.Authentication.CheckUserAsync(user.Email, user.Password);
             if (check)
             {
+                _logger.LogInformation("Loged in user {email}", user.Email);
                 return true;
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+            _logger.LogError("Log in email:{email} ex:{ex}",user.Email, ex.Message);
         }
         return false;
     }
@@ -123,12 +137,14 @@ public class AuthenticationService : IAuthenticationService
             var result = await _unitOfWork.Authentication.RegisterUserAsync(userMapped);
             if (result)
             {
+                _logger.LogInformation("New user registered {email}", user.Email);
                 return true;
             }
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+            _logger.LogError("Register new user {ex}", ex.Message);
         }
         return false;
     }
