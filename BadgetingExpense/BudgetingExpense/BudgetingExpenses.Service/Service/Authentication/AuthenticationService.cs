@@ -60,7 +60,6 @@ public class AuthenticationService : IAuthenticationService
                     expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(tokenConfiguration["ExpiryMinutes"])),
                     signingCredentials: new SigningCredentials(tokenKey, SecurityAlgorithms.HmacSha256)
                 );
-                throw new Exception();
                 _logger.LogInformation("Token generated for {userId}", userId);
                 return new JwtSecurityTokenHandler().WriteToken(token);
             });
