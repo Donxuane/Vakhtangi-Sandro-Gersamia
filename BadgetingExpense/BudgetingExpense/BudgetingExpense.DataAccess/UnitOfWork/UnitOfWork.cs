@@ -3,8 +3,6 @@ using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 using System.Data.Common;
-using BudgetingExpense.Domain.Contracts.IRepository.ILimitationsRepository;
-using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository;
 
 namespace BudgetingExpense.DataAccess.UnitOfWork;
 
