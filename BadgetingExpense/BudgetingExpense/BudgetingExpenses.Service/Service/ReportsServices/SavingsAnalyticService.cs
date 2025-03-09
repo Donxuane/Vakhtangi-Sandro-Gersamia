@@ -1,5 +1,3 @@
-﻿
-
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IReposrtsServices;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 
@@ -21,20 +19,13 @@ namespace BudgetingExpenses.Service.Service.ReportsServices
                 return await Task.Run(() =>
                 {
                     var savings = income - expense;
-
-
                     return savings;
                 });
-                   
             }
-
-            
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-
-            return 0;
         }
 
         public async Task<double> SavingPercentageAsync(double expense, double income)
@@ -56,7 +47,6 @@ namespace BudgetingExpenses.Service.Service.ReportsServices
                 Console.WriteLine(e);
               
             }
-            return 0;
         }
 
       public async Task<(double expense, double income)> FinanceRecords(string userId, int month)

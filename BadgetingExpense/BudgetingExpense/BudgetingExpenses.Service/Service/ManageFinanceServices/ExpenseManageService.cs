@@ -1,8 +1,6 @@
 ﻿using BudgetingExpense.Domain.Contracts.IServiceContracts.IFinanceManageServices;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
-using BudgetingExpenses.Service.DtoModels;
-using Microsoft.AspNetCore.Http;
 
 namespace BudgetingExpenses.Service.Service.ManageFinanceServices;
 
@@ -22,17 +20,13 @@ public class ExpenseManageService : IExpenseManageService
             await _unitOfWork.BeginTransaction();
             var result = await _unitOfWork.ExpenseManage.AddCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
-            if (result > 0)
-            {
                 return result;
             }
-        }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
         }
-        return 0;
     }
 
     public async Task<bool> AddExpenseAsync(Expense model)
@@ -49,7 +43,6 @@ public class ExpenseManageService : IExpenseManageService
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
         }
-        return false;
     }
 
     public async Task<bool> DeleteExpenseAsync(int expenseId)
@@ -66,7 +59,6 @@ public class ExpenseManageService : IExpenseManageService
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
         }
-        return false;
     }
 
     public async Task<IEnumerable<Category>?> GetAllExpenseCategoryRecordsAsync(string userId)
@@ -111,7 +103,6 @@ public class ExpenseManageService : IExpenseManageService
 
         try
         {
-            Category.Type = 0;
             await _unitOfWork.BeginTransaction();
             await _unitOfWork.ExpenseManage.UpdateCategoryAsync(Category);
             await _unitOfWork.SaveChangesAsync();

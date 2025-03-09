@@ -33,7 +33,6 @@ public class ManageUserFinancesController : ControllerBase
         return BadRequest();
     }
 
-    [Authorize(Roles = "User")]
     [HttpPost("AddIncome")]
     public async Task<IActionResult> AddIncome([FromForm] IncomeDto dtoModel)
     {

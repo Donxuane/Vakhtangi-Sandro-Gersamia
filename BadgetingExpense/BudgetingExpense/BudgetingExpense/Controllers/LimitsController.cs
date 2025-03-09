@@ -80,4 +80,3 @@ namespace BudgetingExpense.api.Controllers
             return Ok("email was sent");
         }
     }
-}

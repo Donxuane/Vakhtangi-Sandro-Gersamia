@@ -52,7 +52,6 @@ public class AuthenticationService : IAuthenticationService
                 signingCredentials: new SigningCredentials(JwtKey, SecurityAlgorithms.HmacSha256)
 
             );
-
             return new JwtSecurityTokenHandler().WriteToken(token);
         });
     }

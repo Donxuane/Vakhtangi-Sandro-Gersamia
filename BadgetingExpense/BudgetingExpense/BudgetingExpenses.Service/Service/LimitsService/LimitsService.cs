@@ -42,7 +42,6 @@ namespace BudgetingExpenses.Service.Service.LimitsService
                 Console.WriteLine(ex.Message);
                 await _unitOfWork.RollBackAsync();
             }
-            return false;
         }
 
         public async Task<bool> UpdateLimits(Limits limits)
@@ -63,4 +62,3 @@ namespace BudgetingExpenses.Service.Service.LimitsService
         }
     }
     
-}

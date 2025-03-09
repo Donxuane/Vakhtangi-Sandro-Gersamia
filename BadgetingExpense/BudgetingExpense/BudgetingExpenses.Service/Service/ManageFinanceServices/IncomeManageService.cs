@@ -21,17 +21,13 @@ public class IncomeManageService : IIncomeManageService
             await _unitOfWork.BeginTransaction();
             var result = await _unitOfWork.IncomeManage.AddCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
-            if (result > 0)
-            {
                 return result;
             }
-        }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
         }
-        return 0;
     }
 
     public async Task<bool> AddIncomeAsync(Income model)
@@ -48,7 +44,6 @@ public class IncomeManageService : IIncomeManageService
             await _unitOfWork.RollBackAsync();
             return false;
         }
-        return true;
     }
 
     public async Task<bool> DeleteIncomeAsync(int incomeTypeId)
@@ -65,7 +60,6 @@ public class IncomeManageService : IIncomeManageService
             await _unitOfWork.RollBackAsync();
             return false;
         }
-        return true;
     }
 
     public async Task<IEnumerable<Category>?> GetAllIncomeCategoryRecordsAsync(string userId)
@@ -101,15 +95,12 @@ public class IncomeManageService : IIncomeManageService
             await _unitOfWork.RollBackAsync();
 
         }
-
-        return false;
     }
 
     public async Task<bool> UpdateIncomeCategoryAsync(Category category)
     {
         try
         {
-            category.Type = 1;
             await _unitOfWork.BeginTransaction();
             await _unitOfWork.IncomeManage.UpdateCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
@@ -120,7 +111,6 @@ public class IncomeManageService : IIncomeManageService
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
         }
-        return false;
     }
 
     public async Task<IEnumerable<Income>?> GetAllIncomeRecordsAsync(string userId)
