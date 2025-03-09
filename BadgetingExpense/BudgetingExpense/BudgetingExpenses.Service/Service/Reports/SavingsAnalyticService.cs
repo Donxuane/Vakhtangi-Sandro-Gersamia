@@ -1,7 +1,7 @@
 ﻿using BudgetingExpense.Domain.Contracts.IServiceContracts.IReposrtsServices;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 
-namespace BudgetingExpenses.Service.Service.ReportsServices;
+namespace BudgetingExpenses.Service.Service.Reports;
 
 public class SavingsAnalyticService : ISavingsAnalyticService
 {
@@ -37,11 +37,11 @@ public class SavingsAnalyticService : ISavingsAnalyticService
             {
                 var saving = income - expense;
 
-                var percentage = (saving * 100) / income;
+                var percentage = saving * 100 / income;
 
-                return Math.Round(percentage,2);
+                return Math.Round(percentage, 2);
             });
-       
+
         }
         catch (Exception e)
         {
@@ -50,13 +50,13 @@ public class SavingsAnalyticService : ISavingsAnalyticService
         }
     }
 
-  public async Task<(double expense, double income)> FinanceRecords(string userId, int month)
+    public async Task<(double expense, double income)> FinanceRecords(string userId, int month)
     {
         try
         {
             var expense = await _unitOfWork.ExpenseRecords.GetUserExpenseRecords(userId);
             var income = await _unitOfWork.IncomeRecords.GetUserIncomeRecords(userId);
-            if (expense!=null && income!=null)
+            if (expense != null && income != null)
             {
                 var period = DateTime.UtcNow.AddMonths(-month);
                 if (expense.Any())

@@ -8,7 +8,7 @@ using BudgetingExpense.Domain.Models.AuthenticationModels;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IAuthenticationService;
 
-namespace BudgetingExpenses.Service.Service.AuthenticationService;
+namespace BudgetingExpenses.Service.Service.Authentication;
 
 public class AuthenticationService : IAuthenticationService
 {
@@ -57,7 +57,7 @@ public class AuthenticationService : IAuthenticationService
                 return new JwtSecurityTokenHandler().WriteToken(token);
             });
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             return null;

@@ -2,7 +2,7 @@
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 
-namespace BudgetingExpenses.Service.Service.ManageFinanceServices;
+namespace BudgetingExpenses.Service.Service.ManageFinances;
 
 public class ExpenseManageService : IExpenseManageService
 {

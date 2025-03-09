@@ -1,5 +1,5 @@
 ﻿using System.Data.Common;
-using BudgetingExpense.Domain.Contracts.IRepository.ILimitationsRepository;
+using BudgetingExpense.Domain.Contracts.IRepository.ILimitations;
 using BudgetingExpense.Domain.Models.MainModels;
 using Dapper;
 

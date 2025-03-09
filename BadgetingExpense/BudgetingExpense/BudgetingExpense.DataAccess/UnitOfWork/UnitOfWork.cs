@@ -1,5 +1,7 @@
-﻿using BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
+﻿using BudgetingExpense.Domain.Contracts.IRepository.IFinance;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
+using BudgetingExpense.Domain.Contracts.IRepository.ILimitations;
+using BudgetingExpense.Domain.Contracts.IRepository.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 using System.Data.Common;

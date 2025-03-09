@@ -1,7 +1,7 @@
 ﻿using BudgetingExpense.Domain.Models.MainModels;
 using System.Data.Common;
 
-namespace BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
+namespace BudgetingExpense.Domain.Contracts.IRepository.IFinance;
 
 public interface IManageFinancesRepository<T> where T : class
 {

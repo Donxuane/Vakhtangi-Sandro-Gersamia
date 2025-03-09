@@ -3,7 +3,7 @@ using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 
-namespace BudgetingExpenses.Service.Service.ReportsServices;
+namespace BudgetingExpenses.Service.Service.Reports;
 
 public class UserIncomeReportsService : IIncomeReportsService
 {
@@ -21,7 +21,7 @@ public class UserIncomeReportsService : IIncomeReportsService
             var records = await _unitOfWork.IncomeRecords.GetUserIncomeRecords(userId);
             if (records != null)
             {
-                return records.OrderByDescending(x=>x.IncomeDate);
+                return records.OrderByDescending(x => x.IncomeDate);
             }
             return null;
         }
@@ -42,9 +42,9 @@ public class UserIncomeReportsService : IIncomeReportsService
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
                 if (model.Period == 0 && model.Category != null)
                 {
-                    return records.Where(x => x.CategoryName == model.Category).OrderByDescending(x=>x.IncomeDate);
+                    return records.Where(x => x.CategoryName == model.Category).OrderByDescending(x => x.IncomeDate);
                 }
-                return records.Where(x => x.CategoryName == model.Category && x.IncomeDate >= period).OrderByDescending(x=>x.IncomeDate);
+                return records.Where(x => x.CategoryName == model.Category && x.IncomeDate >= period).OrderByDescending(x => x.IncomeDate);
             }
             return null;
         }

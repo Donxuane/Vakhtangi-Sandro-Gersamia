@@ -3,11 +3,11 @@ using BudgetingExpense.Domain.Contracts.IServiceContracts.IFinanceManageServices
 using BudgetingExpense.Domain.Contracts.IServiceContracts.ILimitsManageService;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IMessageService;
 using BudgetingExpense.Domain.Contracts.IServiceContracts.IReposrtsServices;
-using BudgetingExpenses.Service.Service.AuthenticationService;
-using BudgetingExpenses.Service.Service.LimitsService;
-using BudgetingExpenses.Service.Service.ManageFinanceServices;
-using BudgetingExpenses.Service.Service.MessageService;
-using BudgetingExpenses.Service.Service.ReportsServices;
+using BudgetingExpenses.Service.Service.Authentication;
+using BudgetingExpenses.Service.Service.Limitations;
+using BudgetingExpenses.Service.Service.ManageFinances;
+using BudgetingExpenses.Service.Service.Messaging;
+using BudgetingExpenses.Service.Service.Reports;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BudgetingExpenses.Service.Configuration;

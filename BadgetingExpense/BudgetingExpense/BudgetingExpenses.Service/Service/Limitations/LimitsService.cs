@@ -2,7 +2,7 @@
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 
-namespace BudgetingExpenses.Service.Service.LimitsService;
+namespace BudgetingExpenses.Service.Service.Limitations;
 
 public class LimitsService : ILimitsManageService
 {
@@ -26,7 +26,7 @@ public class LimitsService : ILimitsManageService
             await _unitOfWork.RollBackAsync();
             return false;
         }
-        
+
     }
 
     public async Task<bool> DeleteLimits(int LimitId)
@@ -61,7 +61,7 @@ public class LimitsService : ILimitsManageService
             await _unitOfWork.RollBackAsync();
             return false;
         }
-       
+
     }
 }
 

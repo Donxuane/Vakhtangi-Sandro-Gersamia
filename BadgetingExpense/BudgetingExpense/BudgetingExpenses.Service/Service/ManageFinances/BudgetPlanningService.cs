@@ -3,13 +3,13 @@ using BudgetingExpense.Domain.Contracts.IServiceContracts.IMessageService;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 
-namespace BudgetingExpenses.Service.Service.ManageFinanceServices;
+namespace BudgetingExpenses.Service.Service.ManageFinances;
 
 public class BudgetPlanningService : IBudgetPlanningService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IEmailService _emailService;
-    
+
 
     public BudgetPlanningService(IUnitOfWork unitOfWork, IEmailService emailService)
     {

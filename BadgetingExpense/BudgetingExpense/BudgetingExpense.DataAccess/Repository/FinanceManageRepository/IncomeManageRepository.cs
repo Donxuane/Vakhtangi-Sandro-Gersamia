@@ -1,4 +1,4 @@
-﻿using BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
+﻿using BudgetingExpense.Domain.Contracts.IRepository.IFinance;
 using BudgetingExpense.Domain.Models.MainModels;
 using Dapper;
 using System.Data.Common;

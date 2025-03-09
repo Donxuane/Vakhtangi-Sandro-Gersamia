@@ -2,10 +2,10 @@
 using BudgetingExpense.DataAccess.Repository.Identity;
 using BudgetingExpense.DataAccess.Repository.LimitsRepository;
 using BudgetingExpense.DataAccess.Repository.ReportsRepository;
-using BudgetingExpense.Domain.Contracts.IRepository.IFinanceRepository;
+using BudgetingExpense.Domain.Contracts.IRepository.IFinance;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
-using BudgetingExpense.Domain.Contracts.IRepository.ILimitationsRepository;
-using BudgetingExpense.Domain.Contracts.IRepository.IReportsRepository;
+using BudgetingExpense.Domain.Contracts.IRepository.ILimitations;
+using BudgetingExpense.Domain.Contracts.IRepository.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 using Microsoft.Extensions.DependencyInjection;
