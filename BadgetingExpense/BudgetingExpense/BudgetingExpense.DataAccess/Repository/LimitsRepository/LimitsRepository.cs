@@ -45,8 +45,5 @@ public  class LimitsRepository : IBudgetLimitsRepository
             limits.PeriodCategory,
             limits.DateAdded
         },_transaction);
-
     }
-
-    
 }
