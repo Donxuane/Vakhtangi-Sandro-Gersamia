@@ -11,7 +11,6 @@ public interface IManageFinancesRepository<T> where T : class
     public Task DeleteAsync(int Id);
     public Task<IEnumerable<T>> GetAllAsync(string UserId);
     public Task<IEnumerable<Category>> GetCategoriesAsync(string userId);
-     
     public Task UpdateCategoryAsync(Category category);
     public Task UpdateAsync(T  model); 
 }

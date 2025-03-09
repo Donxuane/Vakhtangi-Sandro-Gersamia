@@ -31,7 +31,6 @@ public class UnitOfWork : IUnitOfWork
         _incomeRecords = incomeRecords;
         _limits = limits;
         _expenseRecords = expenseRecords;
-
         _connection = connection;
         _budgetPlaning = budgetPlaning;
     }

@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BudgetingExpenses.Service.DtoModels
-{
     public  class LimitsDto
     {
         
@@ -13,7 +11,4 @@ namespace BudgetingExpenses.Service.DtoModels
         public double Amount { get; set; }
         public int PeriodCategory { get; set; }
         public DateTime DateAdded { get; set; }
-
-
-    }
 }

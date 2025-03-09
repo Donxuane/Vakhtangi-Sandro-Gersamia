@@ -65,7 +65,6 @@ public class SavingsAnalyticService : ISavingsAnalyticService
                     var sumOfExpenses = expense.Where(x => x.Date >= period).Sum(x => x.Amount);
                     return (sumOfExpenses, sumOfIncomes);
                 }
-            }
             return (0, 0);
         }
         catch (Exception e)

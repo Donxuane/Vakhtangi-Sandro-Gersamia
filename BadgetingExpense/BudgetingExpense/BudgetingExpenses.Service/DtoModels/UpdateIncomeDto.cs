@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BudgetingExpenses.Service.DtoModels
-{
     public class UpdateIncomeDto
     {
         public int Id { get; set; }
@@ -14,4 +12,3 @@ namespace BudgetingExpenses.Service.DtoModels
         public int CategoryId { get; set; }
         public DateTime Date { get; set; }
     }
-}
