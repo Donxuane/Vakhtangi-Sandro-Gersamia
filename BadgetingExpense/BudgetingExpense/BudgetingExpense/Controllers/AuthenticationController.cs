@@ -24,7 +24,7 @@ public class AuthenticationController : ControllerBase
             var generateToken = await _auth.GenerateJwtTokenAsync(loggedUser.Id, roles.FirstOrDefault());
             return Ok(new {token = generateToken});
         }
-        return BadRequest();
+        return BadRequest("Couldn't Process Login");
     }
 
     [HttpPost("RegisterUser")]

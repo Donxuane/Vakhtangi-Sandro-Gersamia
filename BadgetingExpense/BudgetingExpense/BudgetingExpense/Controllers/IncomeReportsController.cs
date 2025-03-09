@@ -8,7 +8,7 @@ namespace BudgetingExpense.api.Controllers;
 
 [Authorize(Roles ="User")]
 [ApiController]
-[Route("IncomeReports/[controller]")]
+[Route("Reports/[controller]")]
 public class IncomeReportsController : ControllerBase
 {
     private readonly IIncomeReportsService _service;
@@ -61,13 +61,13 @@ public class IncomeReportsController : ControllerBase
                 Currency = x.Currency,
                 Date = x.IncomeDate
             }); 
-            return Ok(finalRecords.ToList());
+            return Ok(finalRecords);
         }
         return BadRequest("Records Not Found");
     }
 
-    [HttpGet("GetAllRecords")]
-    public async Task<IActionResult> GetAllIncomeRecords()
+    [HttpGet("AllIncomeRecords")]
+    public async Task<IActionResult> AllIncomeRecords()
     {
         var result = await _service.GetAllRecords(HttpContext.Items["UserId"].ToString());
         if(result != null && result.Any())

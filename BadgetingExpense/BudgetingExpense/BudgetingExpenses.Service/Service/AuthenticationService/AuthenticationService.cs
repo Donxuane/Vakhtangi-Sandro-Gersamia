@@ -26,34 +26,42 @@ public class AuthenticationService : IAuthenticationService
         {
             await _unitOfWork.Authentication.AddUserRoleAsync(email, role);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-
+            Console.WriteLine(ex.Message);
         }
     }
 
     public Task<string> GenerateJwtTokenAsync(string userId, string userRole)
     {
-        return Task.Run(() =>
+        try
         {
-            var Jwt = _configuration.GetSection("Jwt");
-            var JwtKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Jwt["Key"]));
-
-            var claims = new[]
+            return Task.Run(() =>
             {
-            new Claim(ClaimTypes.Name, userId),
-            new Claim(ClaimTypes.Role, userRole)
-            };
-            var token = new JwtSecurityToken(
-                issuer: Jwt["Issuer"],
-                audience: Jwt["Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(Jwt["ExpiryMinutes"])),
-                signingCredentials: new SigningCredentials(JwtKey, SecurityAlgorithms.HmacSha256)
+                var tokenConfiguration = _configuration.GetSection("Jwt");
+                var tokenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration["Key"]));
 
-            );
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        });
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.Name, userId),
+                    new Claim(ClaimTypes.Role, userRole)
+                };
+                var token = new JwtSecurityToken
+                (
+                    issuer: tokenConfiguration["Issuer"],
+                    audience: tokenConfiguration["Audience"],
+                    claims: claims,
+                    expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(tokenConfiguration["ExpiryMinutes"])),
+                    signingCredentials: new SigningCredentials(tokenKey, SecurityAlgorithms.HmacSha256)
+                );
+                return new JwtSecurityTokenHandler().WriteToken(token);
+            });
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
     }
 
     public async Task<IList<string>?> GetRoleAsync(string email)
@@ -63,9 +71,9 @@ public class AuthenticationService : IAuthenticationService
             var roles = await _unitOfWork.Authentication.GetUserRolesAsync(email);
             return roles;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-
+            Console.WriteLine(ex.Message);
         }
         return null;
     }
@@ -77,9 +85,9 @@ public class AuthenticationService : IAuthenticationService
             var user = await _unitOfWork.Authentication.GetUserByEmailAsync(email);
             return user;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-
+            Console.WriteLine(ex.Message);
         }
         return null;
     }
@@ -89,15 +97,14 @@ public class AuthenticationService : IAuthenticationService
         try
         {
             var check = await _unitOfWork.Authentication.CheckUserAsync(user.Email, user.Password);
-
-            if (check == true)
+            if (check)
             {
                 return true;
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-
+            Console.WriteLine(ex.Message);
         }
         return false;
     }
@@ -114,14 +121,14 @@ public class AuthenticationService : IAuthenticationService
                 Name = user.Name
             };
             var result = await _unitOfWork.Authentication.RegisterUserAsync(userMapped);
-            if (result == true)
+            if (result)
             {
                 return true;
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-
+            Console.WriteLine(ex.Message);
         }
         return false;
     }

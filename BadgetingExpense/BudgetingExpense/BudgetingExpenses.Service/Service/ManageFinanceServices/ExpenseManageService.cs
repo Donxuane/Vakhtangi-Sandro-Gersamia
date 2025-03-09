@@ -20,12 +20,13 @@ public class ExpenseManageService : IExpenseManageService
             await _unitOfWork.BeginTransaction();
             var result = await _unitOfWork.ExpenseManage.AddCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
-                return result;
-            }
+            return result;
+        }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
+            return 0;
         }
     }
 
@@ -42,6 +43,7 @@ public class ExpenseManageService : IExpenseManageService
         {
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
+            return false;
         }
     }
 
@@ -58,6 +60,7 @@ public class ExpenseManageService : IExpenseManageService
         {
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
+            return false;
         }
     }
 

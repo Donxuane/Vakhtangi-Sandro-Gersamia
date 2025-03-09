@@ -17,17 +17,15 @@ namespace BudgetingExpense.api.Controllers
             _analyticsService = analyticsService;
         }
         [HttpGet("savingAnalyticByPeriod")]
-        public async Task<IActionResult> savingAnalyticByPeriod( int month)
+        public async Task<IActionResult> savingAnalyticByPeriod(int month)
         {
-           var records = await _analyticsService.FinanceRecords(HttpContext.Items["UserId"].ToString(), month);
-
-           if (records.income >= 0 )
+           var (expense, income) = await _analyticsService.FinanceRecords(HttpContext.Items["UserId"].ToString(), month);
+           if (income >= 0 )
            {
-               var savings = await _analyticsService.SavingsAnalyticByPeriodAsync(records.expense, records.income);
-               var percentage = await _analyticsService.SavingPercentageAsync(records.expense, records.income);
-
-               return Ok($"Here is your saving : {savings} \n percentage : {Math.Round(percentage,2)} %");
-
+               var savings = await _analyticsService.SavingsAnalyticByPeriodAsync(expense, income);
+               var percentage = await _analyticsService.SavingPercentageAsync(expense, income);
+               return Ok($"Income - {income}\n" +
+                   $"Expense - {expense}\nYou Saved : {savings} \n percentage : {percentage}%");
            }
 
            return BadRequest();

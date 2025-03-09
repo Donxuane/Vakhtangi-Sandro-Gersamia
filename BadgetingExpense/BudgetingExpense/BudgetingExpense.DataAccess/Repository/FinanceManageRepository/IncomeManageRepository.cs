@@ -65,8 +65,7 @@ public class IncomeManageRepository : IManageFinancesRepository<Income>
     public async Task UpdateCategoryAsync(Category category)
     {
         var query = "UPDATE Categories SET Name = @Name ,Type = @Type WHERE Id = @Id ";
-        await _connection.ExecuteAsync(query, new { category.Name,Type =category.Type = 1,Id = category.Id }, _transaction);
-
+        await _connection.ExecuteAsync(query, new { category.Name, Type = 1, category.Id }, _transaction);
     }
 
     public async Task UpdateAsync(Income model)

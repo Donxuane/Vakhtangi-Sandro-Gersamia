@@ -30,7 +30,7 @@ public class ManageUserFinancesController : ControllerBase
         {
             return Ok($"{result} Category added Successfully");
         }
-        return BadRequest();
+        return BadRequest("Couldn'd Process Add");
     }
 
     [HttpPost("AddIncome")]
@@ -46,14 +46,14 @@ public class ManageUserFinancesController : ControllerBase
             UserId = userId
         };
         var result = await _incomeService.AddIncomeAsync(model);
-        if (result == true)
+        if (result)
         {
-            return Ok("Income Type Added Successfully");
+            return Ok("Income Added Successfully");
         }
-        return BadRequest();
+        return BadRequest("Couldn'd Process Add");
     }
 
-    [HttpDelete("DeleteIncome")]
+    [HttpDelete("Income")]
     public async Task<IActionResult> DeleteIncome(int incomeTypeId)
     {
         var result = await _incomeService.DeleteIncomeAsync(incomeTypeId);
@@ -61,9 +61,7 @@ public class ManageUserFinancesController : ControllerBase
         {
             return Ok("Income Source Deleted Successfully");
         }
-
-        return BadRequest("Something went wrong contact the site owner");
-
+        return BadRequest("Couldn'd Process Delete");
     }
 
     [HttpPut("UpdateIncome")]
@@ -80,17 +78,11 @@ public class ManageUserFinancesController : ControllerBase
         };
         var categoryUpdated = await _incomeService.UpdateIncomeCategoryAsync(model.Category);
         var incomeUpdated = await _incomeService.UpdateIncomeAsync(income);
-        if (incomeUpdated == true && categoryUpdated == true)
+        if (incomeUpdated && categoryUpdated)
         {
-            return Ok("Successfully updated");
-
+            return Ok("Successfully Updated");
         }
-        else
-        {
-            return BadRequest("Could Not Process Update Try Again!");
-        }
-
-
+        return BadRequest("Couldn'd Process Update");
     }
    
     [HttpPost("AddExpenses")]
@@ -105,28 +97,22 @@ public class ManageUserFinancesController : ControllerBase
             UserId = HttpContext.Items["UserId"].ToString()
         };
         var result = await _expenseManageService.AddExpenseAsync(expense);
-        if (result == true)
+        if (result)
         {
-            return Ok("added successfully");
+            return Ok("Added Successfully");
         }
-        else
-        {
-            return BadRequest("something went wrong");
-        }
+        return BadRequest("Couldn'd Process Add");
     }
 
-    [HttpDelete("DeleteExpenses")]
+    [HttpDelete("Expenses")]
     public async Task<IActionResult> DeleteExpenses(int expenseId)
     {
         var result = await _expenseManageService.DeleteExpenseAsync(expenseId);
-        if (result == true)
+        if (result)
         {
             return Ok("deleted successfully");
         }
-        else
-        {
-            return BadRequest("something went wrong");
-        }
+        return BadRequest("Couldn'd Process Delete");
     }
 
     [HttpPut("UpdateExpenses")]
@@ -143,15 +129,11 @@ public class ManageUserFinancesController : ControllerBase
         };
         var category = await _expenseManageService.UpdateCategoryAsync(updateExpenseViewModel.category);
         var result = await _expenseManageService.UpdateExpenseAsync(expenses);
-        if (result == true && category == true )
+        if (result && category)
         {
-            return Ok("updates successfully");
+            return Ok("Updated Successfully");
         }
-        else
-        {
-            return BadRequest("something went wrong");
-        }
-
+        return BadRequest("Couldn'd Process Update");
     }
 
     [HttpPost("AddExpenseCategory")]
@@ -160,9 +142,8 @@ public class ManageUserFinancesController : ControllerBase
         var result = await _expenseManageService.AddExpenseCategoryAsync(category);
         if (result > 0)
         {
-            return Ok($"{result} Category added Successfully");
+            return Ok($"{result} Category Added Successfully");
         }
-        return BadRequest();
-
+        return BadRequest("Couldn't Process Add");
     }
 }

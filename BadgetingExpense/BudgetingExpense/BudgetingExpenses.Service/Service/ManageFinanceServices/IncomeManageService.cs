@@ -21,12 +21,13 @@ public class IncomeManageService : IIncomeManageService
             await _unitOfWork.BeginTransaction();
             var result = await _unitOfWork.IncomeManage.AddCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
-                return result;
-            }
+            return result;
+        }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
+            return 0;
         }
     }
 
@@ -37,6 +38,7 @@ public class IncomeManageService : IIncomeManageService
             await _unitOfWork.BeginTransaction();
             await _unitOfWork.IncomeManage.AddAsync(model);
             await _unitOfWork.SaveChangesAsync();
+            return true;
         }
         catch (Exception ex)
         {
@@ -53,6 +55,7 @@ public class IncomeManageService : IIncomeManageService
             await _unitOfWork.BeginTransaction();
             await _unitOfWork.IncomeManage.DeleteAsync(incomeTypeId);
             await _unitOfWork.SaveChangesAsync();
+            return true;
         }
         catch (Exception ex)
         {
@@ -93,7 +96,7 @@ public class IncomeManageService : IIncomeManageService
         {
             Console.WriteLine(e);
             await _unitOfWork.RollBackAsync();
-
+            return false;
         }
     }
 
@@ -110,6 +113,7 @@ public class IncomeManageService : IIncomeManageService
         {
             Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
+            return false;
         }
     }
 

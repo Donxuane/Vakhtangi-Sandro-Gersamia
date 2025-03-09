@@ -8,7 +8,7 @@ namespace BudgetingExpense.api.Controllers;
 
 [Authorize(Roles = "User")]
 [ApiController]
-[Route("ExpenseReports/[controller]")]
+[Route("Reports/[controller]")]
 public class ExpenseReportsController : ControllerBase
 {
     private readonly IExpenseReportsService _service;
