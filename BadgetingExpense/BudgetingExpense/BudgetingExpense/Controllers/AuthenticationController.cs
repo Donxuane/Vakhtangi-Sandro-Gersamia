@@ -1,4 +1,4 @@
-﻿using BudgetingExpense.Domain.Contracts.IServiceContracts.IAuthenticationService;
+﻿using BudgetingExpense.Domain.Contracts.IServices.IAuthentication;
 using BudgetingExpense.Domain.Models.AuthenticationModels;
 using Microsoft.AspNetCore.Mvc;
 

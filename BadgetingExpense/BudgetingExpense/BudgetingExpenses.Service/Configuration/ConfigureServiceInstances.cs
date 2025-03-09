@@ -1,8 +1,8 @@
-﻿using BudgetingExpense.Domain.Contracts.IServiceContracts.IAuthenticationService;
-using BudgetingExpense.Domain.Contracts.IServiceContracts.IFinanceManageServices;
-using BudgetingExpense.Domain.Contracts.IServiceContracts.ILimitsManageService;
-using BudgetingExpense.Domain.Contracts.IServiceContracts.IMessageService;
-using BudgetingExpense.Domain.Contracts.IServiceContracts.IReposrtsServices;
+﻿using BudgetingExpense.Domain.Contracts.IServices.IAuthentication;
+using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
+using BudgetingExpense.Domain.Contracts.IServices.ILimitations;
+using BudgetingExpense.Domain.Contracts.IServices.IMessaging;
+using BudgetingExpense.Domain.Contracts.IServices.IReposrts;
 using BudgetingExpenses.Service.Service.Authentication;
 using BudgetingExpenses.Service.Service.Limitations;
 using BudgetingExpenses.Service.Service.ManageFinances;
@@ -22,7 +22,7 @@ public static class ConfigureServiceInstances
         services.AddScoped<IExpenseManageService, ExpenseManageService>();
         services.AddScoped<IExpenseReportsService, UserExpenseReportsService>();
         services.AddScoped<ILimitsManageService, LimitsService>();
-        services.AddScoped<IEmailService, SendMailService>();
+        services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IBudgetPlanningService, BudgetPlanningService>();
         services.AddScoped<ISavingsAnalyticService, SavingsAnalyticService>();
     }

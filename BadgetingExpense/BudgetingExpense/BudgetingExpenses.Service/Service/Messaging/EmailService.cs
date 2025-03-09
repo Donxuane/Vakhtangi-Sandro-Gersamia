@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using System.Net.Mail;
-using BudgetingExpense.Domain.Contracts.IServiceContracts.IMessageService;
+using BudgetingExpense.Domain.Contracts.IServices.IMessaging;
 using BudgetingExpense.Domain.Models.MainModels;
 
 namespace BudgetingExpenses.Service.Service.Messaging;
 
-public class SendMailService : IEmailService
+public class EmailService : IEmailService
 {
     public async Task SendEmail(EmailModel emailModel)
     {
@@ -15,14 +15,11 @@ public class SendMailService : IEmailService
             Subject = emailModel.Subject,
             Body = emailModel.Message,
             IsBodyHtml = false
-
         };
         Email.To.Add(emailModel.Email);
         using var smtp = new SmtpClient("smtp.gmail.com", 587);
         smtp.Credentials = new NetworkCredential("budgetingandexpensetracker12@gmail.com", "mnyteecfzwylmqoo");
         smtp.EnableSsl = true;
-
         await smtp.SendMailAsync(Email);
-
     }
 }

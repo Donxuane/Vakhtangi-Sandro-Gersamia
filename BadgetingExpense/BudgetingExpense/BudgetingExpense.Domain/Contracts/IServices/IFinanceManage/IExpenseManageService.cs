@@ -1,6 +1,6 @@
 ﻿using BudgetingExpense.Domain.Models.MainModels;
 
-namespace BudgetingExpense.Domain.Contracts.IServiceContracts.IFinanceManageServices;
+namespace BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
 
 public interface IExpenseManageService
 {

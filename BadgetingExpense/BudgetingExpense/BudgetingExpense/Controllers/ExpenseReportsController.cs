@@ -1,4 +1,4 @@
-﻿using BudgetingExpense.Domain.Contracts.IServiceContracts.IReposrtsServices;
+﻿using BudgetingExpense.Domain.Contracts.IServices.IReposrts;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 using BudgetingExpenses.Service.DtoModels.ReportsDtoModels;
 using Microsoft.AspNetCore.Authorization;

@@ -1,6 +1,6 @@
-﻿using BudgetingExpense.Domain.Contracts.IServiceContracts.ILimitsManageService;
-using BudgetingExpense.Domain.Models.MainModels;
+﻿using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
+using BudgetingExpense.Domain.Contracts.IServices.ILimitations;
 
 namespace BudgetingExpenses.Service.Service.Limitations;
 

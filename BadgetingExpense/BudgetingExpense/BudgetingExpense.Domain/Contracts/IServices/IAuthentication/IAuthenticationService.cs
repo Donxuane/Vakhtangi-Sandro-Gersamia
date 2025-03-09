@@ -1,7 +1,7 @@
 ﻿using BudgetingExpense.Domain.Models.AuthenticationModels;
 using BudgetingExpense.Domain.Models.MainModels;
 
-namespace BudgetingExpense.Domain.Contracts.IServiceContracts.IAuthenticationService;
+namespace BudgetingExpense.Domain.Contracts.IServices.IAuthentication;
 
 public interface IAuthenticationService
 {

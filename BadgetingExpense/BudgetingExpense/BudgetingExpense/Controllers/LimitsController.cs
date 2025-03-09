@@ -1,5 +1,5 @@
-﻿using BudgetingExpense.Domain.Contracts.IServiceContracts.IFinanceManageServices;
-using BudgetingExpense.Domain.Contracts.IServiceContracts.ILimitsManageService;
+﻿using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
+using BudgetingExpense.Domain.Contracts.IServices.ILimitations;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.DtoModels;
 using Microsoft.AspNetCore.Authorization;

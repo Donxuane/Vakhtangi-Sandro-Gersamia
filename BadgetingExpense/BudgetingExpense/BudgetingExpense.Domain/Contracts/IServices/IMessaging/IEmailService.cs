@@ -1,6 +1,6 @@
 ﻿using BudgetingExpense.Domain.Models.MainModels;
 
-namespace BudgetingExpense.Domain.Contracts.IServiceContracts.IMessageService;
+namespace BudgetingExpense.Domain.Contracts.IServices.IMessaging;
 
 public interface IEmailService
 {

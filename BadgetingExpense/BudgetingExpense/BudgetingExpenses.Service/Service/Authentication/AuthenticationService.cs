@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using BudgetingExpense.Domain.Models.AuthenticationModels;
 using BudgetingExpense.Domain.Models.MainModels;
-using BudgetingExpense.Domain.Contracts.IServiceContracts.IAuthenticationService;
+using BudgetingExpense.Domain.Contracts.IServices.IAuthentication;
 
 namespace BudgetingExpenses.Service.Service.Authentication;
 
