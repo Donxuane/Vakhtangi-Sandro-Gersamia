@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BudgetingExpense.Domain.Models.MainModels
-{
     public class Limits
     {
         [Key]

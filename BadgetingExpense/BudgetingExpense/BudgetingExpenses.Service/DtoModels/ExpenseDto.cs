@@ -4,8 +4,6 @@ namespace BudgetingExpenses.Service.DtoModels;
 
 public class ExpenseDto
 {
-   
-   
     [Required]
     public int Currency {  get; set; }
     [Required]
