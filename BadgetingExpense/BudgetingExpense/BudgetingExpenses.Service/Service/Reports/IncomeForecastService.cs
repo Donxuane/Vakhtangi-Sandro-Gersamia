@@ -1,4 +1,4 @@
-﻿using BudgetingExpense.Domain.Contracts.IServices.IReposrts;
+﻿using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 
@@ -22,12 +22,13 @@ namespace BudgetingExpenses.Service.Service.Reports
             {
                 foreach (var category in filteredByCategory)
                 {
+                    var count = incomeRecords.Count(x => x.Currency == currency.Currency && x.CategoryName == category.CategoryName);
                     var amount = incomeRecords.Where(x => x.Currency == currency.Currency && x.CategoryName == category.CategoryName).Sum(x=>x.Amount);
                     model.Add(new GetForecastCategory
                     {
-                        Amount = amount,
+                        Expected = amount/count,
                         CategoryName = category.CategoryName,
-                        Currencies = currency.Currency
+                        Currency = currency.Currency
                     });
                 }
             }

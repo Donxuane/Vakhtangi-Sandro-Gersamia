@@ -21,7 +21,7 @@ namespace BudgetingExpense.DataAccess.Repository.ReportsRepository
         }
         public async Task<IEnumerable<IncomeRecord>> GetAll(string userId)
         {
-            var query = "SELECT Amount,Currency FROM Incomes WHERE UserId = @UserId";
+            var query = "SELECT Expected,Currency FROM Incomes WHERE UserId = @UserId";
             var report = await _connection.QueryAsync<IncomeRecord>(query ,new {userId});
             return report;
         }

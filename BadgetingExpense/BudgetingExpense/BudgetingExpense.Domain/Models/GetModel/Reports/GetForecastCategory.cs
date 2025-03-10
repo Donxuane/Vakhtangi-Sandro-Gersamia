@@ -10,8 +10,8 @@ namespace BudgetingExpense.Domain.Models.GetModel.Reports
     public class GetForecastCategory
     {
    
-        public double Amount { get; set; }
-        public Currencies Currencies { get; set; }
+        public double Expected { get; set; }
+        public Currencies Currency { get; set; }
         public string CategoryName {get; set; }
 
     }

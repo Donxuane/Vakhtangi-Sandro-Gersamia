@@ -1,4 +1,4 @@
-﻿using BudgetingExpense.Domain.Contracts.IServices.IReposrts;
+﻿using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 using BudgetingExpenses.Service.DtoModels.ReportsDtoModels;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +12,12 @@ namespace BudgetingExpense.api.Controllers;
 public class IncomeReportsController : ControllerBase
 {
     private readonly IIncomeReportsService _service;
+    private readonly IIncomeForecastService _forecastService;
 
-    public IncomeReportsController(IIncomeReportsService service)
+    public IncomeReportsController(IIncomeReportsService service,IIncomeForecastService forecastService)
     {
         _service = service;
+        _forecastService = forecastService;
     }
 
     [HttpGet("IncomeRecordsBasedCurrency")]
@@ -82,5 +84,16 @@ public class IncomeReportsController : ControllerBase
             return Ok(records);
         }
         return BadRequest("Records Not Found");
+    }
+    [HttpGet("income forecast")]
+    public async Task<IActionResult> IncomeForecast()
+    {
+        var result = await _forecastService.GetForecastCategoriesAsync(HttpContext.Items["UserId"].ToString());
+        if (result != null)
+        {
+            return Ok(result);
+        }
+
+        return BadRequest();
     }
 }

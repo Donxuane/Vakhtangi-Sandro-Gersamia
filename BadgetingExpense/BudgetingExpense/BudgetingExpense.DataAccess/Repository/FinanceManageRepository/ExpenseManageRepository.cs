@@ -21,8 +21,8 @@ public class ExpenseManageRepository : IManageFinancesRepository<Expense>
 
     public async Task AddAsync(Expense model)
     {
-        var query = "INSERT INTO Expenses(Currency,Amount,CategoryId,[Date],UserId)" +
-            "Values(@Currency,@Amount,@CategoryId,@Date,@UserId)";
+        var query = "INSERT INTO Expenses(Currency,Expected,CategoryId,[Date],UserId)" +
+            "Values(@Currency,@Expected,@CategoryId,@Date,@UserId)";
         await _connection.ExecuteAsync(query, new
         {
             model.Currency,
@@ -78,7 +78,7 @@ public class ExpenseManageRepository : IManageFinancesRepository<Expense>
 
     public async Task UpdateAsync(Expense model)
     {
-        var query = "Update Expenses SET Currency = @Currency,Amount =@Amount,Date=@Date WHERE UserId = @UserId AND Id = @Id";
+        var query = "Update Expenses SET Currency = @Currency,Expected =@Expected,Date=@Date WHERE UserId = @UserId AND Id = @Id";
         await _connection.ExecuteAsync(query, new { model.Currency, model.Amount, model.Date, model.UserId,model.Id},
             _transaction);
     }

@@ -3,7 +3,7 @@ using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
 using BudgetingExpense.Domain.Contracts.IServices.ILimitations;
 using BudgetingExpense.Domain.Contracts.IServices.IMessaging;
 using BudgetingExpense.Domain.Contracts.IServices.INotifyUser;
-using BudgetingExpense.Domain.Contracts.IServices.IReposrts;
+using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpenses.Service.Service.Authentication;
 using BudgetingExpenses.Service.Service.Limitations;
 using BudgetingExpenses.Service.Service.ManageFinances;
@@ -28,5 +28,7 @@ public static class ConfigureServiceInstances
         services.AddScoped<IBudgetPlanningService, BudgetPlanningService>();
         services.AddScoped<ISavingsAnalyticService, SavingsAnalyticService>();
         services.AddScoped<IIncomeReceiveNotificationService, IncomeReceiveNotificationService>();
+        services.AddScoped<IIncomeForecastService,IncomeForecastService>();
+        services.AddScoped<IExpenseForecastService, ExpenseForecastService>();
     }
 }

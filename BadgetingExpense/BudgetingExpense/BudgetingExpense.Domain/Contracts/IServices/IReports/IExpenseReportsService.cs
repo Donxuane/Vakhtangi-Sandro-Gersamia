@@ -1,7 +1,7 @@
 ﻿using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 
-namespace BudgetingExpense.Domain.Contracts.IServices.IReposrts;
+namespace BudgetingExpense.Domain.Contracts.IServices.IReports;
 
 public interface IExpenseReportsService
 {

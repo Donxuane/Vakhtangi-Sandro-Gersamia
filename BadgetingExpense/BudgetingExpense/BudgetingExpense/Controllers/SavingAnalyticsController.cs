@@ -1,4 +1,4 @@
-﻿using BudgetingExpense.Domain.Contracts.IServices.IReposrts;
+﻿using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

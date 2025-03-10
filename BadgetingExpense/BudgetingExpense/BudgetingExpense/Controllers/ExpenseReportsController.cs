@@ -1,4 +1,4 @@
-﻿using BudgetingExpense.Domain.Contracts.IServices.IReposrts;
+﻿using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 using BudgetingExpenses.Service.DtoModels.ReportsDtoModels;
 using Microsoft.AspNetCore.Authorization;
@@ -12,9 +12,11 @@ namespace BudgetingExpense.api.Controllers;
 public class ExpenseReportsController : ControllerBase
 {
     private readonly IExpenseReportsService _expenseRecordsService;
-    public ExpenseReportsController(IExpenseReportsService service)
+    private readonly IExpenseForecastService _expenseForecastService;
+    public ExpenseReportsController(IExpenseReportsService service, IExpenseForecastService expenseForecastService)
     {
         _expenseRecordsService = service;
+        _expenseForecastService = expenseForecastService;
     }
 
     [HttpGet("TopExpenses")]
@@ -101,5 +103,17 @@ public class ExpenseReportsController : ControllerBase
             return Ok(final);
         }
         return BadRequest("Records Not Found");
+    }
+
+    [HttpGet("expenseForecast")]
+    public async Task<IActionResult> ExpenseForecast()
+    {
+        var result = await _expenseForecastService.GetForecastCategoriesAsync(HttpContext.Items["UserId"].ToString());
+        if (result.Any())
+        {
+            return Ok(result);
+        }
+
+        return BadRequest();
     }
 }

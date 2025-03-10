@@ -1,4 +1,4 @@
-﻿using BudgetingExpense.Domain.Contracts.IServices.IReposrts;
+﻿using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;

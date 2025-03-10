@@ -1,4 +1,4 @@
-﻿namespace BudgetingExpense.Domain.Contracts.IServices.IReposrts;
+﻿namespace BudgetingExpense.Domain.Contracts.IServices.IReports;
 
 public interface ISavingsAnalyticService
 {

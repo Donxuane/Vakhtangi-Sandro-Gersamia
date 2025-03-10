@@ -1,4 +1,4 @@
-﻿using BudgetingExpense.Domain.Contracts.IServices.IReposrts;
+﻿using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 
 namespace BudgetingExpenses.Service.Service.Reports;
