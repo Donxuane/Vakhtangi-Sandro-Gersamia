@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BudgetingExpense.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BudgetingExpense.Domain.Models.MainModels;
 
@@ -7,7 +8,7 @@ public class Expense
     [Key]
     public int? Id { get; set; }
     [Required]
-    public int Currency { get; set; }
+    public Currencies Currency { get; set; }
     [Required]
     public double Amount { get; set; }
     public int? CategoryId { get; set; }

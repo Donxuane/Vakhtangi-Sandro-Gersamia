@@ -6,6 +6,6 @@ public class GetRecordCategory
 {
     public string UserId { get; set; }
     [Required]
-    public string? Category { get; set; } 
+    public string Category { get; set; } 
     public int Period { get; set; }
 }

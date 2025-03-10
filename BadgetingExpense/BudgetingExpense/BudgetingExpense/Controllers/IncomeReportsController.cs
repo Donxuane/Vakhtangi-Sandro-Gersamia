@@ -34,7 +34,7 @@ public class IncomeReportsController : ControllerBase
             {
                 Amount = x.Amount,
                 CategoryName = x.CategoryName,
-                Currency = x.Currency,
+                Currency = x.Currency.ToString(),
                 Date = x.IncomeDate
             });
             return Ok(finalRecords.ToList());
@@ -58,7 +58,7 @@ public class IncomeReportsController : ControllerBase
             {
                 Amount = x.Amount,
                 CategoryName = x.CategoryName,
-                Currency = x.Currency,
+                Currency = x.Currency.ToString(),
                 Date = x.IncomeDate
             }); 
             return Ok(finalRecords);
@@ -76,7 +76,7 @@ public class IncomeReportsController : ControllerBase
             {
                 Amount = x.Amount,
                 CategoryName = x.CategoryName,
-                Currency = x.Currency,
+                Currency = x.Currency.ToString(),
                 Date = x.IncomeDate
             });
             return Ok(records);

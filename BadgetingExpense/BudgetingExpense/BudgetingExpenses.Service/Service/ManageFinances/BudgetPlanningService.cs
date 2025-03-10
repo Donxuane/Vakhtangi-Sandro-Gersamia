@@ -27,7 +27,7 @@ public class BudgetPlanningService : IBudgetPlanningService
         var User = await _unitOfWork.BudgetPlanning.GetEmail(UserId);
         var AllExpenses = await _unitOfWork.BudgetPlanning.GetAll(UserId, CategoryId);
         var result = AllExpenses.Sum(x => x.ExpenseAmount);
-        var Limit = AllExpenses.Select(x => x.limitAmount).FirstOrDefault();
+        var Limit = AllExpenses.Select(x => x.LimitAmount).FirstOrDefault();
         if (Limit < result)
         {
             _emailService.SendEmail(new EmailModel()

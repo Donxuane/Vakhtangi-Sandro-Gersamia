@@ -1,22 +1,20 @@
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-    public class Limits
-    {
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        public string UserId { get; set; }
-        [Required]
-        public int CategoryId { get; set; }
-        [Required]
-        public double Amount { get; set; }
-        [Required]
-        public int PeriodCategory { get; set; }
+namespace BudgetingExpense.Domain.Models.MainModels;
 
-        [Required]
-        public DateTime DateAdded { get; set; }
-    }
+public class Limits
+{
+    [Key]
+    public int Id { get; set; }
+    [Required]
+    public string UserId { get; set; }
+    [Required]
+    public int CategoryId { get; set; }
+    [Required]
+    public double Amount { get; set; }
+    [Required]
+    public int PeriodCategory { get; set; }
+
+    [Required]
+    public DateTime DateAdded { get; set; }
 }
