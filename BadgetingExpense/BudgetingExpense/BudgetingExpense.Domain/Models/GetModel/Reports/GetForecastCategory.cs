@@ -10,7 +10,7 @@ namespace BudgetingExpense.Domain.Models.GetModel.Reports
     public class GetForecastCategory
     {
    
-        public decimal Amount { get; set; }
+        public double Amount { get; set; }
         public Currencies Currencies { get; set; }
         public string CategoryName {get; set; }
 
