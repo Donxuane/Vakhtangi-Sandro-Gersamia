@@ -12,9 +12,9 @@ namespace BudgetingExpense.api.Controllers;
 public class IncomeReportsController : ControllerBase
 {
     private readonly IIncomeReportsService _service;
-    private readonly IIncomeForecastService _forecastService;
+    private readonly IForecastService _forecastService;
 
-    public IncomeReportsController(IIncomeReportsService service,IIncomeForecastService forecastService)
+    public IncomeReportsController(IIncomeReportsService service,IForecastService forecastService)
     {
         _service = service;
         _forecastService = forecastService;

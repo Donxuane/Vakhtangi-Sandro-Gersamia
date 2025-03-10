@@ -12,8 +12,8 @@ namespace BudgetingExpense.api.Controllers;
 public class ExpenseReportsController : ControllerBase
 {
     private readonly IExpenseReportsService _expenseRecordsService;
-    private readonly IExpenseForecastService _expenseForecastService;
-    public ExpenseReportsController(IExpenseReportsService service, IExpenseForecastService expenseForecastService)
+    private readonly IForecastService _expenseForecastService;
+    public ExpenseReportsController(IExpenseReportsService service, IForecastService expenseForecastService)
     {
         _expenseRecordsService = service;
         _expenseForecastService = expenseForecastService;

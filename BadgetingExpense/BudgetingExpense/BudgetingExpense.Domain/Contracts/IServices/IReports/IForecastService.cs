@@ -2,7 +2,7 @@
 
 namespace BudgetingExpense.Domain.Contracts.IServices.IReports
 {
-    public interface IIncomeForecastService
+    public interface IForecastService
     {
         public Task<IEnumerable<GetForecastCategory>> GetForecastCategoriesAsync( string userId);
 

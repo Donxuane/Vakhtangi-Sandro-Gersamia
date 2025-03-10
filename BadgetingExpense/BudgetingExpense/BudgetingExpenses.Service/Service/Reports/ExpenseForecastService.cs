@@ -9,7 +9,7 @@ using BudgetingExpense.Domain.Models.GetModel.Reports;
 
 namespace BudgetingExpenses.Service.Service.Reports
 {
-  public class ExpenseForecastService : IExpenseForecastService
+  public class ExpenseForecastService : IForecastService
   {
       private readonly IUnitOfWork _unitOfWork;
 

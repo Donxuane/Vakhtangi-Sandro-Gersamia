@@ -4,9 +4,10 @@ using BudgetingExpense.Domain.Models.GetModel.Reports;
 
 namespace BudgetingExpenses.Service.Service.Reports
 {
-    public class IncomeForecastService : IIncomeForecastService
+    public class IncomeForecastService : IForecastService
     {
         private readonly IUnitOfWork _unitOfWork;
+
 
         public IncomeForecastService(IUnitOfWork unitOfWork)
         {
