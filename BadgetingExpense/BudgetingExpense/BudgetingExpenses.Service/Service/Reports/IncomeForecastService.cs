@@ -36,4 +36,3 @@ namespace BudgetingExpenses.Service.Service.Reports
             return model;
         }
     }
-}

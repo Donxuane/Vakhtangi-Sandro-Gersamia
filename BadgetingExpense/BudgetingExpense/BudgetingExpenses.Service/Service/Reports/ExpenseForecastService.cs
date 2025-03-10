@@ -1,8 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
@@ -40,4 +35,3 @@ namespace BudgetingExpenses.Service.Service.Reports
             return model;
         }
     }
-}
