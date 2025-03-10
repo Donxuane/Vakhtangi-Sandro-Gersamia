@@ -27,6 +27,6 @@ public static class ConfigureServiceInstances
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IBudgetPlanningService, BudgetPlanningService>();
         services.AddScoped<ISavingsAnalyticService, SavingsAnalyticService>();
-        services.AddScoped<IIncomeRecieveNotificationService, IncomeRecieveNotificationService>();
+        services.AddScoped<IIncomeReceiveNotificationService, IncomeReceiveNotificationService>();
     }
 }

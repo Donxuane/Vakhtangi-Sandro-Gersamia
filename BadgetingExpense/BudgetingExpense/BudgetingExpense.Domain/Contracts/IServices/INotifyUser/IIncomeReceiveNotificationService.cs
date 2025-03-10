@@ -2,7 +2,7 @@
 
 namespace BudgetingExpense.Domain.Contracts.IServices.INotifyUser;
 
-public interface IIncomeRecieveNotificationService
+public interface IIncomeReceiveNotificationService
 {
     public Task<bool> NotifyIncomeAsync(Income record);
 }

@@ -8,9 +8,9 @@ namespace BudgetingExpenses.Service.Service.ManageFinances;
 public class IncomeManageService : IIncomeManageService
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IIncomeRecieveNotificationService _notificationService;
+    private readonly IIncomeReceiveNotificationService _notificationService;
 
-    public IncomeManageService(IUnitOfWork unitOfWork, IIncomeRecieveNotificationService notificationService)
+    public IncomeManageService(IUnitOfWork unitOfWork, IIncomeReceiveNotificationService notificationService)
     {
         _unitOfWork = unitOfWork;
         _notificationService = notificationService;

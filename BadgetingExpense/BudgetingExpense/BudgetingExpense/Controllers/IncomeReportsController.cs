@@ -27,7 +27,7 @@ public class IncomeReportsController : ControllerBase
             Currency = model.Currency,
             Period = model.Period
         };
-        var result = await _service.RecordsBasedCurrecncyPeriod(record);
+        var result = await _service.RecordsBasedCurrencyPeriod(record);
         if (result != null && result.Any())
         {
             var finalRecords = result.Select(x => new RecordsDto

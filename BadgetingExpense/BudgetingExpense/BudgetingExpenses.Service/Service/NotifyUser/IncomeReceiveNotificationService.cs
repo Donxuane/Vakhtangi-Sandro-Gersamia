@@ -6,12 +6,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace BudgetingExpenses.Service.Service.NotifyUser;
 
-public class IncomeRecieveNotificationService : IIncomeRecieveNotificationService
+public class IncomeReceiveNotificationService : IIncomeReceiveNotificationService
 {
     private readonly IEmailService _emailService;
     private readonly IConfiguration _configuration;
     private readonly IUnitOfWork _unitOfWork;
-    public IncomeRecieveNotificationService(IEmailService emailService, 
+    public IncomeReceiveNotificationService(IEmailService emailService, 
         IUnitOfWork unitOfWork, IConfiguration configuration)
     {
         _emailService = emailService;

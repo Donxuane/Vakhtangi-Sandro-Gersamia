@@ -55,7 +55,7 @@ public class UserIncomeReportsService : IIncomeReportsService
         }
     }
 
-    public async Task<IEnumerable<IncomeRecord>?> RecordsBasedCurrecncyPeriod(GetRecordCurrency model)
+    public async Task<IEnumerable<IncomeRecord>?> RecordsBasedCurrencyPeriod(GetRecordCurrency model)
     {
         try
         {
