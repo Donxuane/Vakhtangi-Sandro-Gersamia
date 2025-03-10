@@ -11,7 +11,7 @@ namespace BudgetingExpense.Domain.Models.GetModel.Reports
     {
    
         public double Expected { get; set; }
-        public Currencies Currency { get; set; }
+        public string Currency { get; set; }
         public string CategoryName {get; set; }
 
     }
