@@ -23,7 +23,4 @@ private  DbTransaction _transaction;
             await _connection.QueryAsync(query, new { userId});
 
         }
-
-       
-    }
 }

@@ -1,7 +1,5 @@
-﻿using BudgetingExpense.Domain.Contracts.IRepository.INotifications;
 using BudgetingExpense.Domain.Contracts.IServices.INotifications;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetingExpense.Api.Controllers
@@ -31,4 +29,3 @@ namespace BudgetingExpense.Api.Controllers
             return BadRequest();
         }
     }
-}

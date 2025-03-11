@@ -22,7 +22,6 @@ public class LimitsService : ILimitsManageService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
             return false;
         }
@@ -40,7 +39,6 @@ public class LimitsService : ILimitsManageService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
             return false;
         }
@@ -57,7 +55,6 @@ public class LimitsService : ILimitsManageService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
             return false;
         }

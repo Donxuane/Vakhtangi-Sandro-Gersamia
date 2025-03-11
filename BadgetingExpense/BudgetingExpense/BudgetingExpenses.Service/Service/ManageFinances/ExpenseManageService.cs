@@ -24,7 +24,6 @@ public class ExpenseManageService : IExpenseManageService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
             return 0;
         }
@@ -41,7 +40,6 @@ public class ExpenseManageService : IExpenseManageService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
             return false;
         }
@@ -58,7 +56,6 @@ public class ExpenseManageService : IExpenseManageService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
             return false;
         }
@@ -93,13 +90,10 @@ public class ExpenseManageService : IExpenseManageService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
             await _unitOfWork.RollBackAsync();
             return false;
         }
     }
-
-
 
     public async Task<bool> UpdateCategoryAsync(Category Category)
     {
@@ -113,7 +107,6 @@ public class ExpenseManageService : IExpenseManageService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
             await _unitOfWork.RollBackAsync();
             return false;
         }

@@ -28,7 +28,6 @@ public class IncomeManageService : IIncomeManageService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
             return 0;
         }
@@ -50,7 +49,6 @@ public class IncomeManageService : IIncomeManageService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
             return false;
         }
@@ -67,7 +65,6 @@ public class IncomeManageService : IIncomeManageService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
             return false;
         }
@@ -102,7 +99,6 @@ public class IncomeManageService : IIncomeManageService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
             await _unitOfWork.RollBackAsync();
             return false;
         }
@@ -119,7 +115,6 @@ public class IncomeManageService : IIncomeManageService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             await _unitOfWork.RollBackAsync();
             return false;
         }

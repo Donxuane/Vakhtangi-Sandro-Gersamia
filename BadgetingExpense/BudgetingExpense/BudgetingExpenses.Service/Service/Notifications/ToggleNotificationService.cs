@@ -1,8 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BudgetingExpense.Domain.Contracts.IServices.INotifications;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 
@@ -28,8 +23,5 @@ namespace BudgetingExpenses.Service.Service.Notifications
                 Console.WriteLine(e.Message);
                 return false;
             }
-          
-          
-        }
     }
 }

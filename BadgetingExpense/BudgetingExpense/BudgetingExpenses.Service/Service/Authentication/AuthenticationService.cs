@@ -33,7 +33,6 @@ public class AuthenticationService : IAuthenticationService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             _logger.LogError("Exception: {ex}", ex.Message);
         }
     }
@@ -67,7 +66,6 @@ public class AuthenticationService : IAuthenticationService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             _logger.LogError("Exception {ex}", ex.Message);
             return null;
         }
@@ -82,7 +80,6 @@ public class AuthenticationService : IAuthenticationService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             _logger.LogError("Getting roles {ex}", ex.Message);
         }
         return null;
@@ -97,7 +94,6 @@ public class AuthenticationService : IAuthenticationService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             _logger.LogError("Getting user {ex}", ex.Message);
         }
         return null;
@@ -116,7 +112,6 @@ public class AuthenticationService : IAuthenticationService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             _logger.LogError("Log in email:{email} ex:{ex}",user.Email, ex.Message);
         }
         return false;
@@ -142,7 +137,6 @@ public class AuthenticationService : IAuthenticationService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
             _logger.LogError("Register new user {ex}", ex.Message);
         }
         return false;
