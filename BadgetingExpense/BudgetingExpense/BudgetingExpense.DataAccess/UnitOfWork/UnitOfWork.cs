@@ -6,6 +6,7 @@ using BudgetingExpense.Domain.Contracts.IRepository.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 using System.Data.Common;
+using BudgetingExpense.Domain.Contracts.IRepository.INotifications;
 
 namespace BudgetingExpense.DataAccess.UnitOfWork;
 
@@ -19,6 +20,7 @@ public class UnitOfWork : IUnitOfWork
     private readonly IBudgetLimitsRepository _limits;
     private readonly IBudgetPlaningRepository _budgetPlaning;
     private readonly IGetRepository _getRepository;
+    private readonly IToggleNotificationsRepository _toggleNotifications;
     private readonly DbConnection _connection;
     private DbTransaction? _transaction;
 
@@ -26,7 +28,7 @@ public class UnitOfWork : IUnitOfWork
         IManageFinancesRepository<Expense> expenseManage, IManageFinancesRepository<Income> incomeManage,
         IIncomeRecordsRepository incomeRecords, IBudgetLimitsRepository limits,
         IExpenseRecordsRepository expenseRecords, IBudgetPlaningRepository budgetPlaning,
-        IGetRepository getRepository)
+        IGetRepository getRepository,IToggleNotificationsRepository toggleNotifications)
     {
         _expenseManage = expenseManage;
         _incomeManage = incomeManage;
@@ -37,6 +39,7 @@ public class UnitOfWork : IUnitOfWork
         _connection = connection;
         _budgetPlaning = budgetPlaning;
         _getRepository = getRepository;
+        _toggleNotifications = toggleNotifications;
     }
 
     public IAuthentication Authentication => _authentication;
@@ -80,6 +83,8 @@ public class UnitOfWork : IUnitOfWork
     public IBudgetPlaningRepository BudgetPlanning => _budgetPlaning;
 
     public IGetRepository GetRepository => _getRepository;
+    public IToggleNotificationsRepository ToggleNotificationsRepository { get; }
+
 
     public async ValueTask DisposeAsync()
     {

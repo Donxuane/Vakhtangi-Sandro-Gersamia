@@ -61,7 +61,7 @@ public class ManageUserFinancesController : ControllerBase
         {
             return Ok("Income Source Deleted Successfully");
         }
-        return BadRequest("Couldn'd Process Delete");
+        return BadRequest("Could not Process Delete");
     }
 
     [HttpPut("UpdateIncome")]

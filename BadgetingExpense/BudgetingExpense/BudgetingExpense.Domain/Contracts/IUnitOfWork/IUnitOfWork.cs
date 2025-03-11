@@ -2,6 +2,7 @@
 using BudgetingExpense.Domain.Contracts.IRepository.IGet;
 using BudgetingExpense.Domain.Contracts.IRepository.IIdentity;
 using BudgetingExpense.Domain.Contracts.IRepository.ILimitations;
+using BudgetingExpense.Domain.Contracts.IRepository.INotifications;
 using BudgetingExpense.Domain.Contracts.IRepository.IReports;
 using BudgetingExpense.Domain.Models.MainModels;
 
@@ -20,4 +21,5 @@ public interface IUnitOfWork : IAsyncDisposable
     public IExpenseRecordsRepository ExpenseRecords { get; }
     public IBudgetPlaningRepository BudgetPlanning { get; }
     public IGetRepository GetRepository { get; }
+    public IToggleNotificationsRepository ToggleNotificationsRepository { get; }
 }
