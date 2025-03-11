@@ -22,7 +22,14 @@ public class GetRepository : IGetRepository
 
     public async Task<string> GetEmail(string UserId)
     {
-        var query = "SELECT Email FROM AspNetUsers Where Id =@UserId";
+        var query = "SELECT Email FROM AspNetUsers WHERE Id =@UserId";
         return await _connection.QuerySingleAsync<string>(query, new { UserId });
+    }
+
+    public async Task<bool> GetNotificationActiveStatus(string userId)
+    {
+        var query = "SELECT Notifications FROM AspNetUsers WHERE Id = @UserId";
+        var status = await _connection.QuerySingleAsync<bool>(query, new { userId });
+        return status;
     }
 }

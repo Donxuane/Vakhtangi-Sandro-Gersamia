@@ -83,7 +83,15 @@ public class UnitOfWork : IUnitOfWork
     public IBudgetPlaningRepository BudgetPlanning => _budgetPlaning;
 
     public IGetRepository GetRepository => _getRepository;
-    public IToggleNotificationsRepository ToggleNotificationsRepository { get; }
+    public IToggleNotificationsRepository ToggleNotificationsRepository { get
+        {
+            if (_transaction != null)
+            {
+                _toggleNotifications.SetTransaction(_transaction);
+            }
+            return _toggleNotifications;
+        } 
+    }
 
 
     public async ValueTask DisposeAsync()

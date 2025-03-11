@@ -1,37 +1,52 @@
 ﻿using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
+using Microsoft.Extensions.Logging;
 
 namespace BudgetingExpenses.Service.Service.Reports;
 
 public class ExpenseForecastService : IForecastService
 {
-  private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ExpenseForecastService> _logger;
 
-  public ExpenseForecastService(IUnitOfWork unitOfWork)
-  {
-      _unitOfWork= unitOfWork;
-  }
+    public ExpenseForecastService(IUnitOfWork unitOfWork, ILogger<ExpenseForecastService> logger)
+    {
+        _unitOfWork = unitOfWork;
+        _logger = logger;
+    }
     public async Task<IEnumerable<GetForecastCategory>> GetForecastCategoriesAsync(string userId)
     {
-        var expenseRecords = await _unitOfWork.ExpenseRecords.GetUserExpenseRecords(userId);
-        var filteredByCurrency = expenseRecords.DistinctBy(x => x.Currency);
-        var filteredByCategory = expenseRecords.DistinctBy(x => x.CategoryName);
-        List<GetForecastCategory> model = [];
-        foreach (var currency in filteredByCurrency )
+        try
         {
-            foreach (var category in filteredByCategory)
+            var expenseRecords = await _unitOfWork.ExpenseRecords.GetUserExpenseRecords(userId);
+            var filteredByCurrency = expenseRecords.DistinctBy(x => x.Currency).Select(x => new { x.Currency });
+            var filteredByCategory = expenseRecords.DistinctBy(x => x.CategoryName).Select(x => new {x.CategoryName});
+            List<GetForecastCategory> model = [];
+            foreach (var currency in filteredByCurrency)
             {
-                var count = expenseRecords.Count(x => x.Currency == currency.Currency && x.CategoryName == category.CategoryName);
-                var amount = expenseRecords.Where(x => x.Currency == currency.Currency && x.CategoryName == category.CategoryName).Sum(x=>x.Amount);
-                model.Add(new GetForecastCategory()
+                foreach (var category in filteredByCategory)
                 {
-                    Expected = amount / count,
-                    CategoryName = category.CategoryName,
-                    Currency = currency.Currency.ToString()
-                });
+                    var count = expenseRecords.Count(x => x.Currency == currency.Currency && x.CategoryName == category.CategoryName);
+                    var amount = expenseRecords.Where(x => x.Currency == currency.Currency && x.CategoryName == category.CategoryName).Sum(x => x.Amount);
+                    if (double.IsNaN(amount) || double.IsInfinity(amount))
+                    {
+                        amount = 0;
+                    }
+                    model.Add(new GetForecastCategory()
+                    {
+                        Expected = amount / count,
+                        CategoryName = category.CategoryName,
+                        Currency = currency.Currency.ToString()
+                    });
+                }
             }
-        } 
-        return model;
+            return model;
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError("Exception ex:{ex}", ex.Message);
+            return null;
+        }
     }
 }

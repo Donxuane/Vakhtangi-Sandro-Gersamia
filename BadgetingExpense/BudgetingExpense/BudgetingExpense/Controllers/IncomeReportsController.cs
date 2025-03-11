@@ -85,15 +85,14 @@ public class IncomeReportsController : ControllerBase
         }
         return BadRequest("Records Not Found");
     }
-    [HttpGet("income forecast")]
+    [HttpGet("IncomeForecast")]
     public async Task<IActionResult> IncomeForecast()
     {
         var result = await _forecastService.GetForecastCategoriesAsync(HttpContext.Items["UserId"].ToString());
         if (result != null)
         {
-            return Ok(result);
+            return Ok(new { result });
         }
-
         return BadRequest();
     }
 }

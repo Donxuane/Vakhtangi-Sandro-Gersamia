@@ -1,27 +1,33 @@
-using BudgetingExpense.Domain.Contracts.IServices.INotifications;
+﻿using BudgetingExpense.Domain.Contracts.IServices.INotifications;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
+using Microsoft.Extensions.Logging;
 
-namespace BudgetingExpenses.Service.Service.Notifications
+namespace BudgetingExpenses.Service.Service.Notifications;
+
+public class ToggleNotificationService : IToggleNotificationsService
 {
-    public class ToggleNotificationService : IToggleNotificationsService
-    {
-        private readonly IUnitOfWork _unitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ToggleNotificationService> _logger;
 
-        public ToggleNotificationService(IUnitOfWork unitOfWork )
+    public ToggleNotificationService(IUnitOfWork unitOfWork,ILogger<ToggleNotificationService> logger)
+    {
+        _logger = logger;
+        _unitOfWork = unitOfWork;
+    }
+    public async Task<bool> ToggleNotificationsAsync(string userId, bool status)
+    {
+        try
         {
-            _unitOfWork = unitOfWork;
+            await _unitOfWork.BeginTransaction();
+            await _unitOfWork.ToggleNotificationsRepository.ToggleNotification(userId, status);
+            await _unitOfWork.SaveChangesAsync();
+            _logger.LogInformation("Email Status Updated\nUser:{id}", userId);
+            return true;
         }
-        public async Task<bool> ToggleNotificationsAsync(string userId, bool notification)
+        catch (Exception ex)
         {
-            try
-            {
-             await _unitOfWork.ToggleNotificationsRepository.ToggleNotification(userId);
-             return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return false;
-            }
+            _logger.LogError("Exception ex:{ex}", ex.Message);
+            return false;
+        }
     }
 }

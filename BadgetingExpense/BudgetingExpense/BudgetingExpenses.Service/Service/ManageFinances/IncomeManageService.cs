@@ -2,6 +2,7 @@
 using BudgetingExpense.Domain.Contracts.IServices.INotifyUser;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
+using Microsoft.Extensions.Logging;
 
 namespace BudgetingExpenses.Service.Service.ManageFinances;
 
@@ -9,11 +10,14 @@ public class IncomeManageService : IIncomeManageService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IIncomeReceiveNotificationService _notificationService;
+    private readonly ILogger<IncomeManageService> _logger;
 
-    public IncomeManageService(IUnitOfWork unitOfWork, IIncomeReceiveNotificationService notificationService)
+    public IncomeManageService(IUnitOfWork unitOfWork, 
+        IIncomeReceiveNotificationService notificationService, ILogger<IncomeManageService> logger)
     {
         _unitOfWork = unitOfWork;
         _notificationService = notificationService;
+        _logger = logger;
     }
 
     public async Task<int> AddIncomeCategoryAsync(string CategoryName)
@@ -24,11 +28,13 @@ public class IncomeManageService : IIncomeManageService
             await _unitOfWork.BeginTransaction();
             var result = await _unitOfWork.IncomeManage.AddCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
+            _logger.LogInformation("Added Income Category:{id}", CategoryName);
             return result;
         }
         catch (Exception ex)
         {
             await _unitOfWork.RollBackAsync();
+            _logger.LogError("Exception ex:{ex}", ex.Message);
             return 0;
         }
     }
@@ -40,9 +46,11 @@ public class IncomeManageService : IIncomeManageService
             await _unitOfWork.BeginTransaction();
             await _unitOfWork.IncomeManage.AddAsync(model);
             await _unitOfWork.SaveChangesAsync();
+            _logger.LogInformation("Added Income:{id}\nUser:{userId}", model.Id, model.UserId);
             var sendEmail = await _notificationService.NotifyIncomeAsync(model);
             if (sendEmail)
             {
+                _logger.LogInformation("Email Sent To User:{id}",model.Id);
                 return true;
             }
             return true;
@@ -50,6 +58,7 @@ public class IncomeManageService : IIncomeManageService
         catch (Exception ex)
         {
             await _unitOfWork.RollBackAsync();
+            _logger.LogError("Exception ex:{ex}", ex.Message);
             return false;
         }
     }
@@ -61,11 +70,13 @@ public class IncomeManageService : IIncomeManageService
             await _unitOfWork.BeginTransaction();
             await _unitOfWork.IncomeManage.DeleteAsync(incomeTypeId);
             await _unitOfWork.SaveChangesAsync();
+            _logger.LogInformation("Deleted Income:{id}", incomeTypeId);
             return true;
         }
         catch (Exception ex)
         {
             await _unitOfWork.RollBackAsync();
+            _logger.LogError("Exception ex:{ex}", ex.Message);
             return false;
         }
     }
@@ -83,7 +94,7 @@ public class IncomeManageService : IIncomeManageService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            _logger.LogError("Exception ex:{ex}", ex.Message);
         }
         return null;
     }
@@ -95,11 +106,13 @@ public class IncomeManageService : IIncomeManageService
             await _unitOfWork.BeginTransaction();
             await _unitOfWork.IncomeManage.UpdateAsync(income);
             await _unitOfWork.SaveChangesAsync();
+            _logger.LogInformation("Updated Income:{id}\nUser:{userId}",income.Id,income.UserId);
             return true;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
             await _unitOfWork.RollBackAsync();
+            _logger.LogError("Exception ex:{ex}", ex.Message);
             return false;
         }
     }
@@ -111,11 +124,13 @@ public class IncomeManageService : IIncomeManageService
             await _unitOfWork.BeginTransaction();
             await _unitOfWork.IncomeManage.UpdateCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
+            _logger.LogInformation("Updated Income Category:{id}", category.Id);
             return true;
         }
         catch (Exception ex)
         {
             await _unitOfWork.RollBackAsync();
+            _logger.LogError("Exception ex:{ex}", ex.Message);
             return false;
         }
     }
@@ -133,7 +148,7 @@ public class IncomeManageService : IIncomeManageService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            _logger.LogError("Exception ex:{ex}", ex.Message);
         }
         return null;
     }

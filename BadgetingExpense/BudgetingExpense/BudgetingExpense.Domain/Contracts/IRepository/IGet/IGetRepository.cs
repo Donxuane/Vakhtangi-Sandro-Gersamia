@@ -4,4 +4,5 @@ public interface IGetRepository
 {
     public Task<string> GetEmail(string UserId);
     public Task<string?> GetCategoryName(int categoryId);
+    public Task<bool> GetNotificationActiveStatus(string userId);
 }

@@ -3,6 +3,7 @@ using BudgetingExpense.Domain.Contracts.IServices.INotifyUser;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace BudgetingExpenses.Service.Service.NotifyUser;
 
@@ -11,12 +12,15 @@ public class IncomeReceiveNotificationService : IIncomeReceiveNotificationServic
     private readonly IEmailService _emailService;
     private readonly IConfiguration _configuration;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<IncomeReceiveNotificationService> _logger;
     public IncomeReceiveNotificationService(IEmailService emailService, 
-        IUnitOfWork unitOfWork, IConfiguration configuration)
+        IUnitOfWork unitOfWork, IConfiguration configuration,
+        ILogger<IncomeReceiveNotificationService> logger)
     {
         _emailService = emailService;
         _unitOfWork = unitOfWork;
         _configuration = configuration;
+        _logger = logger;
     }
 
     public async Task<bool> NotifyIncomeAsync(Income record)
@@ -48,7 +52,7 @@ public class IncomeReceiveNotificationService : IIncomeReceiveNotificationServic
         }
         catch(Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            _logger.LogError("Exception ex:{ex}", ex.Message);
             return false;
         }
     }
