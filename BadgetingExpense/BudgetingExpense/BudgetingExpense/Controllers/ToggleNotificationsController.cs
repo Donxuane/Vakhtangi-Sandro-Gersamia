@@ -22,7 +22,7 @@ public class ToggleNotificationsController : ControllerBase
         var result =
              await _toggleNotificationsService.ToggleNotificationsAsync(HttpContext.Items["UserId"].ToString(),
                 notification);
-        if (result != null)
+        if (result)
         {
             return Ok("notification alert updated");
         }

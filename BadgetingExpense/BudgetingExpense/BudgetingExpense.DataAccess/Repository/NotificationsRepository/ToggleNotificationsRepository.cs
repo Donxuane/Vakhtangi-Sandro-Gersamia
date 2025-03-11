@@ -20,7 +20,7 @@ public class ToggleNotificationsRepository : IToggleNotificationsRepository
 
     public async  Task ToggleNotification(string userId, bool status)
     {
-        var query = "UPDATE AspNetUsers SET Notifications = @status WHERE UserId = @UserId";
+        var query = "UPDATE AspNetUsers SET Notifications = @status WHERE Id = @UserId";
         await _connection.QueryAsync(query, new { status, userId }, _transaction);
     }
 }
