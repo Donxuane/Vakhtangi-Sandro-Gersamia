@@ -2,10 +2,11 @@
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 using System.Text.Json;
+using BudgetingExpense.Domain.Models.DatabaseViewModels;
 
 namespace BudgetingExpenses.Service.Service.Reports;
 
-public class IncomeForecastService : IForecastService
+public class IncomeForecastService : IForecastService<IncomeRecord>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -26,14 +27,10 @@ public class IncomeForecastService : IForecastService
             {
                 var count = incomeRecords.Count(x => x.Currency == currency.Currency && x.CategoryName == category.CategoryName);
                 var amount = incomeRecords.Where(x => x.Currency == currency.Currency && x.CategoryName == category.CategoryName).Sum(x=>x.Amount);
-                if(double.IsNaN(amount)|| double.IsInfinity(amount))
-                {
-                    amount = 0;
-                }
-                string json = JsonSerializer.Serialize(amount);
+              
                 model.Add(new GetForecastCategory
                 {
-                    Expected = amount / count,
+                    Expected =Math.Round(amount / count,2) ,
                     CategoryName = category.CategoryName,
                     Currency = currency.Currency.ToString()
                 });

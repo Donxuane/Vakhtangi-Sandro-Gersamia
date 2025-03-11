@@ -2,7 +2,7 @@
 
 namespace BudgetingExpense.Domain.Contracts.IServices.IReports;
 
-public interface IForecastService
+public interface IForecastService<T> where T : class
 {
     public Task<IEnumerable<GetForecastCategory>> GetForecastCategoriesAsync( string userId);
 }

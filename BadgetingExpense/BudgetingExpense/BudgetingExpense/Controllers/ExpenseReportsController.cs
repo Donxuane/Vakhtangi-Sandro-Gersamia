@@ -1,4 +1,5 @@
 ﻿using BudgetingExpense.Domain.Contracts.IServices.IReports;
+using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 using BudgetingExpenses.Service.DtoModels.ReportsDtoModels;
 using Microsoft.AspNetCore.Authorization;
@@ -12,8 +13,8 @@ namespace BudgetingExpense.api.Controllers;
 public class ExpenseReportsController : ControllerBase
 {
     private readonly IExpenseReportsService _expenseRecordsService;
-    private readonly IForecastService _expenseForecastService;
-    public ExpenseReportsController(IExpenseReportsService service, IForecastService expenseForecastService)
+    private readonly IForecastService<ExpenseRecord> _expenseForecastService;
+    public ExpenseReportsController(IExpenseReportsService service, IForecastService<ExpenseRecord> expenseForecastService)
     {
         _expenseRecordsService = service;
         _expenseForecastService = expenseForecastService;

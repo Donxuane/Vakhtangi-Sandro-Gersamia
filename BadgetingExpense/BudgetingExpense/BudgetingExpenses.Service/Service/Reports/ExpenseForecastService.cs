@@ -1,11 +1,12 @@
 ﻿using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
+using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 using Microsoft.Extensions.Logging;
 
 namespace BudgetingExpenses.Service.Service.Reports;
 
-public class ExpenseForecastService : IForecastService
+public class ExpenseForecastService : IForecastService<ExpenseRecord>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ExpenseForecastService> _logger;
@@ -29,16 +30,16 @@ public class ExpenseForecastService : IForecastService
                 {
                     var count = expenseRecords.Count(x => x.Currency == currency.Currency && x.CategoryName == category.CategoryName);
                     var amount = expenseRecords.Where(x => x.Currency == currency.Currency && x.CategoryName == category.CategoryName).Sum(x => x.Amount);
-                    if (double.IsNaN(amount) || double.IsInfinity(amount))
+                    if (count > 0 && amount > 0)
                     {
-                        amount = 0;
-                    }
                     model.Add(new GetForecastCategory()
                     {
-                        Expected = amount / count,
+                        Expected = Math.Round(amount / count,2),
                         CategoryName = category.CategoryName,
                         Currency = currency.Currency.ToString()
                     });
+                    }
+                   
                 }
             }
             return model;
