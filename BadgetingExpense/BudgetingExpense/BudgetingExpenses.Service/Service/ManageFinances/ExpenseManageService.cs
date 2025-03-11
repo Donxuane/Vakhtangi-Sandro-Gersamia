@@ -20,7 +20,7 @@ public class ExpenseManageService : IExpenseManageService
         try
         {
             var category = new Category { Name = categoryName };
-            await _unitOfWork.BeginTransaction();
+            await _unitOfWork.BeginTransactionAsync();
             var result = await _unitOfWork.ExpenseManage.AddCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Added Expense Category:{name}", categoryName);
@@ -38,7 +38,7 @@ public class ExpenseManageService : IExpenseManageService
     {
         try
         {
-            await _unitOfWork.BeginTransaction();
+            await _unitOfWork.BeginTransactionAsync();
             await _unitOfWork.ExpenseManage.AddAsync(model);
             await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Added Expense:{id}\nUser:{userId}", model.Id, model.UserId);
@@ -56,7 +56,7 @@ public class ExpenseManageService : IExpenseManageService
     {
         try
         {
-            await _unitOfWork.BeginTransaction();
+            await _unitOfWork.BeginTransactionAsync();
             await _unitOfWork.ExpenseManage.DeleteAsync(expenseId);
             await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Deleted Expense:{id}", expenseId);
@@ -74,7 +74,7 @@ public class ExpenseManageService : IExpenseManageService
     {
         try
         {
-            await _unitOfWork.BeginTransaction();
+            await _unitOfWork.BeginTransactionAsync();
             var categories = await _unitOfWork.ExpenseManage.GetCategoriesAsync(userId);
             if (categories.Any())
             {
@@ -92,7 +92,7 @@ public class ExpenseManageService : IExpenseManageService
     {
         try
         {
-            await _unitOfWork.BeginTransaction();
+            await _unitOfWork.BeginTransactionAsync();
             await _unitOfWork.ExpenseManage.UpdateAsync(expense);
             await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Updated Expense:{id}\nUser:{userId}", expense.Id, expense.UserId);
@@ -111,7 +111,7 @@ public class ExpenseManageService : IExpenseManageService
 
         try
         {
-            await _unitOfWork.BeginTransaction();
+            await _unitOfWork.BeginTransactionAsync();
             await _unitOfWork.ExpenseManage.UpdateCategoryAsync(Category);
             await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Updated Category:{id}",Category.Id);
@@ -130,7 +130,7 @@ public class ExpenseManageService : IExpenseManageService
     {
         try
         {
-            await _unitOfWork.BeginTransaction();
+            await _unitOfWork.BeginTransactionAsync();
             var records = await _unitOfWork.ExpenseManage.GetAllAsync(userId);
             if (records.Any())
             {

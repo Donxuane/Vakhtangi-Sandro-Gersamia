@@ -28,7 +28,7 @@ public class ExpenseReportsController : ControllerBase
             Period = period,
             UserId = HttpContext.Items["UserId"].ToString()
         };
-        var result = await _expenseRecordsService.BiggestExpensesBasedPeriod(model);
+        var result = await _expenseRecordsService.BiggestExpensesBasedPeriodAsync(model);
         if (result != null && result.Any())
         {
             var finalResult = result.Select(x => new RecordsDto
@@ -51,7 +51,7 @@ public class ExpenseReportsController : ControllerBase
             Period = model.Period,
             UserId = HttpContext.Items["UserId"].ToString()
         };
-        var records = await _expenseRecordsService.RecordsBasedCategoryPeriod(categoryModel);
+        var records = await _expenseRecordsService.RecordsBasedCategoryPeriodAsync(categoryModel);
         if (records != null && records.Any())
         {
             var finalRecord = records.Select(x => new RecordsDto
@@ -74,7 +74,7 @@ public class ExpenseReportsController : ControllerBase
             Period = model.Period,
             UserId = HttpContext.Items["UserId"].ToString()
         };
-        var records = await _expenseRecordsService.RecordsBasedCurrencyPeriod(currencyModel);
+        var records = await _expenseRecordsService.RecordsBasedCurrencyPeriodAsync(currencyModel);
         if (records != null && records.Any())
         {
             var final = records.Select(x => new RecordsDto
@@ -91,7 +91,7 @@ public class ExpenseReportsController : ControllerBase
     [HttpGet("AllExpenseRecords")]
     public async Task<IActionResult> GetAllExpenseRecords()
     {
-        var records = await _expenseRecordsService.GetAllRecords(HttpContext.Items["UserId"].ToString());
+        var records = await _expenseRecordsService.GetAllRecordsAsync(HttpContext.Items["UserId"].ToString());
         if (records != null && records.Any())
         {
             var final = records.Select(x => new RecordsDto

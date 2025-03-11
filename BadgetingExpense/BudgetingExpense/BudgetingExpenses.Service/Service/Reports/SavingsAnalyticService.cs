@@ -50,12 +50,12 @@ public class SavingsAnalyticService : ISavingsAnalyticService
         }
     }
 
-    public async Task<(double expense, double income)> FinanceRecords(string userId, int month)
+    public async Task<(double expense, double income)> FinanceRecordsAsync(string userId, int month)
     {
         try
         {
-            var expense = await _unitOfWork.ExpenseRecords.GetUserExpenseRecords(userId);
-            var income = await _unitOfWork.IncomeRecords.GetUserIncomeRecords(userId);
+            var expense = await _unitOfWork.ExpenseRecords.GetUserExpenseRecordsAsync(userId);
+            var income = await _unitOfWork.IncomeRecords.GetUserIncomeRecordsAsync(userId);
             if (income != null)
             {
                 var period = DateTime.UtcNow.AddMonths(-month);

@@ -19,7 +19,7 @@ namespace BudgetingExpense.api.Controllers
         [HttpGet("savingAnalyticByPeriod")]
         public async Task<IActionResult> savingAnalyticByPeriod(int month)
         {
-           var (expense, income) = await _analyticsService.FinanceRecords(HttpContext.Items["UserId"].ToString(), month);
+           var (expense, income) = await _analyticsService.FinanceRecordsAsync(HttpContext.Items["UserId"].ToString(), month);
            if (income >= 0 )
            {
                var savings = await _analyticsService.SavingsAnalyticByPeriodAsync(expense, income);

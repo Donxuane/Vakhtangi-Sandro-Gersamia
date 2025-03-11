@@ -4,5 +4,5 @@ namespace BudgetingExpense.Domain.Contracts.IServices.IMessaging;
 
 public interface IEmailService
 {
-    public Task SendEmail(EmailModel emailModel);
+    public Task SendEmailAsync(EmailModel emailModel);
 }

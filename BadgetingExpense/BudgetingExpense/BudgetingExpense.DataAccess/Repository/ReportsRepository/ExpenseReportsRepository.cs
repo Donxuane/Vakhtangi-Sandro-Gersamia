@@ -14,7 +14,7 @@ public class ExpenseReportsRepository : IExpenseRecordsRepository
         _connection = connection;
     }
 
-    public async Task<IEnumerable<ExpenseRecord>> GetUserExpenseRecords(string userId)
+    public async Task<IEnumerable<ExpenseRecord>> GetUserExpenseRecordsAsync(string userId)
     {
         var query = "SELECT * FROM ExpenseCategories WHERE UserId = @userId";
         var reports = await _connection.QueryAsync<ExpenseRecord>(query, new { userId });

@@ -17,7 +17,7 @@ public class IncomeForecastService : IForecastService<IncomeRecord>
     }
     public async Task<IEnumerable<GetForecastCategory>> GetForecastCategoriesAsync(string userId)
     {
-        var incomeRecords = await _unitOfWork.IncomeRecords.GetUserIncomeRecords(userId);
+        var incomeRecords = await _unitOfWork.IncomeRecords.GetUserIncomeRecordsAsync(userId);
         var filteredByCurrency = incomeRecords.DistinctBy(x => x.Currency);
         var filteredByCategory = incomeRecords.DistinctBy(x => x.CategoryName);
         List<GetForecastCategory> model = [];

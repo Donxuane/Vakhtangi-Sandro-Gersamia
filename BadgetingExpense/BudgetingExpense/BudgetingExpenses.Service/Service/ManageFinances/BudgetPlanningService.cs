@@ -22,20 +22,20 @@ public class BudgetPlanningService : IBudgetPlanningService
 
     }
 
-    public async Task AllExpenses(string UserId, int CategoryId)
+    public async Task AllExpensesAsync(string UserId, int CategoryId)
     {
-        var User = await _unitOfWork.BudgetPlanning.GetEmail(UserId);
-        var AllExpenses = await _unitOfWork.BudgetPlanning.GetAll(UserId, CategoryId);
+        var User = await _unitOfWork.BudgetPlanning.GetEmailAsync(UserId);
+        var AllExpenses = await _unitOfWork.BudgetPlanning.GetAllAsync(UserId, CategoryId);
         var result = AllExpenses.Sum(x => x.ExpenseAmount);
         var Limit = AllExpenses.Select(x => x.LimitAmount).FirstOrDefault();
         if (Limit < result)
         {
-            _emailService.SendEmail(new EmailModel()
+            _emailService.SendEmailAsync(new EmailModel()
             { Email = User, Message = "limit exceeded", Subject = "limit exceeded" });
         }
         else
         {
-            _emailService.SendEmail(new EmailModel()
+            _emailService.SendEmailAsync(new EmailModel()
             { Email = User, Message = "ndfkasdfnkasd", Subject = "dnkfskdnc" });
         }
     }

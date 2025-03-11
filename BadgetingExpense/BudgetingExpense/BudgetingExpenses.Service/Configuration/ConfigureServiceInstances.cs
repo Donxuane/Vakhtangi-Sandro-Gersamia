@@ -11,7 +11,6 @@ using BudgetingExpenses.Service.Service.Limitations;
 using BudgetingExpenses.Service.Service.ManageFinances;
 using BudgetingExpenses.Service.Service.Messaging;
 using BudgetingExpenses.Service.Service.Notifications;
-using BudgetingExpenses.Service.Service.NotifyUser;
 using BudgetingExpenses.Service.Service.Reports;
 using Microsoft.Extensions.DependencyInjection;
 

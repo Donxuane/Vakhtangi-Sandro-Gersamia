@@ -12,7 +12,7 @@ public interface IUnitOfWork : IAsyncDisposable
 {
     public Task SaveChangesAsync();
     public Task RollBackAsync();
-    public Task BeginTransaction();
+    public Task BeginTransactionAsync();
     public IAuthentication Authentication { get; }
     public IManageFinancesRepository<Expense> ExpenseManage { get; }
     public IManageFinancesRepository<Income> IncomeManage { get; }

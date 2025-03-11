@@ -25,7 +25,7 @@ public class IncomeManageService : IIncomeManageService
         try
         {
             var category = new Category { Name = CategoryName };
-            await _unitOfWork.BeginTransaction();
+            await _unitOfWork.BeginTransactionAsync();
             var result = await _unitOfWork.IncomeManage.AddCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Added Income Category:{id}", CategoryName);
@@ -43,7 +43,7 @@ public class IncomeManageService : IIncomeManageService
     {
         try
         {
-            await _unitOfWork.BeginTransaction();
+            await _unitOfWork.BeginTransactionAsync();
             await _unitOfWork.IncomeManage.AddAsync(model);
             await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Added Income:{id}\nUser:{userId}", model.Id, model.UserId);
@@ -67,7 +67,7 @@ public class IncomeManageService : IIncomeManageService
     {
         try
         {
-            await _unitOfWork.BeginTransaction();
+            await _unitOfWork.BeginTransactionAsync();
             await _unitOfWork.IncomeManage.DeleteAsync(incomeTypeId);
             await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Deleted Income:{id}", incomeTypeId);
@@ -85,7 +85,7 @@ public class IncomeManageService : IIncomeManageService
     {
         try
         {
-            await _unitOfWork.BeginTransaction();
+            await _unitOfWork.BeginTransactionAsync();
             var categories = await _unitOfWork.IncomeManage.GetCategoriesAsync(userId);
             if (categories.Any())
             {
@@ -103,7 +103,7 @@ public class IncomeManageService : IIncomeManageService
     {
         try
         {
-            await _unitOfWork.BeginTransaction();
+            await _unitOfWork.BeginTransactionAsync();
             await _unitOfWork.IncomeManage.UpdateAsync(income);
             await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Updated Income:{id}\nUser:{userId}",income.Id,income.UserId);
@@ -121,7 +121,7 @@ public class IncomeManageService : IIncomeManageService
     {
         try
         {
-            await _unitOfWork.BeginTransaction();
+            await _unitOfWork.BeginTransactionAsync();
             await _unitOfWork.IncomeManage.UpdateCategoryAsync(category);
             await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Updated Income Category:{id}", category.Id);
@@ -139,7 +139,7 @@ public class IncomeManageService : IIncomeManageService
     {
         try
         {
-            await _unitOfWork.BeginTransaction();
+            await _unitOfWork.BeginTransactionAsync();
             var incomeRecords = await _unitOfWork.IncomeManage.GetAllAsync(userId);
             if (incomeRecords.Any())
             {

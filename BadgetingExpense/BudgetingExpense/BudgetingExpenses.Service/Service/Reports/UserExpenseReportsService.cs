@@ -14,11 +14,11 @@ public class UserExpenseReportsService : IExpenseReportsService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<IEnumerable<ExpenseRecord>?> BiggestExpensesBasedPeriod(GetRecordsPeriod model)
+    public async Task<IEnumerable<ExpenseRecord>?> BiggestExpensesBasedPeriodAsync(GetRecordsPeriod model)
     {
         try
         {
-            var records = await _unitOfWork.ExpenseRecords.GetUserExpenseRecords(model.UserId);
+            var records = await _unitOfWork.ExpenseRecords.GetUserExpenseRecordsAsync(model.UserId);
             if (records != null)
             {
                 List<ExpenseRecord> final = [];
@@ -43,11 +43,11 @@ public class UserExpenseReportsService : IExpenseReportsService
         }
     }
 
-    public async Task<IEnumerable<ExpenseRecord>?> GetAllRecords(string userId)
+    public async Task<IEnumerable<ExpenseRecord>?> GetAllRecordsAsync(string userId)
     {
         try
         {
-            var records = await _unitOfWork.ExpenseRecords.GetUserExpenseRecords(userId);
+            var records = await _unitOfWork.ExpenseRecords.GetUserExpenseRecordsAsync(userId);
             if (records != null && records.Any())
             {
                 return records.OrderByDescending(x => x.Date);
@@ -61,11 +61,11 @@ public class UserExpenseReportsService : IExpenseReportsService
         }
     }
 
-    public async Task<IEnumerable<ExpenseRecord>?> RecordsBasedCategoryPeriod(GetRecordCategory model)
+    public async Task<IEnumerable<ExpenseRecord>?> RecordsBasedCategoryPeriodAsync(GetRecordCategory model)
     {
         try
         {
-            var records = await _unitOfWork.ExpenseRecords.GetUserExpenseRecords(model.UserId);
+            var records = await _unitOfWork.ExpenseRecords.GetUserExpenseRecordsAsync(model.UserId);
             if (records != null)
             {
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
@@ -84,11 +84,11 @@ public class UserExpenseReportsService : IExpenseReportsService
         }
     }
 
-    public async Task<IEnumerable<ExpenseRecord>?> RecordsBasedCurrencyPeriod(GetRecordCurrency model)
+    public async Task<IEnumerable<ExpenseRecord>?> RecordsBasedCurrencyPeriodAsync(GetRecordCurrency model)
     {
         try
         {
-            var records = await _unitOfWork.ExpenseRecords.GetUserExpenseRecords(model.UserId);
+            var records = await _unitOfWork.ExpenseRecords.GetUserExpenseRecordsAsync(model.UserId);
             if (records != null)
             {
                 var period = DateTime.UtcNow.AddMonths(-model.Period);

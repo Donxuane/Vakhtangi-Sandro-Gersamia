@@ -16,7 +16,7 @@ public class BudgetPlaningRepository : IBudgetPlaningRepository
         _connection = connection;
     }
 
-    public async Task<IEnumerable<BudgetPlanning>> GetAll(string UserId, int CategoryId)
+    public async Task<IEnumerable<BudgetPlanning>> GetAllAsync(string UserId, int CategoryId)
     {
         var query = "SELECT * FROM BudgetPlaning WHERE UserId = @UserId AND CategoryId = @CategoryId";
 
@@ -24,7 +24,7 @@ public class BudgetPlaningRepository : IBudgetPlaningRepository
 
     }
 
-    public async Task<string> GetEmail(string UserId)
+    public async Task<string> GetEmailAsync(string UserId)
     {
         var query = "SELECT Email FROM AspNetUsers Where Id =@UserId";
         return await _connection.QuerySingleAsync<string>(query, new { UserId });

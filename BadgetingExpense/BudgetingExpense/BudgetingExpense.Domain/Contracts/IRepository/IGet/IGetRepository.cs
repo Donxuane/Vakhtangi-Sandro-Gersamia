@@ -2,7 +2,7 @@
 
 public interface IGetRepository
 {
-    public Task<string> GetEmail(string UserId);
-    public Task<string?> GetCategoryName(int categoryId);
-    public Task<bool> GetNotificationActiveStatus(string userId);
+    public Task<string> GetEmailAsync(string UserId);
+    public Task<string?> GetCategoryNameAsync(int categoryId);
+    public Task<bool> GetNotificationActiveStatusAsync(string userId);
 }

@@ -5,7 +5,7 @@ using BudgetingExpense.Domain.Models.MainModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace BudgetingExpenses.Service.Service.NotifyUser;
+namespace BudgetingExpenses.Service.Service.Notifications;
 
 public class IncomeReceiveNotificationService : IIncomeReceiveNotificationService
 {
@@ -13,7 +13,7 @@ public class IncomeReceiveNotificationService : IIncomeReceiveNotificationServic
     private readonly IConfiguration _configuration;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<IncomeReceiveNotificationService> _logger;
-    public IncomeReceiveNotificationService(IEmailService emailService, 
+    public IncomeReceiveNotificationService(IEmailService emailService,
         IUnitOfWork unitOfWork, IConfiguration configuration,
         ILogger<IncomeReceiveNotificationService> logger)
     {
@@ -27,13 +27,13 @@ public class IncomeReceiveNotificationService : IIncomeReceiveNotificationServic
     {
         try
         {
-            var userEmail = await _unitOfWork.GetRepository.GetEmail(record.UserId);
+            var userEmail = await _unitOfWork.GetRepository.GetEmailAsync(record.UserId);
             if (userEmail != null)
             {
                 var incomeEmail = _configuration.GetSection("IncomeEmail");
                 string? subject = incomeEmail["Subject"].ToString();
                 string? message = incomeEmail["Message"].ToString();
-                var categoryName = await _unitOfWork.GetRepository.GetCategoryName((int)record.CategoryId);
+                var categoryName = await _unitOfWork.GetRepository.GetCategoryNameAsync((int)record.CategoryId);
                 if (categoryName != null)
                 {
                     message = message.Replace("{category}", categoryName);
@@ -45,12 +45,12 @@ public class IncomeReceiveNotificationService : IIncomeReceiveNotificationServic
                 message = message.Replace("{amount}", record.Amount.ToString());
                 message = message.Replace("{currency}", record.Currency.ToString());
                 message = message.Replace("{date}", record.Date.ToString());
-                await _emailService.SendEmail(new EmailModel { Email = userEmail, Message = message, Subject = subject });
+                await _emailService.SendEmailAsync(new EmailModel { Email = userEmail, Message = message, Subject = subject });
                 return true;
             }
             return false;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
             return false;

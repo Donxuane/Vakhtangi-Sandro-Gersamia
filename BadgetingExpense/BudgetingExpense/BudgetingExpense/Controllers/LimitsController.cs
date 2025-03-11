@@ -32,7 +32,7 @@ public class LimitsController : ControllerBase
             DateAdded = limitDto.DateAdded,
             UserId = HttpContext.Items["UserId"].ToString()
         };
-        var result = await _limitsManageService.SetLimits(limits);
+        var result = await _limitsManageService.SetLimitsAsync(limits);
         if (result == true)
         {
             return Ok("Limit added successfully");
@@ -43,7 +43,7 @@ public class LimitsController : ControllerBase
     [HttpDelete("DeleteLimit")]
     public async Task<IActionResult> DeleteLimit(int limitId)
     {
-        var result = await _limitsManageService.DeleteLimits(limitId);
+        var result = await _limitsManageService.DeleteLimitsAsync(limitId);
         if (result == true)
         {
             return Ok("Limit deleted succesfully");
@@ -52,7 +52,7 @@ public class LimitsController : ControllerBase
         return BadRequest("something went wrong");
     }
 
-    [HttpPut("UpdateLimits")]
+    [HttpPut("UpdateLimitsAsync")]
     public async Task<IActionResult> UpdateLimit(UpdateLimitDto updateLimitDto)
     {
         var updateLimits = new Limits()
@@ -65,7 +65,7 @@ public class LimitsController : ControllerBase
             UserId = HttpContext.Items["UserId"].ToString()
             
         };
-        var result = await _limitsManageService.UpdateLimits(updateLimits);
+        var result = await _limitsManageService.UpdateLimitsAsync(updateLimits);
         if (result == true)
         {
             return Ok("updated");
@@ -74,10 +74,10 @@ public class LimitsController : ControllerBase
         return BadRequest();
     }
 
-    [HttpPost("SendEmail")]
+    [HttpPost("SendEmailAsync")]
     public async Task<IActionResult> SendEmail(int CategoryId)
     {
-        await _budgetPlanningService.AllExpenses(HttpContext.Items["UserId"].ToString(), CategoryId);
+        await _budgetPlanningService.AllExpensesAsync(HttpContext.Items["UserId"].ToString(), CategoryId);
         return Ok("email was sent");
     }
 }

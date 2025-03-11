@@ -4,6 +4,6 @@ namespace BudgetingExpense.Domain.Contracts.IRepository.IFinance;
 
 public interface IBudgetPlaningRepository
 {
-    public Task<IEnumerable<BudgetPlanning>> GetAll(string UserId, int CategoryId);
-    public Task<string> GetEmail(string UserId);
+    public Task<IEnumerable<BudgetPlanning>> GetAllAsync(string UserId, int CategoryId);
+    public Task<string> GetEmailAsync(string UserId);
 }

@@ -4,7 +4,7 @@ namespace BudgetingExpense.Domain.Contracts.IServices.ILimitations;
 
 public interface ILimitsManageService
 {
-    Task<bool> SetLimits(Limits limits);
-    Task<bool> DeleteLimits(int LimitId);
-    Task<bool> UpdateLimits(Limits limits);
+    Task<bool> SetLimitsAsync(Limits limits);
+    Task<bool> DeleteLimitsAsync(int LimitId);
+    Task<bool> UpdateLimitsAsync(Limits limits);
 }

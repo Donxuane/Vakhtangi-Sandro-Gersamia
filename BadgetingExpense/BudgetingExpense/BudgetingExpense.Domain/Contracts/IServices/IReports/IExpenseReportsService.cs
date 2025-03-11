@@ -5,8 +5,8 @@ namespace BudgetingExpense.Domain.Contracts.IServices.IReports;
 
 public interface IExpenseReportsService
 {
-    public Task<IEnumerable<ExpenseRecord>?> RecordsBasedCurrencyPeriod(GetRecordCurrency model);
-    public Task<IEnumerable<ExpenseRecord>?> RecordsBasedCategoryPeriod(GetRecordCategory model);
-    public Task<IEnumerable<ExpenseRecord>?> BiggestExpensesBasedPeriod(GetRecordsPeriod model);
-    public Task<IEnumerable<ExpenseRecord>?> GetAllRecords(string userId);
+    public Task<IEnumerable<ExpenseRecord>?> RecordsBasedCurrencyPeriodAsync(GetRecordCurrency model);
+    public Task<IEnumerable<ExpenseRecord>?> RecordsBasedCategoryPeriodAsync(GetRecordCategory model);
+    public Task<IEnumerable<ExpenseRecord>?> BiggestExpensesBasedPeriodAsync(GetRecordsPeriod model);
+    public Task<IEnumerable<ExpenseRecord>?> GetAllRecordsAsync(string userId);
 }

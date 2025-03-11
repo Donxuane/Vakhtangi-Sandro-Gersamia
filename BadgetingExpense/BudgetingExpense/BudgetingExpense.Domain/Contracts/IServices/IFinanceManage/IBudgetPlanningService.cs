@@ -3,5 +3,5 @@
 public interface IBudgetPlanningService
 {
     public Task SendMessageAsync(string UserId);
-    public Task AllExpenses(string UserId, int CategoryId);
+    public Task AllExpensesAsync(string UserId, int CategoryId);
 }

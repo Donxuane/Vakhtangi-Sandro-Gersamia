@@ -18,7 +18,7 @@ public class ToggleNotificationService : IToggleNotificationsService
     {
         try
         {
-            await _unitOfWork.BeginTransaction();
+            await _unitOfWork.BeginTransactionAsync();
             await _unitOfWork.ToggleNotificationsRepository.ToggleNotification(userId, status);
             await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Email Status Updated\nUser:{id}", userId);

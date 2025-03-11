@@ -14,7 +14,7 @@ public class IncomeReportsRepository : IIncomeRecordsRepository
         _connection = connection;
     }
 
-    public async Task<IEnumerable<IncomeRecord>> GetUserIncomeRecords(string userId)
+    public async Task<IEnumerable<IncomeRecord>> GetUserIncomeRecordsAsync(string userId)
     {
         var query = "SELECT * FROM IncomeCategories WHERE UserId = @UserId";
         var reports = await _connection.QueryAsync<IncomeRecord>(query, new { userId });

@@ -20,7 +20,7 @@ public class ExpenseForecastService : IForecastService<ExpenseRecord>
     {
         try
         {
-            var expenseRecords = await _unitOfWork.ExpenseRecords.GetUserExpenseRecords(userId);
+            var expenseRecords = await _unitOfWork.ExpenseRecords.GetUserExpenseRecordsAsync(userId);
             var filteredByCurrency = expenseRecords.DistinctBy(x => x.Currency).Select(x => new { x.Currency });
             var filteredByCategory = expenseRecords.DistinctBy(x => x.CategoryName).Select(x => new {x.CategoryName});
             List<GetForecastCategory> model = [];

@@ -14,11 +14,11 @@ public class UserIncomeReportsService : IIncomeReportsService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<IEnumerable<IncomeRecord>?> GetAllRecords(string userId)
+    public async Task<IEnumerable<IncomeRecord>?> GetAllRecordsAsync(string userId)
     {
         try
         {
-            var records = await _unitOfWork.IncomeRecords.GetUserIncomeRecords(userId);
+            var records = await _unitOfWork.IncomeRecords.GetUserIncomeRecordsAsync(userId);
             if (records != null)
             {
                 return records.OrderByDescending(x => x.IncomeDate);
@@ -32,11 +32,11 @@ public class UserIncomeReportsService : IIncomeReportsService
         }
     }
 
-    public async Task<IEnumerable<IncomeRecord>?> RecordsBasedCategoryPeriod(GetRecordCategory model)
+    public async Task<IEnumerable<IncomeRecord>?> RecordsBasedCategoryPeriodAsync(GetRecordCategory model)
     {
         try
         {
-            var records = await _unitOfWork.IncomeRecords.GetUserIncomeRecords(model.UserId);
+            var records = await _unitOfWork.IncomeRecords.GetUserIncomeRecordsAsync(model.UserId);
             if (records != null)
             {
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
@@ -55,11 +55,11 @@ public class UserIncomeReportsService : IIncomeReportsService
         }
     }
 
-    public async Task<IEnumerable<IncomeRecord>?> RecordsBasedCurrencyPeriod(GetRecordCurrency model)
+    public async Task<IEnumerable<IncomeRecord>?> RecordsBasedCurrencyPeriodAsync(GetRecordCurrency model)
     {
         try
         {
-            var records = await _unitOfWork.IncomeRecords.GetUserIncomeRecords(model.UserId);
+            var records = await _unitOfWork.IncomeRecords.GetUserIncomeRecordsAsync(model.UserId);
             if (records != null)
             {
                 var period = DateTime.UtcNow.AddMonths(-model.Period);

@@ -13,7 +13,7 @@ public class EmailService : IEmailService
     {
         _logger = logger;
     }
-    public async Task SendEmail(EmailModel emailModel)
+    public async Task SendEmailAsync(EmailModel emailModel)
     {
         try
         {

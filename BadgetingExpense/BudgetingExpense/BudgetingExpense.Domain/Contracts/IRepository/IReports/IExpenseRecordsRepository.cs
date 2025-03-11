@@ -4,5 +4,5 @@ namespace BudgetingExpense.Domain.Contracts.IRepository.IReports;
 
 public interface IExpenseRecordsRepository
 {
-    public Task<IEnumerable<ExpenseRecord>> GetUserExpenseRecords(string userId);
+    public Task<IEnumerable<ExpenseRecord>> GetUserExpenseRecordsAsync(string userId);
 }
