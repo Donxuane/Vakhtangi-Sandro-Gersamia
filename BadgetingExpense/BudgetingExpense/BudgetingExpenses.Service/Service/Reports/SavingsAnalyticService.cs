@@ -1,35 +1,38 @@
 ﻿using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
+using BudgetingExpense.Domain.Models.MainModels;
+using Microsoft.Extensions.Logging;
 
 namespace BudgetingExpenses.Service.Service.Reports;
 
 public class SavingsAnalyticService : ISavingsAnalyticService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<SavingsAnalyticService> _logger;
 
-    public SavingsAnalyticService(IUnitOfWork unitOfWork)
+    public SavingsAnalyticService(IUnitOfWork unitOfWork, ILogger<SavingsAnalyticService> logger)
     {
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
-    public async Task<double> SavingsAnalyticByPeriodAsync(double expense, double income)
+    public async Task<Savings?> SavingsAnalyticsAsync(string userId, int month)
     {
         try
         {
-            return await Task.Run(() =>
-            {
-                var savings = income - expense;
-                return savings;
-            });
+            var (expense, income) = await FinanceRecordsAsync(userId, month);
+            var actual = income - expense;
+            var percentage = await SavingPercentageAsync(expense, income);
+            return new Savings { Expense = expense, Income = income, Saved = actual, Percentage = percentage};
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e.Message);
-            return 0;
+            _logger.LogError("Exception ex:{ex}", ex.Message);
+            return null;
         }
     }
 
-    public async Task<double> SavingPercentageAsync(double expense, double income)
+    private async Task<double> SavingPercentageAsync(double expense, double income)
     {
         try
         {
@@ -43,14 +46,14 @@ public class SavingsAnalyticService : ISavingsAnalyticService
             });
 
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e.Message);
+            _logger.LogError("Exception ex:{ex}", ex.Message);
             return 0;
         }
     }
 
-    public async Task<(double expense, double income)> FinanceRecordsAsync(string userId, int month)
+    private async Task<(double expense, double income)> FinanceRecordsAsync(string userId, int month)
     {
         try
         {
@@ -69,9 +72,9 @@ public class SavingsAnalyticService : ISavingsAnalyticService
             }
             return (0, 0);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e.Message);
+            _logger.LogError("Exception ex:{ex}", ex.Message);
             return (0, 0);
         }
     }

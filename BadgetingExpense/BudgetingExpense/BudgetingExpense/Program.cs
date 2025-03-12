@@ -1,5 +1,6 @@
 using BudgetingExpense.api.Configuration;
 using BudgetingExpense.api.CustomMiddleware;
+using BudgetingExpense.Api.Configuration;
 using BudgetingExpense.DataAccess.Configuration;
 using BudgetingExpenses.Service.Configuration;
 
@@ -10,6 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerAuthorization();
 builder.Services.ConfigureDatabaseRules(builder.Configuration);
 builder.Services.ConfigureJWTBearerToken(builder.Configuration);
+builder.Services.AddILoggerConfiguration();
 builder.Services.AddRepositoryInstances();
 builder.Services.AddServiceInstances();
 builder.Services.AddScoped<ConfigureRoles>();

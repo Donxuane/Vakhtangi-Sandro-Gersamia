@@ -18,7 +18,6 @@ public class UnitOfWork : IUnitOfWork
     private readonly IIncomeRecordsRepository _incomeRecords;
     private readonly IExpenseRecordsRepository _expenseRecords;
     private readonly IBudgetLimitsRepository _limits;
-    private readonly IBudgetPlaningRepository _budgetPlaning;
     private readonly IGetRepository _getRepository;
     private readonly IToggleNotificationsRepository _toggleNotifications;
     private readonly DbConnection _connection;
@@ -27,7 +26,7 @@ public class UnitOfWork : IUnitOfWork
     public UnitOfWork(IAuthentication authentication, DbConnection connection,
         IManageFinancesRepository<Expense> expenseManage, IManageFinancesRepository<Income> incomeManage,
         IIncomeRecordsRepository incomeRecords, IBudgetLimitsRepository limits,
-        IExpenseRecordsRepository expenseRecords, IBudgetPlaningRepository budgetPlaning,
+        IExpenseRecordsRepository expenseRecords,
         IGetRepository getRepository,IToggleNotificationsRepository toggleNotifications)
     {
         _expenseManage = expenseManage;
@@ -37,7 +36,6 @@ public class UnitOfWork : IUnitOfWork
         _limits = limits;
         _expenseRecords = expenseRecords;
         _connection = connection;
-        _budgetPlaning = budgetPlaning;
         _getRepository = getRepository;
         _toggleNotifications = toggleNotifications;
     }
@@ -80,7 +78,6 @@ public class UnitOfWork : IUnitOfWork
     }
 
     public IExpenseRecordsRepository ExpenseRecords => _expenseRecords;
-    public IBudgetPlaningRepository BudgetPlanning => _budgetPlaning;
 
     public IGetRepository GetRepository => _getRepository;
     public IToggleNotificationsRepository ToggleNotificationsRepository { get

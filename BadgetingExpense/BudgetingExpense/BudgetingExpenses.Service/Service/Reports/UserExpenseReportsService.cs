@@ -2,16 +2,19 @@
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
+using Microsoft.Extensions.Logging;
 
 namespace BudgetingExpenses.Service.Service.Reports;
 
 public class UserExpenseReportsService : IExpenseReportsService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<UserExpenseReportsService> _logger;
 
-    public UserExpenseReportsService(IUnitOfWork unitOfWork)
+    public UserExpenseReportsService(IUnitOfWork unitOfWork, ILogger<UserExpenseReportsService> logger)
     {
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<IEnumerable<ExpenseRecord>?> BiggestExpensesBasedPeriodAsync(GetRecordsPeriod model)
@@ -23,10 +26,10 @@ public class UserExpenseReportsService : IExpenseReportsService
             {
                 List<ExpenseRecord> final = [];
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
-                var filteredBasedPeriod = records.Where(x => x.Date >= period).OrderByDescending(x => x.Amount);
-                foreach (var item in filteredBasedPeriod)
+                var orderedBasedAmount = records.Where(x => x.Date >= period).OrderByDescending(x => x.Amount);
+                foreach (var item in orderedBasedAmount)
                 {
-                    if (filteredBasedPeriod.Count() == 10)
+                    if (final.Count == 10)
                     {
                         break;
                     }
@@ -38,7 +41,7 @@ public class UserExpenseReportsService : IExpenseReportsService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            _logger.LogError("Exception ex:{ex}", ex.Message);
             return null;
         }
     }
@@ -56,7 +59,7 @@ public class UserExpenseReportsService : IExpenseReportsService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            _logger.LogError("Exception ex:{ex}", ex.Message);
             return null;
         }
     }
@@ -79,7 +82,7 @@ public class UserExpenseReportsService : IExpenseReportsService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            _logger.LogError("Exception ex:{ex}", ex.Message);
             return null;
         }
     }
@@ -102,7 +105,7 @@ public class UserExpenseReportsService : IExpenseReportsService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            _logger.LogError("Exception ex:{ex}", ex.Message);
             return null;
         }
     }

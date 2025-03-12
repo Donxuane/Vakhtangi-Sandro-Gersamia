@@ -40,3 +40,34 @@ Create table Limits
 	Constraint FK_LimitsUserId_AspNetUser foreign key (userId) references AspNetUsers(Id)On Delete Cascade,
 	Constraint FK_LimitsCategoryId_Categories foreign key (CategoryId) references Categories(Id)On Delete Cascade
 )
+Go
+Create View IncomeCategories As
+Select 
+i.UserId As UserId,
+i.Date As IncomeDate,
+i.Amount, 
+i.Currency,
+Coalesce(NullIf(c.Name, ''),'General') As CategoryName
+From Incomes i
+Left Join Categories c On i.CategoryId = c.Id where c.Type = 1;
+
+Go
+Create View ExpenseCategories As
+Select
+ex.UserId,
+ex.Amount,
+ex.Currency,
+ex.Date,
+Coalesce(NullIf(c.Name,''),'General') As CategoryName
+From Expenses ex
+Left Join Categories c on ex.CategoryId = c.Id where c.Type = 0;
+
+Go
+CREATE VIEW BudgetPlaning  
+AS
+SELECT 
+l.UserId,l.Amount as limitAmount,l.PeriodCategory as LimitPeriod,l.DateAdded,ex.Amount as ExpeneseAmount,ex.Currency,ex.Date,l.CategoryId
+FROM Limits l
+LEFT JOIN Expenses ex ON l.CategoryId = ex.CategoryId 
+WHERE l.UserId = ex.UserId;
+Go

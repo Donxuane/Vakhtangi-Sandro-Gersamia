@@ -1,6 +1,6 @@
 ﻿using BudgetingExpense.Domain.Models.MainModels;
 
-namespace BudgetingExpense.Domain.Contracts.IServices.INotifyUser;
+namespace BudgetingExpense.Domain.Contracts.IServices.INotifications;
 
 public interface IIncomeReceiveNotificationService
 {

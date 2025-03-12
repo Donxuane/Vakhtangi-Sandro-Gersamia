@@ -1,4 +1,4 @@
-using BudgetingExpense.Domain.Contracts.IServices.ILimitations;
+﻿using BudgetingExpense.Domain.Contracts.IServices.ILimitations;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.DtoModels;
 using Microsoft.AspNetCore.Authorization;
@@ -13,8 +13,7 @@ public class LimitsController : ControllerBase
 {
     private readonly ILimitsManageService _limitsManageService;
 
-    public LimitsController(ILimitsManageService limitsManageService,
-        IBudgetPlanningService budgetPlanningService)
+    public LimitsController(ILimitsManageService limitsManageService)
     {
         _limitsManageService = limitsManageService;
     }

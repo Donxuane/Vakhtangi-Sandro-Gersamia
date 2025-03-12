@@ -1,5 +1,5 @@
 ﻿using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
-using BudgetingExpense.Domain.Contracts.IServices.INotifyUser;
+using BudgetingExpense.Domain.Contracts.IServices.INotifications;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 using Microsoft.Extensions.Logging;

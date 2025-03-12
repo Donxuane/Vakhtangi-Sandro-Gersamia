@@ -2,16 +2,20 @@
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Logging;
 
 namespace BudgetingExpenses.Service.Service.Reports;
 
 public class UserIncomeReportsService : IIncomeReportsService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<UserIncomeReportsService> _logger;
 
-    public UserIncomeReportsService(IUnitOfWork unitOfWork)
+    public UserIncomeReportsService(IUnitOfWork unitOfWork, ILogger<UserIncomeReportsService> logger)
     {
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<IEnumerable<IncomeRecord>?> GetAllRecordsAsync(string userId)
@@ -27,7 +31,7 @@ public class UserIncomeReportsService : IIncomeReportsService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
+            _logger.LogError("Exception ex:{ex}", ex.Message);
             return null;
         }
     }
@@ -50,7 +54,7 @@ public class UserIncomeReportsService : IIncomeReportsService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            _logger.LogError("Exception ex:{ex}", ex.Message);
             return null;
         }
     }
@@ -73,7 +77,7 @@ public class UserIncomeReportsService : IIncomeReportsService
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            _logger.LogError("Exception ex:{ex}", ex.Message);
             return null;
         }
     }
