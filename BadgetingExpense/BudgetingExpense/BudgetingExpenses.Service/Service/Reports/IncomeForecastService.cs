@@ -1,7 +1,6 @@
 ﻿using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
-using System.Text.Json;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 
 namespace BudgetingExpenses.Service.Service.Reports;

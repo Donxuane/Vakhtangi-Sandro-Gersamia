@@ -1,4 +1,3 @@
-﻿using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
 using BudgetingExpense.Domain.Contracts.IServices.ILimitations;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.DtoModels;
@@ -13,13 +12,11 @@ namespace BudgetingExpense.api.Controllers;
 public class LimitsController : ControllerBase
 {
     private readonly ILimitsManageService _limitsManageService;
-    private readonly IBudgetPlanningService _budgetPlanningService;
 
     public LimitsController(ILimitsManageService limitsManageService,
         IBudgetPlanningService budgetPlanningService)
     {
         _limitsManageService = limitsManageService;
-        _budgetPlanningService = budgetPlanningService;
     }
     [HttpPost("AddLimit")]
     public async Task<IActionResult> AddLimit([FromForm]LimitsDto limitDto)
@@ -72,12 +69,5 @@ public class LimitsController : ControllerBase
         }
 
         return BadRequest();
-    }
-
-    [HttpPost("SendEmailAsync")]
-    public async Task<IActionResult> SendEmail(int CategoryId)
-    {
-        await _budgetPlanningService.AllExpensesAsync(HttpContext.Items["UserId"].ToString(), CategoryId);
-        return Ok("email was sent");
     }
 }

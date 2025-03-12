@@ -2,19 +2,8 @@ using BudgetingExpense.api.Configuration;
 using BudgetingExpense.api.CustomMiddleware;
 using BudgetingExpense.DataAccess.Configuration;
 using BudgetingExpenses.Service.Configuration;
-using Serilog;
-using Serilog.Events;
-
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddLogging();
-Log.Logger = new LoggerConfiguration()
-    .WriteTo.Console()
-    .WriteTo.File("Logs/ErrorLogs.log", restrictedToMinimumLevel: LogEventLevel.Error)
-    .WriteTo.File("Logs/InformationLogs.log", restrictedToMinimumLevel: LogEventLevel.Information)
-    .CreateLogger();
-
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

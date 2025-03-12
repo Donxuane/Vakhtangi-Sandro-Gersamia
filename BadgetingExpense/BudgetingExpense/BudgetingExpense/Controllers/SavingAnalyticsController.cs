@@ -27,7 +27,6 @@ namespace BudgetingExpense.api.Controllers
                return Ok($"Income - {income}\n" +
                    $"Expense - {expense}\nYou Saved : {savings} \n percentage : {percentage}%");
            }
-
            return BadRequest();
         }
     }
