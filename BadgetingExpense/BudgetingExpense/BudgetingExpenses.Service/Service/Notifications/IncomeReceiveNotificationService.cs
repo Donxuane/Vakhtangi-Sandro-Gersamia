@@ -34,14 +34,7 @@ public class IncomeReceiveNotificationService : IIncomeReceiveNotificationServic
                 string? subject = incomeEmail["Subject"].ToString();
                 string? message = incomeEmail["Message"].ToString();
                 var categoryName = await _unitOfWork.GetRepository.GetCategoryNameAsync((int)record.CategoryId);
-                if (categoryName != null)
-                {
-                    message = message.Replace("{category}", categoryName);
-                }
-                else
-                {
-                    message = message.Replace("{category}", "Undefined");
-                }
+                message = message.Replace("{category}", string.IsNullOrEmpty(categoryName) ? "Undefined" : categoryName);
                 message = message.Replace("{amount}", record.Amount.ToString());
                 message = message.Replace("{currency}", record.Currency.ToString());
                 message = message.Replace("{date}", record.Date.ToString());

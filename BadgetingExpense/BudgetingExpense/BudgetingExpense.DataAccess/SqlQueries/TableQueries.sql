@@ -63,11 +63,22 @@ From Expenses ex
 Left Join Categories c on ex.CategoryId = c.Id where c.Type = 0;
 
 Go
-CREATE VIEW BudgetPlaning  
-AS
+CREATE VIEW BudgetPlaning AS
 SELECT 
-l.UserId,l.Amount as limitAmount,l.PeriodCategory as LimitPeriod,l.DateAdded,ex.Amount as ExpeneseAmount,ex.Currency,ex.Date,l.CategoryId
+    l.UserId,
+    l.Amount AS limitAmount,
+    l.PeriodCategory AS LimitPeriod,
+    l.DateAdded,
+    l.CategoryId,
+    COALESCE(SUM(ex.Amount), 0) AS TotalExpenses, 
+    COUNT(ex.Id) AS ExpenseCount,  
+    MAX(ex.Currency) AS Currency  
 FROM Limits l
-LEFT JOIN Expenses ex ON l.CategoryId = ex.CategoryId 
-WHERE l.UserId = ex.UserId;
+LEFT JOIN Expenses ex 
+    ON l.CategoryId = ex.CategoryId 
+    AND l.UserId = ex.UserId 
+    AND ex.Date >= l.DateAdded  
+    AND ex.Date < DATEADD(MONTH, l.PeriodCategory, l.DateAdded)  
+GROUP BY 
+    l.UserId, l.Amount, l.PeriodCategory, l.DateAdded, l.CategoryId;
 Go
