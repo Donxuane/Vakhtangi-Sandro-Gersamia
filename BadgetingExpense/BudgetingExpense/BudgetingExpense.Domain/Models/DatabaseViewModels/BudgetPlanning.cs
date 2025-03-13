@@ -3,9 +3,10 @@
 namespace BudgetingExpense.Domain.Models.DatabaseViewModels;
 
 public class BudgetPlanning
-{
+{  
+    public int Id { get; set; }
     public string UserId { get; set; }
-
+ 
     public double LimitAmount { get; set; }
     public int LimitPeriod { get; set; }
     public DateTime DateAdded { get; set; }
