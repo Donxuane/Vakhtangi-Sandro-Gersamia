@@ -21,4 +21,5 @@ public interface IUnitOfWork : IAsyncDisposable
     public IExpenseRecordsRepository ExpenseRecords { get; }
     public IGetRepository GetRepository { get; }
     public IToggleNotificationsRepository ToggleNotificationsRepository { get; }
+    public  IBudgetPlaningRepository BudgetPlaningRepository { get; }
 }

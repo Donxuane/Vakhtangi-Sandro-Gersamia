@@ -29,5 +29,6 @@ public static class ConfigureRepositoryInstances
         services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
         services.AddScoped<IGetRepository, GetRepository>();
         services.AddScoped<IToggleNotificationsRepository,ToggleNotificationsRepository>();
+        services.AddScoped<IBudgetPlaningRepository, BudgetPlaningRepository>();
     }
 }

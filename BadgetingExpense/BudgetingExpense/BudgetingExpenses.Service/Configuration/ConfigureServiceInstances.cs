@@ -31,5 +31,6 @@ public static class ConfigureServiceInstances
         services.AddScoped<IForecastService<IncomeRecord>,IncomeForecastService>();
         services.AddScoped<IForecastService<ExpenseRecord>, ExpenseForecastService>();
         services.AddScoped<IToggleNotificationsService, ToggleNotificationService>();
+        services.AddScoped<ILimitNotificationService, LimitNotificationService>();
     }
 }

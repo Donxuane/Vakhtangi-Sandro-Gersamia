@@ -1,4 +1,5 @@
 ﻿using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
+using BudgetingExpense.Domain.Contracts.IServices.INotifications;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 using Microsoft.Extensions.Logging;
@@ -9,10 +10,12 @@ public class ExpenseManageService : IExpenseManageService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ExpenseManageService> _logger;
-    public ExpenseManageService(IUnitOfWork unitOfWork, ILogger<ExpenseManageService> logger)
+    private readonly ILimitNotificationService _limitNotificationService;
+    public ExpenseManageService(IUnitOfWork unitOfWork, ILogger<ExpenseManageService> logger,ILimitNotificationService limitNotificationService)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
+        _limitNotificationService = limitNotificationService;
     }
 
     public async Task<int> AddExpenseCategoryAsync(string categoryName)
@@ -41,6 +44,7 @@ public class ExpenseManageService : IExpenseManageService
             await _unitOfWork.BeginTransactionAsync();
             await _unitOfWork.ExpenseManage.AddAsync(model);
             await _unitOfWork.SaveChangesAsync();
+            await _limitNotificationService.NotifyLimitExceededAsync(model.UserId);
             _logger.LogInformation("Added Expense:{id}\nUser:{userId}", model.Id, model.UserId);
             return true;
         }

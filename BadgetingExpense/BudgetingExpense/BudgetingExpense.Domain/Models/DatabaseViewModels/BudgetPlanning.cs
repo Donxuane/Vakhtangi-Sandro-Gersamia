@@ -9,8 +9,10 @@ public class BudgetPlanning
     public double LimitAmount { get; set; }
     public int LimitPeriod { get; set; }
     public DateTime DateAdded { get; set; }
-    public double ExpenseAmount { get; set; }
+    public int CategoryId { get; set; }
+    public double TotalExpenses { get; set; }
+    public int ExpenseCount { get; set;  }
     public Currencies Currency { get; set; }
-    public DateTime Date { get; set; }
+ 
 
 }

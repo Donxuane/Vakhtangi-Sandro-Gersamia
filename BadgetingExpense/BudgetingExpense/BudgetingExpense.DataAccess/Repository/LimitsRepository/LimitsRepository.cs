@@ -35,8 +35,8 @@ public  class LimitsRepository : IBudgetLimitsRepository
 
     public async Task SetLimitAsync(Limits limits)
     {
-        var query = "INSERT INTO Limits (UserId,CategoryId,Expected,PeriodCategory,DateAdded)" +
-                    "VALUES (@UserId,@CategoryId,@Expected,@PeriodCategory,@DateAdded)";
+        var query = "INSERT INTO Limits (UserId,CategoryId,Amount,PeriodCategory,DateAdded)" +
+                    "VALUES (@UserId,@CategoryId,@Amount,@PeriodCategory,@DateAdded)";
         await _connection.ExecuteAsync(query, new
         {
             limits.UserId,

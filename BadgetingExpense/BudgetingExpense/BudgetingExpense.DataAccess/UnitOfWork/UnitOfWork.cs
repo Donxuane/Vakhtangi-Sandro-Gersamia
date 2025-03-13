@@ -20,6 +20,7 @@ public class UnitOfWork : IUnitOfWork
     private readonly IBudgetLimitsRepository _limits;
     private readonly IGetRepository _getRepository;
     private readonly IToggleNotificationsRepository _toggleNotifications;
+    private readonly IBudgetPlaningRepository _planing;
     private readonly DbConnection _connection;
     private DbTransaction? _transaction;
 
@@ -27,7 +28,7 @@ public class UnitOfWork : IUnitOfWork
         IManageFinancesRepository<Expense> expenseManage, IManageFinancesRepository<Income> incomeManage,
         IIncomeRecordsRepository incomeRecords, IBudgetLimitsRepository limits,
         IExpenseRecordsRepository expenseRecords,
-        IGetRepository getRepository,IToggleNotificationsRepository toggleNotifications)
+        IGetRepository getRepository,IToggleNotificationsRepository toggleNotifications, IBudgetPlaningRepository planing)
     {
         _expenseManage = expenseManage;
         _incomeManage = incomeManage;
@@ -38,6 +39,7 @@ public class UnitOfWork : IUnitOfWork
         _connection = connection;
         _getRepository = getRepository;
         _toggleNotifications = toggleNotifications;
+        _planing = planing;
     }
 
     public IAuthentication Authentication => _authentication;
@@ -89,6 +91,8 @@ public class UnitOfWork : IUnitOfWork
             return _toggleNotifications;
         } 
     }
+
+    public IBudgetPlaningRepository BudgetPlaningRepository =>_planing;
 
 
     public async ValueTask DisposeAsync()
