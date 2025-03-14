@@ -65,7 +65,7 @@ Left Join Categories c on ex.CategoryId = c.Id where c.Type = 0;
 Go
 CREATE VIEW BudgetPlaning AS
 SELECT 
-l.Id,
+    l.Id,
     l.UserId,
     l.Amount AS limitAmount,
     l.PeriodCategory AS LimitPeriod,
