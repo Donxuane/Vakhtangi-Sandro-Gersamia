@@ -1,9 +1,6 @@
 ﻿using Serilog.Events;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
-using Serilog.Extensions.Logging;
-using Serilog.Data;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace BudgetingExpense.Api.Configuration;
 
