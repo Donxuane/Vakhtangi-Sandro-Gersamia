@@ -6,7 +6,8 @@ using BudgetingExpenses.Service.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
-builder.Services.AddHostedService<ConfigureDatabase>();
+builder.Services.AddHostedService<ConfigureDatabase>()
+    .AddILoggerConfiguration();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerAuthorization();

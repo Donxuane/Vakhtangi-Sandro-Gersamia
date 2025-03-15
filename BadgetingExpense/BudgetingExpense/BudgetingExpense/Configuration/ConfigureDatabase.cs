@@ -54,22 +54,21 @@ public class ConfigureDatabase : IHostedService
             {
                 connection.Open();
                 DbTransaction transaction = connection.BeginTransaction();
-                try
+
+                var queries = GetDatabaseQueries();
+                if (queries != null && queries.Count != 0)
                 {
-                    var queries = GetDatabaseQueries();
-                    if (queries != null && queries.Count != 0)
+                    foreach (var query in queries)
                     {
-                        foreach (var query in queries)
+                        if (query != null)
                         {
-                            if (query != null)
-                            {
-                                connection.Execute(query, null, transaction);
-                            }
+                            connection.Execute(query, null, transaction);
                         }
-                        transaction.Commit();
                     }
+                    transaction.Commit();
                 }
-                }
+            }
+        }
         catch(Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
@@ -83,10 +82,16 @@ public class ConfigureDatabase : IHostedService
             List<string?> queries = [];
             var tables = new GetSqlData("TableQueries").GetData();
             queries.Add(tables);
-            queries.Add(view);
-            queries.Add(view1);
-            queries.Add(view2);
-
+            var views = new GetSqlData("Views").GetData();
+            
+            if (views != null)
+            {
+                var viewQueries = views.Split("Go", StringSplitOptions.RemoveEmptyEntries);
+                foreach(var query in viewQueries)
+                {
+                    queries.Add(query);
+                }
+            }
             return queries;
         }
         catch(Exception ex)

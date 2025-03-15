@@ -18,6 +18,7 @@
     <None Remove="SqlQueries\ExpenseView.sql" />
     <None Remove="SqlQueries\IncomeView.sql" />
     <None Remove="SqlQueries\TableQueries.sql" />
+    <None Remove="SqlQueries\Views.sql" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SqlQueries\BudgetPlanningView.sql" />
@@ -26,6 +27,7 @@
     <EmbeddedResource Include="SqlQueries\TableQueries.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="SqlQueries\Views.sql" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.66" />
