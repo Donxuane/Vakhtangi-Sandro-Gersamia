@@ -8,7 +8,6 @@ public static class ConfigureILogger
 {
     public static void AddILoggerConfiguration(this IServiceCollection services)
     {
-        services.AddLogging();
         Log.Logger = new LoggerConfiguration()
             .WriteTo.Console(theme: SystemConsoleTheme.Colored)
             .WriteTo.File("Logs/ErrorLogs.log", restrictedToMinimumLevel: LogEventLevel.Error)

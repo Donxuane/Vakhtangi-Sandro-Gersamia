@@ -69,13 +69,7 @@ public class ConfigureDatabase : IHostedService
                         transaction.Commit();
                     }
                 }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    _logger.LogError("Exception ex:{ex}", ex.Message);
                 }
-            }
-        }
         catch(Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
@@ -88,9 +82,6 @@ public class ConfigureDatabase : IHostedService
         {
             List<string?> queries = [];
             var tables = new GetSqlData("TableQueries").GetData();
-            var view = new GetSqlData("BudgetPlanningView").GetData();
-            var view1 = new GetSqlData("ExpenseView").GetData();
-            var view2 = new GetSqlData("IncomeView").GetData();
             queries.Add(tables);
             queries.Add(view);
             queries.Add(view1);
