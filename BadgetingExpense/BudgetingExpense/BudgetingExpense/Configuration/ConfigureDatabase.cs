@@ -1,4 +1,5 @@
-﻿using BudgetingExpense.DataAccess.Repository.Identity;
+﻿using BudgetingExpense.api.Configuration;
+using BudgetingExpense.DataAccess.Repository.Identity;
 using BudgetingExpense.DataAccess.SqlQueries;
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -32,10 +33,16 @@ public class ConfigureDatabase : IHostedService
                 _logger.LogInformation("Database Queries Execution Started");
                 AddDatabaseContentAccordingly();
                 _logger.LogInformation("Database Setup Finished!");
+
             }
             else
             {
                 _logger.LogInformation("Database Already Exists!");
+            }
+            var seedData = scope.ServiceProvider.GetRequiredService<ConfigureSeeding>();
+            if (seedData != null)
+            {
+                await seedData.SeedRoles();
             }
         }
     }
@@ -100,4 +107,5 @@ public class ConfigureDatabase : IHostedService
             return null;
         }
     }
+    
 }
