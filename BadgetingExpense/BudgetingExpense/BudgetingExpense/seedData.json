@@ -10,7 +10,13 @@
       "Email": "sandrogersamia77@gmail.com",
       "Password": "1234567",
       "RegisterDate": "19 june 2005"
-
+    },
+    {
+      "Name": "Vakhtangi",
+      "Surname": "Chitashvili",
+      "Email": "vaxtangichitashvili@gmail.com",
+      "Password": "1234567",
+      "RegisterDate": "12 february 2004"
     }
   ],
 
@@ -32,6 +38,34 @@
     {
       "Currency": 1,
       "Amount": 1500,
+      "CategoryId": 3,
+      "Date": "1 january 2025",
+      "UserId": "null"
+    },
+    {
+      "Currency": 0,
+      "Amount": 100.24,
+      "CategoryId": 1,
+      "Date": "1 january 2025",
+      "UserId": "null"
+    },
+    {
+      "Currency": 0,
+      "Amount": 500,
+      "CategoryId": 1,
+      "Date": "1 february 2025",
+      "UserId": "null"
+    },
+    {
+      "Currency": 0,
+      "Amount": 1500,
+      "CategoryId": 2,
+      "Date": "1 january 2025",
+      "UserId": "null"
+    },
+    {
+      "Currency": 1,
+      "Amount": 400,
       "CategoryId": 3,
       "Date": "1 january 2025",
       "UserId": "null"
@@ -57,6 +91,34 @@
       "Amount": 500,
       "CategoryId": 6,
       "Date": "14 february 2025",
+      "UserId": "null"
+    },
+    {
+      "Currency": 0,
+      "Amount": 150.56,
+      "CategoryId": 5,
+      "Date": "14 february 2025",
+      "UserId": "null"
+    },
+    {
+      "Currency": 0,
+      "Amount": 150.56,
+      "CategoryId": 4,
+      "Date": "24 february 2025",
+      "UserId": "null"
+    },
+    {
+      "Currency": 0,
+      "Amount": 15.56,
+      "CategoryId": 5,
+      "Date": "25 february 2025",
+      "UserId": "null"
+    },
+    {
+      "Currency": 1,
+      "Amount": 78,
+      "CategoryId": 6,
+      "Date": "14 march 2025",
       "UserId": "null"
     }
   ],
@@ -85,14 +147,21 @@
       "Name": "Car",
       "Type": "0"
     }
-  ]
+  ],
   "Limits": [
     {
       "UserId": "null",
       "CategoryId": 4,
       "Amount": 400,
       "PeriodCategory": 1,
-      "DateAdded" :"23 february 2025"
+      "DateAdded": "23 february 2025"
+    },
+    {
+      "UserId": "null",
+      "CategoryId": 5,
+      "Amount": 150,
+      "PeriodCategory": 1,
+      "DateAdded": "10 february 2025"
     }
   ]
 
