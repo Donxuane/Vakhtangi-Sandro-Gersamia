@@ -19,7 +19,7 @@ public class LimitsService : ILimitsManageService
         try
         {
             await _unitOfWork.BeginTransactionAsync();
-            await _unitOfWork.LimitsRepository.SetLimitAsync(limits);
+            await _unitOfWork.LimitsRepository.AddLimitAsync(limits);
             await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Limit Set To Category:{category}, User:{userId}", limits.CategoryId, limits.UserId);
             return true;

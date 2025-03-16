@@ -23,7 +23,8 @@ public class ConfigureDatabase : IHostedService
     }
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        using (var scope = _scopeFactory.CreateScope())
+        var scope = _scopeFactory.CreateScope();
+        try
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             if (!await dbContext.Database.CanConnectAsync(cancellationToken))
@@ -33,16 +34,27 @@ public class ConfigureDatabase : IHostedService
                 _logger.LogInformation("Database Queries Execution Started");
                 AddDatabaseContentAccordingly();
                 _logger.LogInformation("Database Setup Finished!");
-
+                var seedData = scope.ServiceProvider.GetRequiredService<ConfigureSeeding>();
+                if (seedData != null)
+                {
+                    await seedData.SeedRoles();
+                    await seedData.SeedData();
+                }
             }
             else
             {
                 _logger.LogInformation("Database Already Exists!");
             }
-            var seedData = scope.ServiceProvider.GetRequiredService<ConfigureSeeding>();
-            if (seedData != null)
+        }
+        finally
+        {
+            if (scope is IAsyncDisposable asyncDisposable)
             {
-                await seedData.SeedRoles();
+                await asyncDisposable.DisposeAsync();
+            }
+            else
+            {
+                scope.Dispose();
             }
         }
     }

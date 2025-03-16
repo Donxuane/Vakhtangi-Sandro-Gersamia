@@ -27,13 +27,13 @@ public  class LimitsRepository : IBudgetLimitsRepository
 
     public async Task UpdateLimitsAsync(Limits limits)
     {
-        var query = @"UPDATE Limits SET CategoryId = @CategoryId,Expected = @Expected,PeriodCategory = @PeriodCategory WHERE UserId =@UserId AND Id=@Id";
+        var query = @"UPDATE Limits SET CategoryId = @CategoryId,Amount = @Amount,PeriodCategory = @PeriodCategory WHERE UserId =@UserId AND Id=@Id";
         await _connection.ExecuteAsync(query, new { limits.CategoryId, limits.Amount, limits.PeriodCategory,limits.UserId,limits.Id },
             _transaction);
 
     }
 
-    public async Task SetLimitAsync(Limits limits)
+    public async Task AddLimitAsync(Limits limits)
     {
         var query = "INSERT INTO Limits (UserId,CategoryId,Amount,PeriodCategory,DateAdded)" +
                     "VALUES (@UserId,@CategoryId,@Amount,@PeriodCategory,@DateAdded)";

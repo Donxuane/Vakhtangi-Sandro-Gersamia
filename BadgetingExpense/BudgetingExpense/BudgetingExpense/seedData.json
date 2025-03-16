@@ -3,8 +3,9 @@
     "Admin",
     "User"
   ],
-  "User": [
+  "Users": [
     {
+      "Id": "dasdnfkds",
       "Name": "Sandro",
       "Surname": "Gersamia",
       "Email": "sandrogersamia77@gmail.com",
@@ -12,6 +13,7 @@
       "RegisterDate": "19 june 2005"
     },
     {
+      "Id": "dasdnfkdssadnsakd",
       "Name": "Vakhtangi",
       "Surname": "Chitashvili",
       "Email": "vaxtangichitashvili@gmail.com",
@@ -71,7 +73,7 @@
       "UserId": "null"
     }
   ],
-  "Expense": [
+  "Expenses": [
     {
       "Currency": 0,
       "Amount": 600,

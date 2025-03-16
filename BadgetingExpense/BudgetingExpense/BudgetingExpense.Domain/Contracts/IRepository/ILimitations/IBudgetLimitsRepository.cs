@@ -5,7 +5,7 @@ namespace BudgetingExpense.Domain.Contracts.IRepository.ILimitations;
 
 public interface IBudgetLimitsRepository
 {
-    public Task SetLimitAsync(Limits limits);
+    public Task AddLimitAsync(Limits limits);
     public void SetTransaction(DbTransaction transaction);
     public Task DeleteLimitsAsync(int id);
     public Task UpdateLimitsAsync(Limits limits);
