@@ -99,7 +99,7 @@ public class ConfigureDatabase : IHostedService
         try
         {
             List<string?> queries = [];
-            var tables = new GetSqlData("TableQueries").GetData();
+            var tables = new GetSqlData("Tables").GetData();
             queries.Add(tables);
             var views = new GetSqlData("Views").GetData();
             

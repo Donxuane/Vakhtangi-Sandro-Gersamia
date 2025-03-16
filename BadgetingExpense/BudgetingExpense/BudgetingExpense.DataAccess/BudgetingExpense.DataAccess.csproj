@@ -14,17 +14,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="SqlQueries\BudgetPlanningView.sql" />
-    <None Remove="SqlQueries\ExpenseView.sql" />
-    <None Remove="SqlQueries\IncomeView.sql" />
-    <None Remove="SqlQueries\TableQueries.sql" />
     <None Remove="SqlQueries\Views.sql" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SqlQueries\BudgetPlanningView.sql" />
-    <EmbeddedResource Include="SqlQueries\ExpenseView.sql" />
-    <EmbeddedResource Include="SqlQueries\IncomeView.sql" />
-    <EmbeddedResource Include="SqlQueries\TableQueries.sql">
+    <EmbeddedResource Include="SqlQueries\Tables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="SqlQueries\Views.sql" />
