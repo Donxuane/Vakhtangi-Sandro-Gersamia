@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BudgetingExpense.Domain.Contracts.IRepository.IGet;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using Dapper;
@@ -26,4 +23,3 @@ namespace BudgetingExpense.DataAccess.Repository.Get
             return await _connection.QueryAsync<BudgetPlanning>(query, new { userId });
         }
     }
-}
