@@ -12,87 +12,103 @@ namespace BudgetingExpense.DataAccess.UnitOfWork;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly IAuthentication _authentication;
-    private readonly IManageFinancesRepository<Expense> _expenseManage;
-    private readonly IManageFinancesRepository<Income> _incomeManage;
-    private readonly IIncomeRecordsRepository _incomeRecords;
-    private readonly IExpenseRecordsRepository _expenseRecords;
-    private readonly IBudgetLimitsRepository _limits;
-    private readonly IGetRepository _getRepository;
-    private readonly IToggleNotificationsRepository _toggleNotifications;
-    private readonly IBudgetPlaningRepository _planing;
+    private readonly Func<IAuthentication> _authenticationFactory;
+    private readonly Func<IManageFinancesRepository<Expense>> _expenseManageFactory;
+    private readonly Func<IManageFinancesRepository<Income>> _incomeManageFactory;
+    private readonly Func<IIncomeRecordsRepository> _incomeRecordsFactory;
+    private readonly Func<IExpenseRecordsRepository> _expenseRecordsFactory;
+    private readonly Func<IBudgetLimitsRepository> _limitsFactory;
+    private readonly Func<IGetRepository> _getRepositoryFactory;
+    private readonly Func<IToggleNotificationsRepository> _toggleNotificationsFactory;
+    private readonly Func<IBudgetPlaningRepository> _planingFactory;
+
+    private IAuthentication? _authentication;
+    private IManageFinancesRepository<Expense>? _expenseManage;
+    private IManageFinancesRepository<Income>? _incomeManage;
+    private IIncomeRecordsRepository? _incomeRecords;
+    private IExpenseRecordsRepository? _expenseRecords;
+    private IBudgetLimitsRepository? _limits;
+    private IGetRepository? _getRepository;
+    private IToggleNotificationsRepository? _toggleNotifications;
+    private IBudgetPlaningRepository? _planing;
+
     private readonly DbConnection _connection;
     private DbTransaction? _transaction;
 
-    public UnitOfWork(IAuthentication authentication, DbConnection connection,
-        IManageFinancesRepository<Expense> expenseManage, IManageFinancesRepository<Income> incomeManage,
-        IIncomeRecordsRepository incomeRecords, IBudgetLimitsRepository limits,
-        IExpenseRecordsRepository expenseRecords,
-        IGetRepository getRepository,IToggleNotificationsRepository toggleNotifications, IBudgetPlaningRepository planing)
+    public UnitOfWork(Func<IAuthentication> authentication, DbConnection connection,
+        Func<IManageFinancesRepository<Expense>> expenseManage, Func<IManageFinancesRepository<Income>> incomeManage,
+        Func<IIncomeRecordsRepository> incomeRecords, Func<IBudgetLimitsRepository> limits,
+        Func<IExpenseRecordsRepository> expenseRecords,
+        Func<IGetRepository> getRepository,Func<IToggleNotificationsRepository> toggleNotifications,
+        Func<IBudgetPlaningRepository> planing)
     {
-        _expenseManage = expenseManage;
-        _incomeManage = incomeManage;
-        _authentication = authentication;
-        _incomeRecords = incomeRecords;
-        _limits = limits;
-        _expenseRecords = expenseRecords;
+        _expenseManageFactory = expenseManage;
+        _incomeManageFactory = incomeManage;
+        _authenticationFactory = authentication;
+        _incomeRecordsFactory = incomeRecords;
+        _limitsFactory = limits;
+        _expenseRecordsFactory = expenseRecords;
         _connection = connection;
-        _getRepository = getRepository;
-        _toggleNotifications = toggleNotifications;
-        _planing = planing;
+        _getRepositoryFactory = getRepository;
+        _toggleNotificationsFactory = toggleNotifications;
+        _planingFactory = planing;
     }
 
-    public IAuthentication Authentication => _authentication;
+    public IAuthentication Authentication => _authentication??=_authenticationFactory();
 
-    public IManageFinancesRepository<Expense> ExpenseManage 
-    {
-        get 
-        {
-            if (_transaction != null)
-            {
-                _expenseManage.SetTransaction(_transaction);
-            }
-            return _expenseManage;
-        } 
-    }
-    public IManageFinancesRepository<Income> IncomeManage 
+    public IManageFinancesRepository<Expense> ExpenseManage
     {
         get
         {
             if (_transaction != null)
             {
+                _expenseManage ??= _expenseManageFactory();
+                _expenseManage.SetTransaction(_transaction);
+            }
+            return _expenseManage??=_expenseManageFactory();
+        }
+    }
+    public IManageFinancesRepository<Income> IncomeManage
+    {
+        get
+        {
+            if (_transaction != null)
+            {
+                _incomeManage ??= _incomeManageFactory();
                 _incomeManage.SetTransaction(_transaction);
             }
-            return _incomeManage;
-        } 
+            return _incomeManage??=_incomeManageFactory();
+        }
     }
 
-    public IIncomeRecordsRepository IncomeRecords => _incomeRecords;
+    public IIncomeRecordsRepository IncomeRecords => _incomeRecords??=_incomeRecordsFactory();
 
     public IBudgetLimitsRepository LimitsRepository { get
         {
             if (_transaction != null)
             {
+                _limits ??= _limitsFactory();
                 _limits.SetTransaction(_transaction);
             }
-            return _limits;
+            return _limits??=_limitsFactory();
         }
     }
 
-    public IExpenseRecordsRepository ExpenseRecords => _expenseRecords;
+    public IExpenseRecordsRepository ExpenseRecords => _expenseRecords??=_expenseRecordsFactory();
 
-    public IGetRepository GetRepository => _getRepository;
+    public IGetRepository GetRepository => _getRepository??=_getRepositoryFactory();
     public IToggleNotificationsRepository ToggleNotificationsRepository { get
         {
             if (_transaction != null)
             {
+                _toggleNotifications ??= _toggleNotificationsFactory();
                 _toggleNotifications.SetTransaction(_transaction);
             }
-            return _toggleNotifications;
+            return _toggleNotifications??=_toggleNotificationsFactory();
         } 
     }
 
-    public IBudgetPlaningRepository BudgetPlaningRepository =>_planing;
+    public IBudgetPlaningRepository BudgetPlaningRepository =>_planing??=_planingFactory();
 
 
     public async ValueTask DisposeAsync()
