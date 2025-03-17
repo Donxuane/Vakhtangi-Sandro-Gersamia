@@ -32,14 +32,14 @@ public static class ConfigureRepositoryInstances
 
         services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 
-        services.AddScoped<Func<IAuthentication>>(x => () => x.GetRequiredService<IAuthentication>());
-        services.AddScoped<Func<IManageFinancesRepository<Expense>>>(x=>()=>x.GetRequiredService<IManageFinancesRepository<Expense>>());
-        services.AddScoped<Func<IManageFinancesRepository<Income>>>(x => () => x.GetRequiredService<IManageFinancesRepository<Income>>());
-        services.AddScoped<Func<IIncomeRecordsRepository>>(x=>()=>x.GetRequiredService<IIncomeRecordsRepository>());
-        services.AddScoped<Func<IExpenseRecordsRepository>>(x=>()=>x.GetRequiredService<IExpenseRecordsRepository>());
-        services.AddScoped<Func<IBudgetLimitsRepository>>(x => () => x.GetRequiredService<IBudgetLimitsRepository>());
-        services.AddScoped<Func<IGetRepository>>(x => () => x.GetRequiredService<IGetRepository>());
-        services.AddScoped<Func<IToggleNotificationsRepository>>(x => () => x.GetRequiredService<IToggleNotificationsRepository>());
-        services.AddScoped<Func<IBudgetPlaningRepository>>(x => () => x.GetRequiredService<IBudgetPlaningRepository>());
+        services.AddScoped<Func<IAuthentication>>(x => x.GetRequiredService<IAuthentication>);
+        services.AddScoped<Func<IManageFinancesRepository<Expense>>>(x=>x.GetRequiredService<IManageFinancesRepository<Expense>>);
+        services.AddScoped<Func<IManageFinancesRepository<Income>>>(x => x.GetRequiredService<IManageFinancesRepository<Income>>);
+        services.AddScoped<Func<IIncomeRecordsRepository>>(x=>x.GetRequiredService<IIncomeRecordsRepository>);
+        services.AddScoped<Func<IExpenseRecordsRepository>>(x=>x.GetRequiredService<IExpenseRecordsRepository>);
+        services.AddScoped<Func<IBudgetLimitsRepository>>(x => x.GetRequiredService<IBudgetLimitsRepository>);
+        services.AddScoped<Func<IGetRepository>>(x => x.GetRequiredService<IGetRepository>);
+        services.AddScoped<Func<IToggleNotificationsRepository>>(x => x.GetRequiredService<IToggleNotificationsRepository>);
+        services.AddScoped<Func<IBudgetPlaningRepository>>(x => x.GetRequiredService<IBudgetPlaningRepository>);
     }
 }

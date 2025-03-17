@@ -25,6 +25,7 @@ public class ExpenseManageService : IExpenseManageService
             var category = new Category { Name = categoryName };
             await _unitOfWork.BeginTransactionAsync();
             var result = await _unitOfWork.ExpenseManage.AddCategoryAsync(category);
+          
             await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Added Expense Category:{name}", categoryName);
             return result;

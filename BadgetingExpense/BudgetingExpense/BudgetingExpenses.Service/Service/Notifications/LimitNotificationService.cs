@@ -37,7 +37,7 @@ namespace BudgetingExpenses.Service.Service.Notifications
             if (enabledOrNot)
             {
                 var getBudgetPlaningView = await _unitOfWork.BudgetPlaningRepository.GetBudgetPlaningViewAsync(userId);
-                var (subject, templateMessage) = await GetEmail();
+                var (subject, templateMessage) = await GetEmailPattern();
 
                 foreach (var budgetItem in getBudgetPlaningView)
                 {
@@ -72,14 +72,18 @@ namespace BudgetingExpenses.Service.Service.Notifications
             return false;
         }
 
-        private async Task<(string subject,string message)> GetEmail()
+        private async Task<(string? subject,string? message)> GetEmailPattern()
         {
+            
             try
             {
-                var email = _configuration.GetSection("LimitEmail");
-                string? subject = email["Subject"].ToString();
-                string? message = email["Message"].ToString();
-                return (subject, message);
+                return await Task.Run(() =>
+                {
+                    var email = _configuration.GetSection("LimitEmail");
+                    string? subject = email["Subject"].ToString();
+                    string? message = email["Message"].ToString();
+                    return (subject, message);
+                });
             }
             catch (Exception ex)
             {
