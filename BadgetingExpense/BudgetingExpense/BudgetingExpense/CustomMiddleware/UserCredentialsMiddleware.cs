@@ -30,8 +30,6 @@ public class UserCredentialsMiddleware
                 context.Items["UserId"] = userId;
                 await _next(context);
             }
-            context.Response.StatusCode = 401;
-        }
         catch(Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
