@@ -22,7 +22,7 @@ public class IncomeReportsController : ControllerBase
     }
 
     [HttpGet("IncomeRecordsBasedCurrency")]
-    public async Task<IActionResult> IncomeRecordsBasedCurrency([FromQuery]GetRecordsCurrencyDto model)
+    public async Task<IActionResult> IncomeRecordsBasedCurrencyAsync([FromQuery]GetRecordsCurrencyDto model)
     {
         var record = new GetRecordCurrency
         {
@@ -46,7 +46,7 @@ public class IncomeReportsController : ControllerBase
     }
 
     [HttpPost("IncomeRecordsBasedCategory")]
-    public async Task<IActionResult> IncomeRecordsBasedCategory([FromForm] GetRecordsCategoryDto model)
+    public async Task<IActionResult> IncomeRecordsBasedCategoryAsync([FromForm] GetRecordsCategoryDto model)
     {
         var record = new GetRecordCategory
         {
@@ -70,7 +70,7 @@ public class IncomeReportsController : ControllerBase
     }
 
     [HttpGet("AllIncomeRecords")]
-    public async Task<IActionResult> AllIncomeRecords()
+    public async Task<IActionResult> IncomeRecordsAsync()
     {
         var result = await _service.GetAllRecordsAsync(HttpContext.Items["UserId"].ToString());
         if(result != null && result.Any())
@@ -87,7 +87,7 @@ public class IncomeReportsController : ControllerBase
         return BadRequest("Records Not Found");
     }
     [HttpGet("IncomeForecast")]
-    public async Task<IActionResult> IncomeForecast()
+    public async Task<IActionResult> IncomeForecastAsync()
     {
         var result = await _forecastService.GetForecastCategoriesAsync(HttpContext.Items["UserId"].ToString());
         if (result != null)

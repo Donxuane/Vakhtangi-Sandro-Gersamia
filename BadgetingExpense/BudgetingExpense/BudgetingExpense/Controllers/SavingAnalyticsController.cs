@@ -17,7 +17,7 @@ public class SavingAnalyticsController :ControllerBase
         _analyticsService = analyticsService;
     }
     [HttpGet("savingAnalyticByPeriod")]
-    public async Task<IActionResult> SavingAnalyticByPeriod(int month)
+    public async Task<IActionResult> SavingAnalyticByPeriodAsync(int month)
     {
         var value = await _analyticsService.SavingsAnalyticsAsync(HttpContext.Items["UserId"].ToString(), month);
         if (value != null && value.Income > 0)

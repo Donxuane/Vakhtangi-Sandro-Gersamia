@@ -9,7 +9,7 @@ namespace BudgetingExpense.api.Controllers;
 
 [Authorize(Roles = "User")]
 [ApiController]
-[Route("Reports/[controller]")]
+[Route("api/[controller]")]
 public class ExpenseReportsController : ControllerBase
 {
     private readonly IExpenseReportsService _expenseRecordsService;
@@ -21,7 +21,7 @@ public class ExpenseReportsController : ControllerBase
     }
 
     [HttpGet("TopExpenses")]
-    public async Task<IActionResult> GetMostExpenseRecords(int period)
+    public async Task<IActionResult> GetMostExpenseRecordsAsync(int period)
     {
         var model = new GetRecordsPeriod
         {
@@ -43,7 +43,7 @@ public class ExpenseReportsController : ControllerBase
         return BadRequest("Records Not Found");
     }
     [HttpGet("ExpensesBasedCategoryPeriod")]
-    public async Task<IActionResult> GetExpensesBasedCategoryPeriod([FromQuery]GetRecordsCategoryDto model)
+    public async Task<IActionResult> GetExpensesBasedCategoryPeriodAsync([FromQuery]GetRecordsCategoryDto model)
     {
         var categoryModel = new GetRecordCategory
         {
@@ -66,7 +66,7 @@ public class ExpenseReportsController : ControllerBase
         return BadRequest("Records Not Found");
     }
     [HttpGet("ExpensesBasedCurrencyPeriod")]
-    public async Task<IActionResult> GetExpensesBasedCurrencyPeriod([FromQuery]GetRecordsCurrencyDto model)
+    public async Task<IActionResult> GetExpensesBasedCurrencyPeriodAsync([FromQuery]GetRecordsCurrencyDto model)
     {
         var currencyModel = new GetRecordCurrency
         {
@@ -89,7 +89,7 @@ public class ExpenseReportsController : ControllerBase
         return BadRequest("No Records Found");
     }
     [HttpGet("AllExpenseRecords")]
-    public async Task<IActionResult> GetAllExpenseRecords()
+    public async Task<IActionResult> GetAllExpenseRecordsAsync()
     {
         var records = await _expenseRecordsService.GetAllRecordsAsync(HttpContext.Items["UserId"].ToString());
         if (records != null && records.Any())
@@ -107,7 +107,7 @@ public class ExpenseReportsController : ControllerBase
     }
 
     [HttpGet("expenseForecast")]
-    public async Task<IActionResult> ExpenseForecast()
+    public async Task<IActionResult> ExpenseForecastAsync()
     {
         var result = await _expenseForecastService.GetForecastCategoriesAsync(HttpContext.Items["UserId"].ToString());
         if (result.Any())

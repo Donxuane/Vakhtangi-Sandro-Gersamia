@@ -17,11 +17,10 @@ public class ToggleNotificationsController : ControllerBase
     }
 
     [HttpPut("toggleNotifications")]
-    public async Task<IActionResult> toggleNotification(bool notification)
+    public async Task<IActionResult> ToggleNotificationAsync(bool notification)
     {
-        var result =
-             await _toggleNotificationsService.ToggleNotificationsAsync(HttpContext.Items["UserId"].ToString(),
-                notification);
+        var result = await _toggleNotificationsService.ToggleNotificationsAsync(HttpContext.Items["UserId"].ToString(),
+            notification);
         if (result)
         {
             return Ok("notification alert updated");

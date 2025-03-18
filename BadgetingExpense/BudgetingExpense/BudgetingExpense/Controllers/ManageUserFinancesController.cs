@@ -21,7 +21,7 @@ public class ManageUserFinancesController : ControllerBase
     }
 
     [HttpPost("AddIncomeCategory")]
-    public async Task<IActionResult> AddIncomeCategory(string category)
+    public async Task<IActionResult> AddIncomeCategoryAsync(string category)
     {
         var result = await _incomeService.AddIncomeCategoryAsync(category);
         if (result > 0)
@@ -32,7 +32,7 @@ public class ManageUserFinancesController : ControllerBase
     }
 
     [HttpPost("AddIncome")]
-    public async Task<IActionResult> AddIncome([FromForm] IncomeDto dtoModel)
+    public async Task<IActionResult> AddIncomeAsync([FromForm] IncomeDto dtoModel)
     {
         string userId = HttpContext.Items["UserId"].ToString();
         var model = new Income
@@ -52,7 +52,7 @@ public class ManageUserFinancesController : ControllerBase
     }
 
     [HttpDelete("Income")]
-    public async Task<IActionResult> DeleteIncome(int incomeTypeId)
+    public async Task<IActionResult> DeleteIncomeAsync(int incomeTypeId)
     {
         var result = await _incomeService.DeleteIncomeAsync(incomeTypeId);
         if (result == true)
@@ -63,7 +63,7 @@ public class ManageUserFinancesController : ControllerBase
     }
 
     [HttpPut("UpdateIncome")]
-    public async Task<IActionResult> UpdateIncome([FromForm]UpdateIncomeDto model)
+    public async Task<IActionResult> UpdateIncomeAsync([FromForm]UpdateIncomeDto model)
     {
         var income = new Income()
         {
@@ -83,7 +83,7 @@ public class ManageUserFinancesController : ControllerBase
     }
    
     [HttpPost("AddExpenses")]
-    public async Task<IActionResult> AddExepenses([FromForm]ExpenseDto expenseDto)
+    public async Task<IActionResult> AddExepensesAsync([FromForm]ExpenseDto expenseDto)
     {
         var expense = new Expense
         {
@@ -102,7 +102,7 @@ public class ManageUserFinancesController : ControllerBase
     }
 
     [HttpDelete("Expenses")]
-    public async Task<IActionResult> DeleteExpenses(int expenseId)
+    public async Task<IActionResult> DeleteExpensesAsync(int expenseId)
     {
         var result = await _expenseManageService.DeleteExpenseAsync(expenseId);
         if (result)
@@ -133,7 +133,7 @@ public class ManageUserFinancesController : ControllerBase
     }
 
     [HttpPost("AddExpenseCategory")]
-    public async Task<IActionResult> AddExpenseCategory(string category)
+    public async Task<IActionResult> AddExpenseCategoryAsync(string category)
     {
         var result = await _expenseManageService.AddExpenseCategoryAsync(category);
         if (result > 0)

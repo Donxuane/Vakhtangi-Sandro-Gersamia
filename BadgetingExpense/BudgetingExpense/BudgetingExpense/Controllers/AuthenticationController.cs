@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BudgetingExpense.api.Controllers;
 
 [ApiController]
-[Route("Auth/[controller]")]
+[Route("api/[controller]")]
 public class AuthenticationController : ControllerBase
 {
     private readonly IAuthenticationService _auth;

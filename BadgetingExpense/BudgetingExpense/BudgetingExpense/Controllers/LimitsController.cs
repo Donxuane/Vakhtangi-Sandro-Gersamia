@@ -18,7 +18,7 @@ public class LimitsController : ControllerBase
         _limitsManageService = limitsManageService;
     }
     [HttpPost("AddLimit")]
-    public async Task<IActionResult> AddLimit([FromForm]LimitsDto limitDto)
+    public async Task<IActionResult> AddLimitAsync([FromForm]LimitsDto limitDto)
     {
         var limits = new Limits()
         {
@@ -37,7 +37,7 @@ public class LimitsController : ControllerBase
     }
 
     [HttpDelete("DeleteLimit")]
-    public async Task<IActionResult> DeleteLimit(int limitId)
+    public async Task<IActionResult> DeleteLimitAsync(int limitId)
     {
         var result = await _limitsManageService.DeleteLimitsAsync(limitId);
         if (result == true)
@@ -49,7 +49,7 @@ public class LimitsController : ControllerBase
     }
 
     [HttpPut("UpdateLimitsAsync")]
-    public async Task<IActionResult> UpdateLimit([FromForm]UpdateLimitDto updateLimitDto)
+    public async Task<IActionResult> UpdateLimitAsync([FromForm]UpdateLimitDto updateLimitDto)
     {
         var updateLimits = new Limits()
         {
