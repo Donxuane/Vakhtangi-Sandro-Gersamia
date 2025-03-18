@@ -1,5 +1,3 @@
-﻿using BudgetingExpense.api.ViewModels.ExpenseViewModel;
-using BudgetingExpense.api.ViewModels.IncomeViewModels;
 using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.DtoModels;
@@ -76,7 +74,6 @@ public class ManageUserFinancesController : ControllerBase
             Date = model.Income.Date,
             UserId = HttpContext.Items["UserId"].ToString()
         };
-        var categoryUpdated = await _incomeService.UpdateIncomeCategoryAsync(model.Category);
         var incomeUpdated = await _incomeService.UpdateIncomeAsync(income);
         if (incomeUpdated && categoryUpdated)
         {
@@ -127,7 +124,6 @@ public class ManageUserFinancesController : ControllerBase
             Date = updateExpenseViewModel.expenses.Date,
             UserId = HttpContext.Items["UserId"].ToString()
         };
-        var category = await _expenseManageService.UpdateCategoryAsync(updateExpenseViewModel.category);
         var result = await _expenseManageService.UpdateExpenseAsync(expenses);
         if (result && category)
         {

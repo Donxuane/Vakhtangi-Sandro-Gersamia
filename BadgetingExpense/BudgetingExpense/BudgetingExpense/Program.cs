@@ -21,13 +21,6 @@ builder.Services.AddScoped<ConfigureSeeding>();
 
 
 var app = builder.Build();
-
-//using (var scope = app.Services.CreateScope())
-//{
-//    var roles = scope.ServiceProvider.GetRequiredService<ConfigureRoles>();
-//    roles.RoleCeeder().GetAwaiter().GetResult();
-//}
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

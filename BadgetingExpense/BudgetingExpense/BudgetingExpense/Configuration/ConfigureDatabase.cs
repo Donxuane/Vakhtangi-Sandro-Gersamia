@@ -102,7 +102,6 @@ public class ConfigureDatabase : IHostedService
             var tables = new GetSqlData("Tables").GetData();
             queries.Add(tables);
             var views = new GetSqlData("Views").GetData();
-            
             if (views != null)
             {
                 var viewQueries = views.Split("Go", StringSplitOptions.RemoveEmptyEntries);
@@ -119,5 +118,4 @@ public class ConfigureDatabase : IHostedService
             return null;
         }
     }
-    
 }
