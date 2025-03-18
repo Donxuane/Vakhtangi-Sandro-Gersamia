@@ -1,4 +1,4 @@
-using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
+﻿using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.DtoModels;
 using Microsoft.AspNetCore.Authorization;
@@ -63,19 +63,19 @@ public class ManageUserFinancesController : ControllerBase
     }
 
     [HttpPut("UpdateIncome")]
-    public async Task<IActionResult> UpdateIncome([FromForm]UpdateIncomeViewModel model)
+    public async Task<IActionResult> UpdateIncome([FromForm]UpdateIncomeDto model)
     {
         var income = new Income()
         {
-            Id = model.Income.Id,
-            Amount = model.Income.Amount,
-            CategoryId = model.Income.CategoryId,
-            Currency = model.Income.Currency,
-            Date = model.Income.Date,
+            Id = model.Id,
+            Amount = model.Amount,
+            CategoryId = model.CategoryId,
+            Currency = model.Currency,
+            Date = model.Date,
             UserId = HttpContext.Items["UserId"].ToString()
         };
         var incomeUpdated = await _incomeService.UpdateIncomeAsync(income);
-        if (incomeUpdated && categoryUpdated)
+        if (incomeUpdated)
         {
             return Ok("Successfully Updated");
         }
@@ -113,19 +113,19 @@ public class ManageUserFinancesController : ControllerBase
     }
 
     [HttpPut("UpdateExpenses")]
-    public async Task<IActionResult> UpdateExpenses([FromForm]UpdateExpenseViewModel updateExpenseViewModel)
+    public async Task<IActionResult> UpdateExpensesAsyn([FromForm]UpdateExpenseDto model)
     {
         var expenses = new Expense()
         {
-            Id = updateExpenseViewModel.expenses.Id,
-            Currency = updateExpenseViewModel.expenses.Currency,
-            Amount = updateExpenseViewModel.expenses.Amount,
-            CategoryId = updateExpenseViewModel.expenses.CategoryId,
-            Date = updateExpenseViewModel.expenses.Date,
+            Id = model.Id,
+            Currency = model.Currency,
+            Amount = model.Amount,
+            CategoryId = model.CategoryId,
+            Date = model.Date,
             UserId = HttpContext.Items["UserId"].ToString()
         };
         var result = await _expenseManageService.UpdateExpenseAsync(expenses);
-        if (result && category)
+        if (result)
         {
             return Ok("Updated Successfully");
         }

@@ -6,4 +6,5 @@ public class UpdateLimitDto
     public int CategoryId { get; set; }
     public double Amount { get; set; }
     public int PeriodCategory { get; set; }
+    public DateTime StartupDate {  get; set; }
 }

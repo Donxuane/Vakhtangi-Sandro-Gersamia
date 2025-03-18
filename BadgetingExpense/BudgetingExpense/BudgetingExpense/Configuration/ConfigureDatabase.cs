@@ -110,6 +110,15 @@ public class ConfigureDatabase : IHostedService
                     queries.Add(query);
                 }
             }
+            var procedures = new GetSqlData("Procedures").GetData();
+            if (procedures != null)
+            {
+                var proceduresQueries = procedures.Split("Go",StringSplitOptions.RemoveEmptyEntries);
+                foreach(var query in queries)
+                {
+                    queries.Add(query);
+                }
+            }
             return queries;
         }
         catch(Exception ex)

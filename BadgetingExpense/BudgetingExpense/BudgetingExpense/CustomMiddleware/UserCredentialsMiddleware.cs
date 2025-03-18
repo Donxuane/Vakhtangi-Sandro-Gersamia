@@ -5,10 +5,12 @@ namespace BudgetingExpense.api.CustomMiddleware;
 public class UserCredentialsMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly ILogger<UserCredentialsMiddleware> _logger;
 
-    public UserCredentialsMiddleware(RequestDelegate next)
+    public UserCredentialsMiddleware(RequestDelegate next, ILogger<UserCredentialsMiddleware> logger)
     {
         _next = next;
+        _logger = logger;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -26,13 +28,13 @@ public class UserCredentialsMiddleware
             if (!string.IsNullOrEmpty(userId))
             {
                 context.Items["UserId"] = userId;
+                await _next(context);
             }
-            await _next(context);
+            context.Response.StatusCode = 401;
         }
         catch(Exception ex)
         {
-            context.Response.StatusCode = 500;
-            await context.Response.WriteAsJsonAsync(ex.Message);
+            _logger.LogError("Exception ex:{ex}", ex.Message);
         }
     } 
 }

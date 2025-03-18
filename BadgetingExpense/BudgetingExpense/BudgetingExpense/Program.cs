@@ -1,6 +1,7 @@
 using BudgetingExpense.api.Configuration;
 using BudgetingExpense.api.CustomMiddleware;
 using BudgetingExpense.Api.Configuration;
+using BudgetingExpense.Api.CustomMiddleware;
 using BudgetingExpense.DataAccess.Configuration;
 using BudgetingExpenses.Service.Configuration;
 
@@ -30,6 +31,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
+app.UseMiddleware<ExceptionLoggerMiddleware>();
 app.UseMiddleware<UserCredentialsMiddleware>();
 app.UseAuthorization();
 

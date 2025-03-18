@@ -49,7 +49,7 @@ public class LimitsController : ControllerBase
     }
 
     [HttpPut("UpdateLimitsAsync")]
-    public async Task<IActionResult> UpdateLimit(UpdateLimitDto updateLimitDto)
+    public async Task<IActionResult> UpdateLimit([FromForm]UpdateLimitDto updateLimitDto)
     {
         var updateLimits = new Limits()
         {
@@ -57,7 +57,7 @@ public class LimitsController : ControllerBase
             Amount = updateLimitDto.Amount,
             CategoryId = updateLimitDto.CategoryId,
             PeriodCategory = updateLimitDto.PeriodCategory,
-            DateAdded = DateTime.UtcNow,
+            DateAdded = updateLimitDto.StartupDate,
             UserId = HttpContext.Items["UserId"].ToString()
             
         };

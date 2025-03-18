@@ -27,9 +27,17 @@ public  class LimitsRepository : IBudgetLimitsRepository
 
     public async Task UpdateLimitsAsync(Limits limits)
     {
-        var query = @"UPDATE Limits SET CategoryId = @CategoryId,Amount = @Amount,PeriodCategory = @PeriodCategory WHERE UserId =@UserId AND Id=@Id";
-        await _connection.ExecuteAsync(query, new { limits.CategoryId, limits.Amount, limits.PeriodCategory,limits.UserId,limits.Id },
-            _transaction);
+        await _connection.ExecuteAsync("UpdateProcedure", new
+        {
+            TableName = "Limits",
+            limits.Amount,
+            limits.CategoryId,
+            Date = limits.DateAdded,
+            limits.PeriodCategory,
+            limits.Id,
+            limits.UserId
+        },
+        _transaction, commandType: System.Data.CommandType.StoredProcedure);
 
     }
 
@@ -44,6 +52,7 @@ public  class LimitsRepository : IBudgetLimitsRepository
             limits.Amount,
             limits.PeriodCategory,
             limits.DateAdded
-        },_transaction);
+        },
+        _transaction);
     }
 }
