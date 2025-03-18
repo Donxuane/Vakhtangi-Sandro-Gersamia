@@ -28,11 +28,13 @@ public class UserCredentialsMiddleware
             if (!string.IsNullOrEmpty(userId))
             {
                 context.Items["UserId"] = userId;
-                await _next(context);
             }
+            await _next(context);
+        }
         catch(Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
+            context.Response.StatusCode = 401;
         }
     } 
 }

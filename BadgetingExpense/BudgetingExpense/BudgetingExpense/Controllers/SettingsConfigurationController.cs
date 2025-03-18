@@ -7,11 +7,11 @@ namespace BudgetingExpense.Api.Controllers;
 [Authorize(Roles = "User")]
 [ApiController]
 [Route("notifications/[controller]")]
-public class ToggleNotificationsController : ControllerBase
+public class SettingsConfigurationController : ControllerBase
 {
     private readonly IToggleNotificationsService _toggleNotificationsService;
 
-    public ToggleNotificationsController(IToggleNotificationsService toggleNotificationsRepository)
+    public SettingsConfigurationController(IToggleNotificationsService toggleNotificationsRepository)
     {
         _toggleNotificationsService = toggleNotificationsRepository;
     }
