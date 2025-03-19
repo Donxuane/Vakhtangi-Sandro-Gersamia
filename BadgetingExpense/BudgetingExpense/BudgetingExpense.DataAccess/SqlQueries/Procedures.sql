@@ -25,3 +25,37 @@ BEGIN
              N'@Currency INT, @Amount DECIMAL(18,2), @CategoryId INT, @Date DATETIME, @PeriodCategory INT, @Id INT,@UserId NVARCHAR(450)',
              @Currency, @Amount, @CategoryId, @Date, @PeriodCategory, @Id, @UserId;
 END;
+Go
+CREATE PROCEDURE SavingsAnalyticsProcedure
+    @UserId NVARCHAR(450),
+    @Period INT = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+    DECLARE @AdjustedPeriod INT = ISNULL(@Period, 1);
+    WITH IncomeData AS (
+        SELECT 
+            Currency, 
+            AVG(Amount) AS IncomeAvg
+        FROM IncomeCategories 
+        WHERE UserId = @UserId 
+            AND IncomeDate >= DATEADD(Month, -@AdjustedPeriod, GETDATE())
+        GROUP BY Currency
+    ),
+    ExpenseData AS (
+        SELECT 
+            Currency, 
+            AVG(Amount) AS ExpenseAvg
+        FROM ExpenseCategories 
+        WHERE UserId = @UserId 
+            AND [Date] >= DATEADD(Month, -@AdjustedPeriod, GETDATE())
+        GROUP BY Currency
+    )
+    SELECT 
+        COALESCE(i.Currency, e.Currency) AS Currency,
+        ISNULL(i.IncomeAvg, 0) AS AverageIncome,
+        ISNULL(e.ExpenseAvg, 0) AS AverageExpense,
+        ISNULL(i.IncomeAvg, 0) - ISNULL(e.ExpenseAvg, 0) AS Savings
+    FROM IncomeData i
+    FULL JOIN ExpenseData e ON i.Currency = e.Currency;
+END;

@@ -1,4 +1,5 @@
-﻿using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
+﻿using BudgetingExpense.Api.CustomFilters;
+using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
 using BudgetingExpense.Domain.Contracts.IServices.ILimitations;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.DtoModels;
@@ -39,6 +40,7 @@ public class ManageUserFinancesController : ControllerBase
         return BadRequest("Couldn'd Process Add");
     }
 
+    [ServiceFilter(typeof(CategoryValidationFilter))]
     [HttpPost("AddIncome")]
     public async Task<IActionResult> AddIncomeAsync([FromForm] IncomeDto dtoModel)
     {
@@ -69,7 +71,7 @@ public class ManageUserFinancesController : ControllerBase
         }
         return BadRequest("Could not Process Delete");
     }
-
+    [ServiceFilter(typeof(CategoryValidationFilter))]
     [HttpPut("UpdateIncome")]
     public async Task<IActionResult> UpdateIncomeAsync([FromForm] UpdateIncomeDto model)
     {
@@ -92,6 +94,7 @@ public class ManageUserFinancesController : ControllerBase
     /// <summary>
     /// Manage Expenses
     /// </summary>
+    [ServiceFilter(typeof(CategoryValidationFilter))]
     [HttpPost("AddExpenses")]
     public async Task<IActionResult> AddExepensesAsync([FromForm] ExpenseDto expenseDto)
     {
@@ -121,7 +124,7 @@ public class ManageUserFinancesController : ControllerBase
         }
         return BadRequest("Couldn'd Process Delete");
     }
-
+    [ServiceFilter(typeof(CategoryValidationFilter))]
     [HttpPut("UpdateExpenses")]
     public async Task<IActionResult> UpdateExpensesAsyn([FromForm] UpdateExpenseDto model)
     {

@@ -7,8 +7,8 @@ using BudgetingExpense.Domain.Models.MainModels;
 
 namespace BudgetingExpense.Domain.Contracts.IRepository.IGet
 {
-   public interface IGetAllCategory
+   public interface IGetCategory
    {
-       public int GetAllCategoryAsync( int categoryId);
+       public int GetCategoryTypeAsync( int categoryId);
    }
 }

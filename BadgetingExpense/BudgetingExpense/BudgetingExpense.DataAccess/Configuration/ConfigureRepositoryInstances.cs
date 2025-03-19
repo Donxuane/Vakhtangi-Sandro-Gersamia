@@ -29,6 +29,7 @@ public static class ConfigureRepositoryInstances
         services.AddScoped<IGetRepository, GetRepository>();
         services.AddScoped<IToggleNotificationsRepository,ToggleNotificationsRepository>();
         services.AddScoped<IBudgetPlaningRepository, BudgetPlaningRepository>();
+        services.AddScoped<IGetCategory, GetAllCategories>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 

@@ -12,7 +12,7 @@ public class Income
     public Currencies Currency { get; set; }
     [Required]
     public double Amount { get; set; }
-    [FinancialValidation(FinancialTypes.Income)]
+    [CategoryTypeValidation(FinancialTypes.Income)]
     public int? CategoryId { get; set; }
     [Required]
     public DateTime Date { get; set; }

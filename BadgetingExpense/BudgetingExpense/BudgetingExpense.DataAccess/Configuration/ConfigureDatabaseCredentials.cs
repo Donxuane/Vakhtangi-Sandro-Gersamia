@@ -27,7 +27,7 @@ public static class ConfigureDatabaseCredentials
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
-        services.AddScoped<DbConnection>(sp =>
+        services.AddScoped<DbConnection>(options =>
             new SqlConnection(configuration.GetConnectionString("default")));
     }
 }

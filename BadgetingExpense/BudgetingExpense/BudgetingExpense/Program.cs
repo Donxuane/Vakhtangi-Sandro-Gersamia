@@ -1,6 +1,7 @@
 using BudgetingExpense.api.Configuration;
 using BudgetingExpense.api.CustomMiddleware;
 using BudgetingExpense.Api.Configuration;
+using BudgetingExpense.Api.CustomFilters;
 using BudgetingExpense.Api.CustomMiddleware;
 using BudgetingExpense.DataAccess.Configuration;
 using BudgetingExpenses.Service.Configuration;
@@ -19,6 +20,7 @@ builder.Services.ConfigureJWTBearerToken(builder.Configuration);
 builder.Services.AddRepositoryInstances();
 builder.Services.AddServiceInstances();
 builder.Services.AddScoped<ConfigureSeeding>();
+builder.Services.AddScoped<CategoryValidationFilter>();
 
 
 var app = builder.Build();
