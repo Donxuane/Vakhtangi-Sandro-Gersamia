@@ -72,7 +72,6 @@ public class ConfigureDatabase : IHostedService
             using (DbConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                DbTransaction transaction = connection.BeginTransaction();
 
                 var queries = GetDatabaseQueries();
                 if (queries != null && queries.Count != 0)
