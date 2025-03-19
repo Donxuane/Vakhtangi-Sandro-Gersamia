@@ -59,3 +59,4 @@ BEGIN
     FROM IncomeData i
     FULL JOIN ExpenseData e ON i.Currency = e.Currency;
 END;
+ 
