@@ -205,7 +205,6 @@ public class ReportsController : ControllerBase
         {
             return Ok(result);
         }
-
         return BadRequest();
     }
 
