@@ -36,7 +36,7 @@ public class UserIncomeReportsService : IIncomeReportsService
         }
     }
 
-    public async Task<IEnumerable<IncomeRecord>?> RecordsBasedCategoryPeriodAsync(GetRecordCategory model)
+    public async Task<IEnumerable<IncomeRecord>?> RecordsBasedCategoryPeriodAsync(RecordCategory model)
     {
         try
         {
@@ -59,7 +59,7 @@ public class UserIncomeReportsService : IIncomeReportsService
         }
     }
 
-    public async Task<IEnumerable<IncomeRecord>?> RecordsBasedCurrencyPeriodAsync(GetRecordCurrency model)
+    public async Task<IEnumerable<IncomeRecord>?> RecordsBasedCurrencyPeriodAsync(RecordCurrency model)
     {
         try
         {

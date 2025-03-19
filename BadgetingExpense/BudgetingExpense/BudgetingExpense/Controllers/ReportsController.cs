@@ -35,7 +35,7 @@ public class ReportsController : ControllerBase
     [HttpGet("IncomeRecordsBasedCurrency")]
     public async Task<IActionResult> IncomeRecordsBasedCurrencyAsync([FromQuery] GetRecordsCurrencyDto model)
     {
-        var record = new GetRecordCurrency
+        var record = new RecordCurrency
         {
             UserId = HttpContext.Items["UserId"].ToString(),
             Currency = model.Currency,
@@ -59,7 +59,7 @@ public class ReportsController : ControllerBase
     [HttpPost("IncomeRecordsBasedCategory")]
     public async Task<IActionResult> IncomeRecordsBasedCategoryAsync([FromForm] GetRecordsCategoryDto model)
     {
-        var record = new GetRecordCategory
+        var record = new RecordCategory
         {
             Category = model.CategoryName,
             Period = model.Period,
@@ -114,7 +114,7 @@ public class ReportsController : ControllerBase
     [HttpGet("TopExpenses")]
     public async Task<IActionResult> GetMostExpenseRecordsAsync(int period)
     {
-        var model = new GetRecordsPeriod
+        var model = new RecordsPeriod
         {
             Period = period,
             UserId = HttpContext.Items["UserId"].ToString()
@@ -136,7 +136,7 @@ public class ReportsController : ControllerBase
     [HttpGet("ExpensesBasedCategoryPeriod")]
     public async Task<IActionResult> GetExpensesBasedCategoryPeriodAsync([FromQuery] GetRecordsCategoryDto model)
     {
-        var categoryModel = new GetRecordCategory
+        var categoryModel = new RecordCategory
         {
             Category = model.CategoryName,
             Period = model.Period,
@@ -159,7 +159,7 @@ public class ReportsController : ControllerBase
     [HttpGet("ExpensesBasedCurrencyPeriod")]
     public async Task<IActionResult> GetExpensesBasedCurrencyPeriodAsync([FromQuery] GetRecordsCurrencyDto model)
     {
-        var currencyModel = new GetRecordCurrency
+        var currencyModel = new RecordCurrency
         {
             Currency = model.Currency,
             Period = model.Period,

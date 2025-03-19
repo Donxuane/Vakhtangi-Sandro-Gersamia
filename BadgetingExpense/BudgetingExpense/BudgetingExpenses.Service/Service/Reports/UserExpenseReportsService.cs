@@ -17,7 +17,7 @@ public class UserExpenseReportsService : IExpenseReportsService
         _logger = logger;
     }
 
-    public async Task<IEnumerable<ExpenseRecord>?> BiggestExpensesBasedPeriodAsync(GetRecordsPeriod model)
+    public async Task<IEnumerable<ExpenseRecord>?> BiggestExpensesBasedPeriodAsync(RecordsPeriod model)
     {
         try
         {
@@ -64,7 +64,7 @@ public class UserExpenseReportsService : IExpenseReportsService
         }
     }
 
-    public async Task<IEnumerable<ExpenseRecord>?> RecordsBasedCategoryPeriodAsync(GetRecordCategory model)
+    public async Task<IEnumerable<ExpenseRecord>?> RecordsBasedCategoryPeriodAsync(RecordCategory model)
     {
         try
         {
@@ -87,7 +87,7 @@ public class UserExpenseReportsService : IExpenseReportsService
         }
     }
 
-    public async Task<IEnumerable<ExpenseRecord>?> RecordsBasedCurrencyPeriodAsync(GetRecordCurrency model)
+    public async Task<IEnumerable<ExpenseRecord>?> RecordsBasedCurrencyPeriodAsync(RecordCurrency model)
     {
         try
         {

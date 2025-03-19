@@ -16,14 +16,14 @@ public class IncomeForecastService : IForecastService<IncomeRecord>
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
-    public async Task<IEnumerable<GetForecastCategory>> GetForecastCategoriesAsync(string userId)
+    public async Task<IEnumerable<ForecastCategory>> GetForecastCategoriesAsync(string userId)
     {
         try
         {
             var incomeRecords = await _unitOfWork.IncomeRecords.GetUserIncomeRecordsAsync(userId);
             var filteredByCurrency = incomeRecords.DistinctBy(x => x.Currency).Select(x => new { x.Currency });
             var filteredByCategory = incomeRecords.DistinctBy(x => x.CategoryName).Select(x => new { x.CategoryName });
-            List<GetForecastCategory> model = [];
+            List<ForecastCategory> model = [];
             foreach (var currency in filteredByCurrency)
             {
                 foreach (var category in filteredByCategory)
@@ -32,7 +32,7 @@ public class IncomeForecastService : IForecastService<IncomeRecord>
                     var amount = incomeRecords.Where(x => x.Currency == currency.Currency && x.CategoryName == category.CategoryName).Sum(x => x.Amount);
                     if (count > 0 && amount > 0)
                     {
-                        model.Add(new GetForecastCategory
+                        model.Add(new ForecastCategory
                         {
                             Expected = Math.Round(amount / count, 2),
                             CategoryName = category.CategoryName,

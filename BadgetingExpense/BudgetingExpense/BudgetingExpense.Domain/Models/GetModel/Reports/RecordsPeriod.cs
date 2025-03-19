@@ -2,7 +2,7 @@
 
 namespace BudgetingExpense.Domain.Models.GetModel.Reports;
 
-public class GetRecordsPeriod
+public class RecordsPeriod
 {
     [Required]
     public string UserId {  get; set; }

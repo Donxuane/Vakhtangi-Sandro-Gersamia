@@ -2,7 +2,7 @@
 
 namespace BudgetingExpense.Domain.Models.GetModel.Reports;
 
-public class GetRecordCategory
+public class RecordCategory
 {
     public string UserId { get; set; }
     [Required]

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BudgetingExpense.Domain.Models.GetModel.Reports;
 
-public class GetRecordCurrency
+public class RecordCurrency
 {
     public string UserId { get; set; }
     public int Period { get; set; }
