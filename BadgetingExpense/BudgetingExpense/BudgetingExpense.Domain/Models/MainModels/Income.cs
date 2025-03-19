@@ -1,5 +1,6 @@
 ﻿using BudgetingExpense.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
+using BudgetingExpense.Domain.CustomAttributes;
 
 namespace BudgetingExpense.Domain.Models.MainModels;
 
@@ -11,6 +12,7 @@ public class Income
     public Currencies Currency { get; set; }
     [Required]
     public double Amount { get; set; }
+    [FinancialValidation(FinancialTypes.Income)]
     public int? CategoryId { get; set; }
     [Required]
     public DateTime Date { get; set; }
