@@ -1,6 +1,6 @@
 ﻿using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
-using BudgetingExpense.Domain.Models.MainModels;
+using BudgetingExpense.Domain.Models.GetModel.Reports;
 using Microsoft.Extensions.Logging;
 
 namespace BudgetingExpenses.Service.Service.Reports;
@@ -15,19 +15,19 @@ public class SavingsAnalyticService : ISavingsAnalyticService
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
-
-    public async Task<Savings?> SavingsAnalyticsAsync(string userId, int month)
+    public async Task<IEnumerable<SavingsPeriod>?> GetSavingsAnalytics(string userId, int? month)
     {
         try
         {
-            var (expense, income) = await FinanceRecordsAsync(userId, month);
-            var actual = income - expense;
-            var percentage = await SavingPercentageAsync(expense, income);
-            return new Savings { Expense = expense, Income = income, Saved = actual, Percentage = percentage};
+            await _unitOfWork.BeginTransactionAsync();
+            var records = await _unitOfWork.SavingsRepository.GetSavingsAnalyticsAsync(userId, month);
+            await _unitOfWork.SaveChangesAsync();
+            return records;
         }
         catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
+            await _unitOfWork.RollBackAsync();
             return null;
         }
     }

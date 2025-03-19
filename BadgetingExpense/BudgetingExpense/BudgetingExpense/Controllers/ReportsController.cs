@@ -56,8 +56,8 @@ public class ReportsController : ControllerBase
         return BadRequest("Records Not Found");
     }
 
-    [HttpPost("IncomeRecordsBasedCategory")]
-    public async Task<IActionResult> IncomeRecordsBasedCategoryAsync([FromForm] GetRecordsCategoryDto model)
+    [HttpGet("IncomeRecordsBasedCategory")]
+    public async Task<IActionResult> IncomeRecordsBasedCategoryAsync([FromQuery]GetRecordsCategoryDto model)
     {
         var record = new RecordCategory
         {
@@ -177,7 +177,7 @@ public class ReportsController : ControllerBase
             });
             return Ok(final);
         }
-        return BadRequest("No Records Found");
+        return BadRequest("Records Not Found");
     }
     [HttpGet("AllExpenseRecords")]
     public async Task<IActionResult> GetAllExpenseRecordsAsync()
@@ -205,7 +205,7 @@ public class ReportsController : ControllerBase
         {
             return Ok(result);
         }
-        return BadRequest();
+        return BadRequest("Records Not Found");
     }
 
     /// <summary>
@@ -214,12 +214,12 @@ public class ReportsController : ControllerBase
     [HttpGet("savingAnalyticByPeriod")]
     public async Task<IActionResult> SavingAnalyticByPeriodAsync(int month)
     {
-        var value = await _analyticsService.SavingsAnalyticsAsync(HttpContext.Items["UserId"].ToString(), month);
-        if (value != null && value.Income > 0)
+        var value = await _analyticsService.GetSavingsAnalytics(HttpContext.Items["UserId"].ToString(), month);
+        if (value != null)
         {
             return Ok(value);
         }
-        return BadRequest();
+        return BadRequest("Records Not Found");
     }
 }
 

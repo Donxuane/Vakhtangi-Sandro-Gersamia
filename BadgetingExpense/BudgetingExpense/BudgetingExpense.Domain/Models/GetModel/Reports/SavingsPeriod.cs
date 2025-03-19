@@ -8,5 +8,5 @@ public class SavingsPeriod
     public double AverageIncome { get; set; }
     public double AverageExpense { get; set; }
     public double Savings {  get; set; }
-    public double SavingsPercentage { get; set; }
+    public double Percentage { get; set; }
 }

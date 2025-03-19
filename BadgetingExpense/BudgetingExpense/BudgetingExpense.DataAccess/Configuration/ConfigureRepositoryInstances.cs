@@ -29,6 +29,7 @@ public static class ConfigureRepositoryInstances
         services.AddScoped<IGetRepository, GetRepository>();
         services.AddScoped<IToggleNotificationsRepository,ToggleNotificationsRepository>();
         services.AddScoped<IBudgetPlaningRepository, BudgetPlaningRepository>();
+        services.AddScoped<ISavingsRepository, SavingsAnalyticsRepository>();
         services.AddScoped<IGetCategory, GetAllCategories>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
@@ -42,5 +43,6 @@ public static class ConfigureRepositoryInstances
         services.AddScoped<Func<IGetRepository>>(x => x.GetRequiredService<IGetRepository>);
         services.AddScoped<Func<IToggleNotificationsRepository>>(x => x.GetRequiredService<IToggleNotificationsRepository>);
         services.AddScoped<Func<IBudgetPlaningRepository>>(x => x.GetRequiredService<IBudgetPlaningRepository>);
+        services.AddScoped<Func<ISavingsRepository>>(x => x.GetRequiredService<ISavingsRepository>);
     }
 }

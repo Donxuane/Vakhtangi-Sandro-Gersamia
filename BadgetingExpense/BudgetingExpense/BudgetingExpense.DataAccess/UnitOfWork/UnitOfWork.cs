@@ -21,6 +21,7 @@ public class UnitOfWork : IUnitOfWork
     private readonly Func<IGetRepository> _getRepositoryFactory;
     private readonly Func<IToggleNotificationsRepository> _toggleNotificationsFactory;
     private readonly Func<IBudgetPlaningRepository> _planingFactory;
+    private readonly Func<ISavingsRepository> _savingsFactory;
 
     private IAuthentication? _authentication;
     private IManageFinancesRepository<Expense>? _expenseManage;
@@ -31,6 +32,7 @@ public class UnitOfWork : IUnitOfWork
     private IGetRepository? _getRepository;
     private IToggleNotificationsRepository? _toggleNotifications;
     private IBudgetPlaningRepository? _planing;
+    private ISavingsRepository? _savings;
 
     private readonly DbConnection _connection;
     private DbTransaction? _transaction;
@@ -40,7 +42,7 @@ public class UnitOfWork : IUnitOfWork
         Func<IIncomeRecordsRepository> incomeRecords, Func<IBudgetLimitsRepository> limits,
         Func<IExpenseRecordsRepository> expenseRecords,
         Func<IGetRepository> getRepository,Func<IToggleNotificationsRepository> toggleNotifications,
-        Func<IBudgetPlaningRepository> planing)
+        Func<IBudgetPlaningRepository> planing, Func<ISavingsRepository> savings)
     {
         _expenseManageFactory = expenseManage;
         _incomeManageFactory = incomeManage;
@@ -52,9 +54,12 @@ public class UnitOfWork : IUnitOfWork
         _getRepositoryFactory = getRepository;
         _toggleNotificationsFactory = toggleNotifications;
         _planingFactory = planing;
+        _savingsFactory = savings;
     }
 
     public IAuthentication Authentication => _authentication??=_authenticationFactory();
+
+    
 
     public IManageFinancesRepository<Expense> ExpenseManage
     {
@@ -110,6 +115,18 @@ public class UnitOfWork : IUnitOfWork
 
     public IBudgetPlaningRepository BudgetPlaningRepository =>_planing??=_planingFactory();
 
+    public ISavingsRepository SavingsRepository
+    {
+        get
+        {
+            if( _transaction != null)
+            {
+                _savings??=_savingsFactory();
+                _savings.SetTransaction(_transaction);
+            }
+            return _savings??= _savingsFactory();
+        }
+    }
 
     public async ValueTask DisposeAsync()
     {
