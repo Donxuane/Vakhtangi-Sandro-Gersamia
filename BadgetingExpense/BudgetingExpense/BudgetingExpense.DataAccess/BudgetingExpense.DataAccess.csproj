@@ -14,9 +14,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="SqlQueries\Procedures.sql" />
     <None Remove="SqlQueries\Views.sql" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="SqlQueries\Procedures.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="SqlQueries\Tables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

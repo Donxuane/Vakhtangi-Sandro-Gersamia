@@ -32,13 +32,17 @@ public class ConfigureDatabase : IHostedService
                 _logger.LogInformation("Database Migration Execution Started");
                 await dbContext.Database.MigrateAsync(cancellationToken);
                 _logger.LogInformation("Database Queries Execution Started");
-                AddDatabaseContentAccordingly();
-                _logger.LogInformation("Database Setup Finished!");
-                var seedData = scope.ServiceProvider.GetRequiredService<ConfigureSeeding>();
-                if (seedData != null)
+                var result = AddDatabaseContentAccordingly();
+                if (result == true)
                 {
-                    await seedData.SeedRoles();
-                    await seedData.SeedData();
+                    _logger.LogInformation("Database Setup Finished!");
+
+                    var seedData = scope.ServiceProvider.GetRequiredService<ConfigureSeeding>();
+                    if (seedData != null)
+                    {
+                        await seedData.SeedRoles();
+                        await seedData.SeedData();
+                    }
                 }
             }
             else
@@ -64,7 +68,7 @@ public class ConfigureDatabase : IHostedService
         return Task.CompletedTask;
     }
 
-    private void AddDatabaseContentAccordingly()
+    private bool AddDatabaseContentAccordingly()
     {
         try
         {
@@ -72,24 +76,38 @@ public class ConfigureDatabase : IHostedService
             using (DbConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-
                 var queries = GetDatabaseQueries();
                 if (queries != null && queries.Count != 0)
                 {
                     foreach (var query in queries)
                     {
-                        if (query != null)
+                        DbTransaction transaction = connection.BeginTransaction();
+                        try
                         {
-                            connection.Execute(query, null, transaction);
+                            
+                            if (query != null)
+                            {
+
+                                connection.Execute(query, null, transaction);
+                                transaction.Commit();
+                            }
                         }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                        }
+                       
                     }
-                    transaction.Commit();
+                    
+                    return true;
                 }
             }
+            return false;
         }
         catch(Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
+            return false;
         }
     }
 
@@ -113,7 +131,7 @@ public class ConfigureDatabase : IHostedService
             if (procedures != null)
             {
                 var proceduresQueries = procedures.Split("Go",StringSplitOptions.RemoveEmptyEntries);
-                foreach(var query in queries)
+                foreach(var query in proceduresQueries)
                 {
                     queries.Add(query);
                 }
