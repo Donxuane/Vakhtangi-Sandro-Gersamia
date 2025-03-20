@@ -63,7 +63,7 @@ namespace BudgetingExpenses.Service.Service.Notifications
                             Message = message,
                             Subject = subject
                         });
-                        await _unitOfWork.LimitsRepository.DeleteLimitsAsync(budgetItem.Id);
+                        
                     }
                 }
                 return true;

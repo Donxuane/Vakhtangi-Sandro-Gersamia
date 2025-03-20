@@ -1,46 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using BudgetingExpense.Domain.Contracts.IServices.IMessaging;
+using BudgetingExpense.Domain.Contracts.IServices.INotifications;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
+using BudgetingExpense.Domain.Models.MainModels;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BudgetingExpenses.Service.Configuration.BackgroundServices
 {
-    public class LimitsCleanupService: BackgroundService
+    public class LimitsCleanupService : BackgroundService
     {
-        private readonly IUnitOfWork _unitOfWork;
+
         private readonly ILogger<LimitsCleanupService> _logger;
         private readonly IServiceProvider _serviceProvider;
-        private readonly HttpContext _httpContext;
-        public LimitsCleanupService(IUnitOfWork unitOfWork,ILogger<LimitsCleanupService> logger,IServiceProvider serviceProvider,HttpContext httpContext)
+
+
+
+        public LimitsCleanupService(ILogger<LimitsCleanupService> logger, IServiceProvider serviceProvider)
         {
-            _unitOfWork = unitOfWork;
+
             _logger = logger;
             _serviceProvider = serviceProvider;
-            _httpContext = httpContext;
+
+
         }
-        
-        
+
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            
+
 
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
                 {
-                    _logger.LogInformation("Limits Cleanup Execution Started");
-               
-                    await CleanupLimitsAsync(_httpContext.Items["UserId"].ToString());
 
-                    
-                    await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
-                    _logger.LogInformation("Limits Cleanup Execution finished");
+                    string userId = "7ec242e5-83a9-40cb-9f80-6ce804e8dd95";
+                    int count = 0;
+                    if (userId is not null)
+                    {
+                        _logger.LogInformation("Limits Cleanup Execution Started");
+
+                        await CleanupLimitsAsync(userId);
+
+
+                        await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+                        count++;
+                        _logger.LogInformation($"Limits Cleanup Execution finished {count}");
+
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -51,17 +69,63 @@ namespace BudgetingExpenses.Service.Configuration.BackgroundServices
 
         private async Task CleanupLimitsAsync(string userId)
         {
-          
-
-            var getBudgetPlaningViewAsync = await _unitOfWork.BudgetPlaningRepository.GetBudgetPlaningViewAsync(userId);
-
-            foreach (var getBudgetPlanning in getBudgetPlaningViewAsync)
+            var scope = _serviceProvider.CreateScope();
+            try
             {
-                if (getBudgetPlanning.TotalExpenses > getBudgetPlanning.LimitAmount)
+
+
+                var unitOfWork = scope.ServiceProvider.GetService<IUnitOfWork>();
+                var notificationService = scope.ServiceProvider.GetService<ILimitNotificationService>();
+                var getBudgetPlaningViewAsync =
+                    await unitOfWork.BudgetPlaningRepository.GetBudgetPlaningViewAsync(
+                        "7b105803-1b9b-4854-bdc4-6373519208fd");
+
+                foreach (var getBudgetPlanning in getBudgetPlaningViewAsync)
                 {
-                    await _unitOfWork.LimitsRepository.DeleteLimitsAsync(getBudgetPlanning.Id);
+                    if (getBudgetPlanning.TotalExpenses > getBudgetPlanning.LimitAmount)
+                    {
+                        try
+                        {
+
+
+                            await unitOfWork.BeginTransactionAsync();
+                            await unitOfWork.LimitsRepository.DeleteLimitsAsync(getBudgetPlanning.Id);
+                            await unitOfWork.SaveChangesAsync();
+                            await notificationService.NotifyLimitExceededAsync(userId);
+                        }
+                        catch (Exception e)
+                        {
+                            _logger.LogError(e.Message);
+                            await unitOfWork.RollBackAsync();
+                        }
+
+                    }
+
+
+
+
+
                 }
+            }
+
+            finally
+            {
+                if (scope is IAsyncDisposable asyncDisposable)
+                {
+                    await asyncDisposable.DisposeAsync();
+                }
+               
             }
         }
     }
 }
+                      
+                 
+                    
+                   
+                   
+
+       
+        
+    
+
