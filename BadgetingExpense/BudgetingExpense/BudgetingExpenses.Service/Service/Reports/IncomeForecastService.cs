@@ -16,31 +16,18 @@ public class IncomeForecastService : IForecastService<IncomeRecord>
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
-    public async Task<IEnumerable<ForecastCategory>> GetForecastCategoriesAsync(string userId)
+    public async Task<IEnumerable<ForecastCategory>?> GetForecastCategoriesAsync(string userId)
     {
         try
         {
             var incomeRecords = await _unitOfWork.IncomeRecords.GetUserIncomeRecordsAsync(userId);
-            var filteredByCurrency = incomeRecords.DistinctBy(x => x.Currency).Select(x => new { x.Currency });
-            var filteredByCategory = incomeRecords.DistinctBy(x => x.CategoryName).Select(x => new { x.CategoryName });
-            List<ForecastCategory> model = [];
-            foreach (var currency in filteredByCurrency)
-            {
-                foreach (var category in filteredByCategory)
+            var model = incomeRecords.GroupBy(x => new { x.Currency, x.CategoryName })
+                .Select(x => new ForecastCategory
                 {
-                    var count = incomeRecords.Count(x => x.Currency == currency.Currency && x.CategoryName == category.CategoryName);
-                    var amount = incomeRecords.Where(x => x.Currency == currency.Currency && x.CategoryName == category.CategoryName).Sum(x => x.Amount);
-                    if (count > 0 && amount > 0)
-                    {
-                        model.Add(new ForecastCategory
-                        {
-                            Expected = Math.Round(amount / count, 2),
-                            CategoryName = category.CategoryName,
-                            Currency = currency.Currency.ToString()
-                        });
-                    }
-                }
-            }
+                    CategoryName = x.Key.CategoryName,
+                    Currency = x.Key.Currency.ToString(),
+                    Expected = Math.Round(x.Sum(z => z.Amount) / x.Count(), 2)
+                }).Where(x => x.Expected > 0);
             return model;
         }
         catch(Exception ex)
