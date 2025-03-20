@@ -4,5 +4,5 @@ namespace BudgetingExpense.Domain.Contracts.IServices.IReports;
 
 public interface ISavingsAnalyticService
 {
-    public Task<IEnumerable<SavingsPeriod>?> GetSavingsAnalytics(string userId, int? month);
+    public Task<IEnumerable<SavingsPeriod>?> GetSavingsAnalyticsAsync(string userId, int? month);
 }

@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetingExpense.DataAccess
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetingExpense.Domain", "BudgetingExpense.Domain\BudgetingExpense.Domain.csproj", "{90B37D13-084F-4770-AC2D-C11981D79566}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetingExpense.UnitTests", "BudgetingExpense.UnitTests\BudgetingExpense.UnitTests.csproj", "{570FFA82-4F6F-424F-BAB9-4CDB30C912AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{90B37D13-084F-4770-AC2D-C11981D79566}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90B37D13-084F-4770-AC2D-C11981D79566}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90B37D13-084F-4770-AC2D-C11981D79566}.Release|Any CPU.Build.0 = Release|Any CPU
+		{570FFA82-4F6F-424F-BAB9-4CDB30C912AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{570FFA82-4F6F-424F-BAB9-4CDB30C912AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{570FFA82-4F6F-424F-BAB9-4CDB30C912AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{570FFA82-4F6F-424F-BAB9-4CDB30C912AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
