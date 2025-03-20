@@ -54,7 +54,14 @@ public class SavingsAnalyticsTests
 
         var result = await _savingsAnalyticsService.GetSavingsAnalyticsAsync(userId, month);
         Assert.Null(result);
-        _mockedLogger.Verify(x=>x.LogError(It.IsAny<string>(),It.IsAny<object>()),Times.Once);
-
+        _mockedUnitOfWork.Verify(x => x.RollBackAsync(), Times.Once);
+        _mockedLogger.Verify(
+        x => x.Log(
+            LogLevel.Error,
+            It.IsAny<EventId>(),
+            It.Is<It.IsAnyType>((o, t) => true),
+            It.IsAny<Exception>(),
+            It.IsAny<Func<It.IsAnyType, Exception?, string>>()
+        ), Times.Once);
     }
 }
