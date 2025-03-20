@@ -87,7 +87,7 @@ namespace BudgetingExpenses.Service.Service.Notifications
             }
             catch (Exception ex)
             {
-               _logger.LogError("Exseption ex:{ex}",ex.Message);
+               _logger.LogError("Exception ex:{ex}",ex.Message);
                return (null,null);
             }
         }
