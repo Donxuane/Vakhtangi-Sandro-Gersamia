@@ -214,7 +214,7 @@ public class ReportsController : ControllerBase
     [HttpGet("savingAnalyticByPeriod")]
     public async Task<IActionResult> SavingAnalyticByPeriodAsync(int month)
     {
-        var value = await _analyticsService.GetSavingsAnalytics(HttpContext.Items["UserId"].ToString(), month);
+        var value = await _analyticsService.GetSavingsAnalyticsAsync(HttpContext.Items["UserId"].ToString(), month);
         if (value != null)
         {
             return Ok(value);

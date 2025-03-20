@@ -15,7 +15,7 @@ public class SavingsAnalyticService : ISavingsAnalyticService
         _unitOfWork = unitOfWork;
         _logger = logger;
     }
-    public async Task<IEnumerable<SavingsPeriod>?> GetSavingsAnalytics(string userId, int? month)
+    public async Task<IEnumerable<SavingsPeriod>?> GetSavingsAnalyticsAsync(string userId, int? month)
     {
         try
         {
