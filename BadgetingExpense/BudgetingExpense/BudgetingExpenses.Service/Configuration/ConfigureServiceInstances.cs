@@ -21,9 +21,9 @@ public static class ConfigureServiceInstances
     {
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IIncomeManageService, IncomeManageService>();
-        services.AddScoped<IIncomeReportsService, UserIncomeReportsService>();
+        services.AddScoped<IIncomeReportsService, IncomeReportsService>();
         services.AddScoped<IExpenseManageService, ExpenseManageService>();
-        services.AddScoped<IExpenseReportsService, UserExpenseReportsService>();
+        services.AddScoped<IExpenseReportsService, ExpenseReportsService>();
         services.AddScoped<ILimitsManageService, LimitsService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ISavingsAnalyticService, SavingsAnalyticService>();

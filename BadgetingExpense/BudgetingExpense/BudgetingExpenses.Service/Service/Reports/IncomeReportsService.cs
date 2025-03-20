@@ -6,12 +6,12 @@ using Microsoft.Extensions.Logging;
 
 namespace BudgetingExpenses.Service.Service.Reports;
 
-public class UserIncomeReportsService : IIncomeReportsService
+public class IncomeReportsService : IIncomeReportsService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ILogger<UserIncomeReportsService> _logger;
+    private readonly IUnitOfWork _unitOfWork; 
+    private readonly ILogger<IncomeReportsService> _logger;
 
-    public UserIncomeReportsService(IUnitOfWork unitOfWork, ILogger<UserIncomeReportsService> logger)
+    public IncomeReportsService(IUnitOfWork unitOfWork, ILogger<IncomeReportsService> logger)
     {
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -40,7 +40,7 @@ public class UserIncomeReportsService : IIncomeReportsService
         try
         {
             var records = await _unitOfWork.IncomeRecords.GetUserIncomeRecordsAsync(model.UserId);
-            if (records != null)
+            if (records != null && records.Any())
             {
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
                 if (model.Period == 0 && model.Category != null)
