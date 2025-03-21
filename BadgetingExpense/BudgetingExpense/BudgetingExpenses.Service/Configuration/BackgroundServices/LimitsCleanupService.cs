@@ -44,8 +44,8 @@ namespace BudgetingExpenses.Service.Configuration.BackgroundServices
                 try
                 {
 
-                    string userId = "7ec242e5-83a9-40cb-9f80-6ce804e8dd95";
-                    int count = 0;
+                    string userId = "3ffa2bc5-6d7c-4cc7-a87f-24206c7570dd";
+                
                     if (userId is not null)
                     {
                         _logger.LogInformation("Limits Cleanup Execution Started");
@@ -54,8 +54,8 @@ namespace BudgetingExpenses.Service.Configuration.BackgroundServices
 
 
                         await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
-                        count++;
-                        _logger.LogInformation($"Limits Cleanup Execution finished {count}");
+                        
+                        _logger.LogInformation($"Limits Cleanup Execution finished ");
 
                     }
 

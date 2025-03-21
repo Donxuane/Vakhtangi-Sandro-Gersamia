@@ -37,7 +37,7 @@ public class ManageUserFinancesController : ControllerBase
         {
             return Ok($"{result} Category added Successfully");
         }
-        return BadRequest("Couldn'd Process Add");
+        return BadRequest("Couldn't Process Add");
     }
 
     [ServiceFilter(typeof(CategoryValidationFilter))]
@@ -58,7 +58,7 @@ public class ManageUserFinancesController : ControllerBase
         {
             return Ok("Income Added Successfully");
         }
-        return BadRequest("Couldn'd Process Add");
+        return BadRequest("Couldn't Process Add");
     }
 
     [HttpDelete("Income")]
@@ -89,14 +89,14 @@ public class ManageUserFinancesController : ControllerBase
         {
             return Ok("Successfully Updated");
         }
-        return BadRequest("Couldn'd Process Update");
+        return BadRequest("Couldn't Process Update");
     }
     /// <summary>
     /// Manage Expenses
     /// </summary>
     [ServiceFilter(typeof(CategoryValidationFilter))]
     [HttpPost("AddExpenses")]
-    public async Task<IActionResult> AddExepensesAsync([FromForm] ExpenseDto expenseDto)
+    public async Task<IActionResult> AddExpensesAsync([FromForm] ExpenseDto expenseDto)
     {
         var expense = new Expense
         {
@@ -111,7 +111,7 @@ public class ManageUserFinancesController : ControllerBase
         {
             return Ok("Added Successfully");
         }
-        return BadRequest("Couldn'd Process Add");
+        return BadRequest("Couldn't Process Add");
     }
 
     [HttpDelete("Expenses")]
@@ -122,11 +122,11 @@ public class ManageUserFinancesController : ControllerBase
         {
             return Ok("deleted successfully");
         }
-        return BadRequest("Couldn'd Process Delete");
+        return BadRequest("Couldn't Process Delete");
     }
     [ServiceFilter(typeof(CategoryValidationFilter))]
     [HttpPut("UpdateExpenses")]
-    public async Task<IActionResult> UpdateExpensesAsyn([FromForm] UpdateExpenseDto model)
+    public async Task<IActionResult> UpdateExpensesAsync([FromForm] UpdateExpenseDto model)
     {
         var expenses = new Expense()
         {
@@ -142,7 +142,7 @@ public class ManageUserFinancesController : ControllerBase
         {
             return Ok("Updated Successfully");
         }
-        return BadRequest("Couldn'd Process Update");
+        return BadRequest("Couldn't Process Update");
     }
 
     [HttpPost("AddExpenseCategory")]
@@ -184,7 +184,7 @@ public class ManageUserFinancesController : ControllerBase
         var result = await _limitsManageService.DeleteLimitsAsync(limitId);
         if (result == true)
         {
-            return Ok("Limit deleted succesfully");
+            return Ok("Limit deleted successfully");
         }
 
         return BadRequest("something went wrong");
@@ -206,7 +206,7 @@ public class ManageUserFinancesController : ControllerBase
         var result = await _limitsManageService.UpdateLimitsAsync(updateLimits);
         if (result == true)
         {
-            return Ok("updated");
+            return Ok(" limit updated successfully");
         }
 
         return BadRequest();
