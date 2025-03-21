@@ -65,7 +65,7 @@ public class ManageUserFinancesController : ControllerBase
     public async Task<IActionResult> DeleteIncomeAsync(int incomeTypeId)
     {
         var result = await _incomeService.DeleteIncomeAsync(incomeTypeId);
-        if (result == true)
+        if (result)
         {
             return Ok("Income Source Deleted Successfully");
         }
@@ -171,7 +171,7 @@ public class ManageUserFinancesController : ControllerBase
             UserId = HttpContext.Items["UserId"].ToString()
         };
         var result = await _limitsManageService.SetLimitsAsync(limits);
-        if (result == true)
+        if (result)
         {
             return Ok("Limit added successfully");
         }
@@ -182,7 +182,7 @@ public class ManageUserFinancesController : ControllerBase
     public async Task<IActionResult> DeleteLimitAsync(int limitId)
     {
         var result = await _limitsManageService.DeleteLimitsAsync(limitId);
-        if (result == true)
+        if (result)
         {
             return Ok("Limit deleted successfully");
         }
@@ -204,7 +204,7 @@ public class ManageUserFinancesController : ControllerBase
 
         };
         var result = await _limitsManageService.UpdateLimitsAsync(updateLimits);
-        if (result == true)
+        if (result)
         {
             return Ok(" limit updated successfully");
         }

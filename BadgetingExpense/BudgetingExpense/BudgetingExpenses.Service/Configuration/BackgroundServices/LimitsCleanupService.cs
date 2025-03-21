@@ -78,7 +78,7 @@ namespace BudgetingExpenses.Service.Configuration.BackgroundServices
                 var notificationService = scope.ServiceProvider.GetService<ILimitNotificationService>();
                 var getBudgetPlaningViewAsync =
                     await unitOfWork.BudgetPlaningRepository.GetBudgetPlaningViewAsync(
-                        "7b105803-1b9b-4854-bdc4-6373519208fd");
+                        "3ffa2bc5 - 6d7c - 4cc7 - a87f - 24206c7570dd");
 
                 foreach (var getBudgetPlanning in getBudgetPlaningViewAsync)
                 {

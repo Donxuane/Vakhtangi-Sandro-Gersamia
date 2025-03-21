@@ -17,7 +17,7 @@ public class AuthenticationController : ControllerBase
     public async Task<IActionResult> LogInUserAync([FromForm] Login user)
     {
         var logedUser = await _auth.LoginUserServiceAsync(user);
-        if(logedUser == true)
+        if(logedUser)
         {
             var loggedUser = await _auth.GetUserAsync(user.Email);
             var roles = await _auth.GetRoleAsync(user.Email);

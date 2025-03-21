@@ -106,7 +106,7 @@ public class AuthenticationService : IAuthenticationService
             var check = await _unitOfWork.Authentication.CheckUserAsync(user.Email, user.Password);
             if (check)
             {
-                _logger.LogInformation("Loged in user {email}", user.Email);
+                _logger.LogInformation("Logged in user {email}", user.Email);
                 return true;
             }
         }
