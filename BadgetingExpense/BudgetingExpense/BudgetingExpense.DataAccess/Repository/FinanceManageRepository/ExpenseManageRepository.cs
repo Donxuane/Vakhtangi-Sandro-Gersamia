@@ -48,10 +48,6 @@ public class ExpenseManageRepository : IManageFinancesRepository<Expense>
 
     public Task<int> AddCategoryAsync(Category category)
     {
-        if (category.Name == null)
-        {
-            category.Name = "etc";
-        }
         var query = "INSERT INTO Categories(Name, Type) OUTPUT INSERTED.Id VALUES(@Name,@Type)";
         var id = _connection.QuerySingleAsync<int>(query, new { category.Name, Type = category.Type = 0 }, _transaction);
         
