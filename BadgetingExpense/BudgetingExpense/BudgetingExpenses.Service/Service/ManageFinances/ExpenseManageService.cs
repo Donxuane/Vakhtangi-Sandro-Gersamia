@@ -133,7 +133,6 @@ public class ExpenseManageService : IExpenseManageService
     {
         try
         {
-            await _unitOfWork.BeginTransactionAsync();
             var records = await _unitOfWork.ExpenseManage.GetAllAsync(userId);
             if (records.Any())
             {
