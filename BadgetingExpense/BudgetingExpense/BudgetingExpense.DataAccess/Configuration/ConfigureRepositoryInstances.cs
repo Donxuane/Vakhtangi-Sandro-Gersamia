@@ -31,6 +31,7 @@ public static class ConfigureRepositoryInstances
         services.AddScoped<IBudgetPlaningRepository, BudgetPlaningRepository>();
         services.AddScoped<ISavingsRepository, SavingsAnalyticsRepository>();
         services.AddScoped<IGetCategory, GetAllCategories>();
+        services.AddScoped<IGetUserCredentials, GetUserCredentialsRepository>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
 

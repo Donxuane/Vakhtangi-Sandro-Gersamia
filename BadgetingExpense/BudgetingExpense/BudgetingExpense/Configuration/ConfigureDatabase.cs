@@ -84,7 +84,6 @@ public class ConfigureDatabase : IHostedService
                         DbTransaction transaction = connection.BeginTransaction();
                         try
                         {
-                            
                             if (query != null)
                             {
 

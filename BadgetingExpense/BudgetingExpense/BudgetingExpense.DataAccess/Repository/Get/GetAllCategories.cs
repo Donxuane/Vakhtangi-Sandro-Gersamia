@@ -12,7 +12,7 @@ public class GetAllCategories : IGetCategory
     {
         _connection = connection;
     }
-    public  int GetCategoryTypeAsync(int categoryId)
+    public int GetCategoryTypeAsync(int categoryId)
     {
         var query = "Select Type FROM Categories WHERE Id = @CategoryId";
         return _connection.QuerySingle<int>(query, new { categoryId });

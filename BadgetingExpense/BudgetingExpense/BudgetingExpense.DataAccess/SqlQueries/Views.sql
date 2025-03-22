@@ -28,7 +28,7 @@ SELECT
     l.CategoryId,
     COALESCE(SUM(ex.Amount),0) AS TotalExpenses, 
     COUNT(ex.Id) AS ExpenseCount,  
-    MAX(ex.Currency) AS Currency  
+    ex.Currency AS Currency  
 FROM Limits l
 LEFT JOIN Expenses ex 
     ON l.CategoryId = ex.CategoryId 
@@ -36,5 +36,4 @@ LEFT JOIN Expenses ex
     AND ex.Date >= l.DateAdded  
     AND ex.Date < DATEADD(MONTH, l.PeriodCategory, l.DateAdded)  
 GROUP BY 
-   l.Id, l.UserId, l.Amount, l.PeriodCategory, l.DateAdded, l.CategoryId;
-
+   l.Id, l.UserId, l.Amount, l.PeriodCategory, l.DateAdded, l.CategoryId,ex.Currency;

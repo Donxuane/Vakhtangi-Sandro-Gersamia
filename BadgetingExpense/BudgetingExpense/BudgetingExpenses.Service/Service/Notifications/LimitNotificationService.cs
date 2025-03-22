@@ -23,35 +23,50 @@ public class LimitNotificationService : ILimitNotificationService
     }
     public async Task<bool> NotifyLimitExceededAsync(string userId)
     {
+        try
+        {
             var getBudgetPlaningView = await _unitOfWork.BudgetPlaningRepository.GetBudgetPlaningViewAsync(userId);
             foreach (var budgetItem in getBudgetPlaningView)
             {
-                if (budgetItem.LimitAmount < budgetItem.TotalExpenses || budgetItem.TotalExpenses >= budgetItem.LimitAmount * 0.9)
+                if (budgetItem.TotalExpenses >= budgetItem.LimitAmount * 0.9)
                 {
-                    var categoryName = await _unitOfWork.GetRepository.GetCategoryNameAsync(budgetItem.CategoryId);
-
-                 
-                    var message = templateMessage
-                        .Replace("{category}", string.IsNullOrEmpty(categoryName) ? "Undefined" : categoryName)
-                        .Replace("{amount}", budgetItem.TotalExpenses.ToString())
-                        .Replace("{currency}", budgetItem.Currency.ToString())
-                        .Replace("{limitAmount}", budgetItem.LimitAmount.ToString())
-                        .Replace("{LimitCurrency}", budgetItem.Currency.ToString());
-
-                    if (budgetItem.TotalExpenses >= budgetItem.LimitAmount * 0.9)
+                    var enabled = await _unitOfWork.GetRepository.GetNotificationActiveStatusAsync(userId);
+                    if (enabled)
                     {
-                        message = message.Replace("{category}", "you expense exceeded 90% of of your limit");
+                        var email = await _unitOfWork.GetRepository.GetEmailAsync(userId);
+
+                        var categoryName = await _unitOfWork.GetRepository.GetCategoryNameAsync(budgetItem.CategoryId);
+                        var (subject, templateMessage) = await GetEmailPattern();
+                        var message = templateMessage
+                            .Replace("{category}", string.IsNullOrEmpty(categoryName) ? "Undefined" : categoryName)
+                            .Replace("{amount}", budgetItem.TotalExpenses.ToString())
+                            .Replace("{currency}", budgetItem.Currency.ToString())
+                            .Replace("{limitAmount}", budgetItem.LimitAmount.ToString())
+                            .Replace("{LimitCurrency}", budgetItem.Currency.ToString());
+
+                        if (budgetItem.TotalExpenses <= budgetItem.LimitAmount)
+                        {
+                            message = message.Replace("{category}", "your expense exceeded 90% of of your limit");
+                        }
+                        await _emailService.SendEmailAsync(new EmailModel()
+                        {
+                            Email = email,
+                            Message = message,
+                            Subject = subject
+                        });
                     }
-                    await _emailService.SendEmailAsync(new EmailModel()
-                    {
-                        Email = email,
-                        Message = message,
-                        Subject = subject
-                    });
+                }
+                if (budgetItem.TotalExpenses > budgetItem.LimitAmount)
+                {
+                    await _unitOfWork.LimitsRepository.DeleteLimitsAsync(budgetItem.Id, budgetItem.UserId);
                 }
             }
+            return true;
+        }catch(Exception ex)
+        {
+            _logger.LogError("Exception ex:{ex}", ex.Message);
+            return false;
         }
-        return false;
     }
 
     private async Task<(string? subject,string? message)> GetEmailPattern()
