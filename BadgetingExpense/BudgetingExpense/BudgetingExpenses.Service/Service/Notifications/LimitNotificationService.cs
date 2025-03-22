@@ -14,8 +14,6 @@ public class LimitNotificationService : ILimitNotificationService
     private readonly IConfiguration _configuration;
     private readonly ILogger<LimitNotificationService> _logger;
     
-
-
     public LimitNotificationService(IUnitOfWork unitOfWork, IEmailService emailService, IConfiguration configuration, ILogger<LimitNotificationService> logger)
     {
         _unitOfWork = unitOfWork;
@@ -25,14 +23,7 @@ public class LimitNotificationService : ILimitNotificationService
     }
     public async Task<bool> NotifyLimitExceededAsync(string userId)
     {
-        var enabledOrNot = await _unitOfWork.GetRepository.GetNotificationActiveStatusAsync(userId);
-        var email = await _unitOfWork.GetRepository.GetEmailAsync(userId);
-
-        if (enabledOrNot)
-        {
             var getBudgetPlaningView = await _unitOfWork.BudgetPlaningRepository.GetBudgetPlaningViewAsync(userId);
-            var (subject, templateMessage) = await GetEmailPattern();
-
             foreach (var budgetItem in getBudgetPlaningView)
             {
                 if (budgetItem.LimitAmount < budgetItem.TotalExpenses || budgetItem.TotalExpenses >= budgetItem.LimitAmount * 0.9)
@@ -57,12 +48,9 @@ public class LimitNotificationService : ILimitNotificationService
                         Message = message,
                         Subject = subject
                     });
-                    
                 }
             }
-            return true;
         }
-
         return false;
     }
 
