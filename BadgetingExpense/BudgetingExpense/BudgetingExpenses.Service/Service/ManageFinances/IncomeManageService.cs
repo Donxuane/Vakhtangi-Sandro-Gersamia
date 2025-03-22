@@ -85,7 +85,6 @@ public class IncomeManageService : IIncomeManageService
     {
         try
         {
-            await _unitOfWork.BeginTransactionAsync();
             var categories = await _unitOfWork.IncomeManage.GetCategoriesAsync(userId);
             if (categories.Any())
             {

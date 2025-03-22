@@ -43,10 +43,13 @@ public class ExpenseManageServiceTests
     {
         var model = new Expense { Amount = 21, Date = DateTime.UtcNow, CategoryId = 1, Currency = Currencies.GEL, UserId = "User Id" };
         _mockUnitOfWork.Setup(x => x.ExpenseManage.AddAsync(model))
-            .ThrowsAsync(new Exception());
+            .GetType();
         var result = await _service.AddExpenseAsync(model);
-        Assert.False(result);
-        _mockUnitOfWork.Verify(x=>x.RollBackAsync(),Times.Once);
+        Assert.True(result);
+        _mockUnitOfWork.Verify(x=>x.RollBackAsync(),Times.Never);
+        _mockUnitOfWork.Verify(x=>x.BeginTransactionAsync(),Times.Once);
+        _mockUnitOfWork.Verify(x=>x.ExpenseManage.AddAsync(model), Times.Once);
+        _mockUnitOfWork.Verify(x => x.SaveChangesAsync(), Times.Once);
     }
 
     [Fact]
@@ -80,5 +83,39 @@ public class ExpenseManageServiceTests
         returendItem.Id == item.Id && returendItem.Name == item.Name && returendItem.Type == item.Type
         ));
         Assert.Equal(list, result);
+    }
+
+    [Fact]
+    public async Task UpdateExpenseAsync_ShouldNotProceedUpdate_WhileExceptionThrown()
+    {
+        _mockUnitOfWork.Setup(x => x.ExpenseManage.UpdateAsync(It.IsAny<Expense>()))
+            .ThrowsAsync(new Exception());
+
+        var result = await _service.UpdateExpenseAsync(It.IsAny<Expense>());
+        Assert.False(result);
+        _mockUnitOfWork.Verify(x => x.BeginTransactionAsync(), Times.Once);
+        _mockUnitOfWork.Verify(x => x.ExpenseManage.UpdateAsync(It.IsAny<Expense>()), Times.Once);
+        _mockUnitOfWork.Verify(x => x.RollBackAsync(), Times.Once);
+    }
+
+    [Fact]
+    public async Task GetAllExpenseRecordsAsync_ShouldReturnAllExpenseRecords_BasedUserId()
+    {
+        string userId = "User Id";
+        var returnCollection = new List<Expense>() { 
+            new() { Id = 1,Amount = 10, CategoryId = 1,Currency = Currencies.GEL,Date = DateTime.UtcNow.AddDays(-3),UserId = userId},
+            new() { Id = 2,Amount = 15, CategoryId = 1,Currency = Currencies.GEL,Date = DateTime.UtcNow.AddDays(-5),UserId = userId}
+        };
+        _mockUnitOfWork.Setup(x => x.ExpenseManage.GetAllAsync(userId))
+            .ReturnsAsync(returnCollection);
+
+        var result = await _service.GetAllExpenseRecordsAsync(userId);
+        Assert.Equal(returnCollection, result);
+        Assert.NotNull(result);
+          Assert.All(returnCollection, record =>
+          Assert.Contains(result, rec =>
+            rec.Id == record.Id
+        ));
+        _mockUnitOfWork.Verify(x => x.ExpenseManage.GetAllAsync(userId), Times.Once);
     }
 }

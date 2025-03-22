@@ -112,7 +112,7 @@ public class AuthenticationService : IAuthenticationService
         }
         catch (Exception ex)
         {
-            _logger.LogError("Log in email:{email} ex:{ex}",user.Email, ex.Message);
+            _logger.LogError("Log in fail email:{email} ex:{ex}",user.Email, ex.Message);
         }
         return false;
     }
