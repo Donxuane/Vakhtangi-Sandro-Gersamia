@@ -19,10 +19,10 @@ public  class LimitsRepository : IBudgetLimitsRepository
         _transaction ??= transaction;
     }
 
-    public async Task DeleteLimitsAsync(int id)
+    public async Task DeleteLimitsAsync(int id, string userId)
     {
-        var query = "DELETE FROM Limits WHERE Id = @Id";
-        await _connection.ExecuteAsync(query, new { id }, _transaction);
+        var query = "DELETE FROM Limits WHERE Id = @Id AND UserId = @userId";
+        await _connection.ExecuteAsync(query, new { id, userId }, _transaction);
     }
 
     public async Task UpdateLimitsAsync(Limits limits)

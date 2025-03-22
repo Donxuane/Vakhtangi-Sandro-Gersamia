@@ -78,7 +78,6 @@ public class ExpenseManageService : IExpenseManageService
     {
         try
         {
-            await _unitOfWork.BeginTransactionAsync();
             var categories = await _unitOfWork.ExpenseManage.GetCategoriesAsync(userId);
             if (categories.Any())
             {

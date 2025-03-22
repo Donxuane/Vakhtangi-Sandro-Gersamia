@@ -89,7 +89,7 @@ namespace BudgetingExpenses.Service.Configuration.BackgroundServices
 
 
                             await unitOfWork.BeginTransactionAsync();
-                            await unitOfWork.LimitsRepository.DeleteLimitsAsync(getBudgetPlanning.Id);
+                            await unitOfWork.LimitsRepository.DeleteLimitsAsync(getBudgetPlanning.Id,"");
                             await unitOfWork.SaveChangesAsync();
                             await notificationService.NotifyLimitExceededAsync(userId);
                         }

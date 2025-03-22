@@ -181,7 +181,7 @@ public class ManageUserFinancesController : ControllerBase
     [HttpDelete("DeleteLimit")]
     public async Task<IActionResult> DeleteLimitAsync(int limitId)
     {
-        var result = await _limitsManageService.DeleteLimitsAsync(limitId);
+        var result = await _limitsManageService.DeleteLimitsAsync(limitId, HttpContext.Items["UserId"].ToString());
         if (result)
         {
             return Ok("Limit deleted successfully");

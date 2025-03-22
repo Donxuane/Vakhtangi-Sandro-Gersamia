@@ -1,4 +1,4 @@
-﻿using BudgetingExpense.Domain.Contracts.IServices.IReports;
+﻿ using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
@@ -6,7 +6,7 @@ using BudgetingExpenses.Service.Service.Reports;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace BudgetingExpense.UnitTests;
+namespace BudgetingExpense.UnitTests.Reports;
 
 public class ExpenseReportsTests
 {
@@ -26,7 +26,7 @@ public class ExpenseReportsTests
     public async Task BiggestExpensesBasedPeriodAsync_ReturnsDataWhileFetched()
     {
         var modelPass = new RecordsPeriod { Period = 5, UserId = "User Id" };
-        var modelReturn = new List<ExpenseRecord> { 
+        var modelReturn = new List<ExpenseRecord> {
             new() { Amount = 100,UserId ="User Id", Date = DateTime.UtcNow.AddMonths(-1) },
             new() { Amount = 500,UserId ="User Id", Date = DateTime.UtcNow.AddMonths(-2) },
             new() { Amount = 300,UserId ="User Id", Date = DateTime.UtcNow.AddMonths(-1) },
@@ -38,10 +38,10 @@ public class ExpenseReportsTests
 
         var result = await _expenseReportsService.BiggestExpensesBasedPeriodAsync(modelPass);
         Assert.NotNull(result);
-        Assert.Equal(modelReturn.OrderByDescending(x=>x.Amount), result);
+        Assert.Equal(modelReturn.OrderByDescending(x => x.Amount), result);
         Assert.Equal(5, result.Count());
         Assert.Equal(700, result.First().Amount);
-        _mockedUnitOfWork.Verify(x=>x.ExpenseRecords.GetUserExpenseRecordsAsync(modelPass.UserId), Times.Once);
+        _mockedUnitOfWork.Verify(x => x.ExpenseRecords.GetUserExpenseRecordsAsync(modelPass.UserId), Times.Once);
         _mockedUnitOfWork.VerifyNoOtherCalls();
     }
 
@@ -55,7 +55,7 @@ public class ExpenseReportsTests
         var result = await _expenseReportsService.GetAllRecordsAsync(userId);
 
         Assert.Null(result);
-        _mockedUnitOfWork.Verify(x=>x.ExpenseRecords.GetUserExpenseRecordsAsync(userId),Times.Once);
+        _mockedUnitOfWork.Verify(x => x.ExpenseRecords.GetUserExpenseRecordsAsync(userId), Times.Once);
     }
 
     [Fact]
@@ -69,7 +69,7 @@ public class ExpenseReportsTests
         var result = await _expenseReportsService.RecordsBasedCategoryPeriodAsync(model);
 
         Assert.Null(result);
-        _mockedUnitOfWork.Verify(x=>x.ExpenseRecords.GetUserExpenseRecordsAsync(model.UserId),Times.Once);
+        _mockedUnitOfWork.Verify(x => x.ExpenseRecords.GetUserExpenseRecordsAsync(model.UserId), Times.Once);
         _mockedLogger.Verify(x => x.Log(
              LogLevel.Error,
              It.IsAny<EventId>(),
@@ -95,11 +95,11 @@ public class ExpenseReportsTests
 
         var result = await _expenseReportsService.RecordsBasedCurrencyPeriodAsync(model);
 
-        Assert.NotNull(result); 
+        Assert.NotNull(result);
         Assert.Equal(modelReturn.OrderByDescending(x => x.Date), result);
-        foreach(var record in result)
+        foreach (var record in result)
         {
-            Assert.InRange<DateTime>(record.Date, DateTime.UtcNow.AddMonths(-model.Period), DateTime.UtcNow);
+            Assert.InRange(record.Date, DateTime.UtcNow.AddMonths(-model.Period), DateTime.UtcNow);
         }
         _mockedUnitOfWork.Verify(x => x.ExpenseRecords.GetUserExpenseRecordsAsync(model.UserId), Times.Once);
         _mockedUnitOfWork.VerifyNoOtherCalls();

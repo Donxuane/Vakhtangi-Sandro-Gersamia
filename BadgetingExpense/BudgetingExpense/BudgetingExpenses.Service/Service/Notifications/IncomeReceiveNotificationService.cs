@@ -32,12 +32,13 @@ public class IncomeReceiveNotificationService : IIncomeReceiveNotificationServic
             {
                 var incomeEmail = _configuration.GetSection("IncomeEmail");
                 string? subject = incomeEmail["Subject"].ToString();
-                string? message = incomeEmail["Message"].ToString();
+                string? template = incomeEmail["Message"].ToString();
                 var categoryName = await _unitOfWork.GetRepository.GetCategoryNameAsync((int)record.CategoryId);
-                message = message.Replace("{category}", string.IsNullOrEmpty(categoryName) ? "Undefined" : categoryName);
-                message = message.Replace("{amount}", record.Amount.ToString());
-                message = message.Replace("{currency}", record.Currency.ToString());
-                message = message.Replace("{date}", record.Date.ToString());
+                var message = template
+                    .Replace("{category}", string.IsNullOrEmpty(categoryName) ? "Undefined" : categoryName)
+                    .Replace("{amount}", record.Amount.ToString())
+                    .Replace("{currency}", record.Currency.ToString())
+                    .Replace("{date}", record.Date.ToString());
                 await _emailService.SendEmailAsync(new EmailModel { Email = userEmail, Message = message, Subject = subject });
                 return true;
             }

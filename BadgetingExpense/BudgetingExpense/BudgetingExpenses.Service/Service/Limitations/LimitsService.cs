@@ -33,14 +33,14 @@ public class LimitsService : ILimitsManageService
 
     }
 
-    public async Task<bool> DeleteLimitsAsync(int LimitId)
+    public async Task<bool> DeleteLimitsAsync(int limitId, string userId)
     {
         try
         {
             await _unitOfWork.BeginTransactionAsync();
-            await _unitOfWork.LimitsRepository.DeleteLimitsAsync(LimitId);
+            await _unitOfWork.LimitsRepository.DeleteLimitsAsync(limitId,userId);
             await _unitOfWork.SaveChangesAsync();
-            _logger.LogInformation("Limitation Deletes Id:{id}",LimitId);
+            _logger.LogInformation("Limitation Deletes Id:{id}",limitId);
             return true;
         }
         catch (Exception ex)

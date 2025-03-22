@@ -7,6 +7,6 @@ public interface IBudgetLimitsRepository
 {
     public Task AddLimitAsync(Limits limits);
     public void SetTransaction(DbTransaction transaction);
-    public Task DeleteLimitsAsync(int id);
+    public Task DeleteLimitsAsync(int id, string userId);
     public Task UpdateLimitsAsync(Limits limits);
 }
