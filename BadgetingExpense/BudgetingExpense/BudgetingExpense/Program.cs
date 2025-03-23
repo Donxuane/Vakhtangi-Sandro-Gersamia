@@ -5,7 +5,6 @@ using BudgetingExpense.Api.CustomFilters;
 using BudgetingExpense.Api.CustomMiddleware;
 using BudgetingExpense.DataAccess.Configuration;
 using BudgetingExpenses.Service.Configuration;
-using BudgetingExpenses.Service.Configuration.BackgroundServices;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -36,7 +35,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-app.UseMiddleware<ExceptionLoggerMiddleware>();
 app.UseMiddleware<UserCredentialsMiddleware>();
 app.UseAuthorization();
 
