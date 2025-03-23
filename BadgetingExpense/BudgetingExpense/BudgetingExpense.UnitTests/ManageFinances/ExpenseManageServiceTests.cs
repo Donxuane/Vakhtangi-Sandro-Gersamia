@@ -39,7 +39,7 @@ public class ExpenseManageServiceTests
     }
 
     [Fact]
-    public async Task AddExpenseAsync_ShouldAddExpenseInDatabse_ShouldReturnTrue()
+    public async Task AddExpenseAsync_ShouldAddExpenseInDatabase_ShouldReturnTrue()
     {
         var model = new Expense { Amount = 21, Date = DateTime.UtcNow, CategoryId = 1, Currency = Currencies.GEL, UserId = "User Id" };
         _mockUnitOfWork.Setup(x => x.ExpenseManage.AddAsync(model))
@@ -79,8 +79,8 @@ public class ExpenseManageServiceTests
         var result = await _service.GetAllExpenseCategoryRecordsAsync(userId);
         Assert.NotNull(result);
         Assert.All(list, item =>
-        Assert.Contains(result, returendItem => 
-        returendItem.Id == item.Id && returendItem.Name == item.Name && returendItem.Type == item.Type
+        Assert.Contains(result, category => 
+        category.Id == item.Id && category.Name == item.Name && category.Type == item.Type
         ));
         Assert.Equal(list, result);
     }
