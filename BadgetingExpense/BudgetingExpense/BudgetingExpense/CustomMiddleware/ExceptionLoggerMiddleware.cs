@@ -15,7 +15,10 @@ public class ExceptionLoggerMiddleware
     {
         try
         {
+            var startTime = DateTime.Now;
             await _next(context);
+            var endTime = DateTime.Now;
+            _logger.LogInformation("Request To Pass Took: {time}", endTime - startTime);
         }
         catch (Exception ex)
         {
