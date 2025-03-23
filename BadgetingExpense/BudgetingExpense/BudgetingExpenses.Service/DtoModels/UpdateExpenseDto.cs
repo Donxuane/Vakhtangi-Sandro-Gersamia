@@ -6,7 +6,6 @@ namespace BudgetingExpenses.Service.DtoModels;
 
 public class UpdateExpenseDto
 {
-    [Required]
     public int Id { get; set; }
     public Currencies Currency { get; set; }
     public double Amount { get; set; }
