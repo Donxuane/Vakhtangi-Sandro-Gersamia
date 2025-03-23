@@ -1,0 +1,9 @@
+﻿{
+  "EmailSettings": {
+      "CompanyName": "Bank",
+      "CompanyEmail": "budgetingandexpensetracker12@gmail.com",
+      "Host": "smtp.gmail.com",
+      "Port": 587,
+      "AppPassword": "mnyteecfzwylmqoo"
+    }
+}

@@ -2,6 +2,8 @@
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace BudgetingExpense.api.Configuration;
 
@@ -124,8 +126,5 @@ public class ConfigureSeeding
             Console.WriteLine(e);
             await _unitOfWork.RollBackAsync();
         }
-
-
-
     }
 }

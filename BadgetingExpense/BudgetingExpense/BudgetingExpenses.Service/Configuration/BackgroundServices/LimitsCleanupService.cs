@@ -17,18 +17,18 @@ public class LimitsCleanupService : BackgroundService
         _logger = logger;
         _serviceProvider = serviceProvider;
     }
-
-
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        while (!stoppingToken.IsCancellationRequested)
+        while (!cancellationToken.IsCancellationRequested)
         {
             try
             {
+                _logger.LogInformation("Waiting Minute to Start Executing");
+                await Task.Delay(TimeSpan.FromMinutes(3), cancellationToken);
                 _logger.LogInformation("Limits Cleanup Execution Started");
                 await CleanupLimitsAsync();
                 _logger.LogInformation($"Limits Cleanup Execution finished ");
-                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+                await Task.Delay(TimeSpan.FromMinutes(1), cancellationToken);
             }
             catch (Exception ex)
             {

@@ -5,12 +5,14 @@ using BudgetingExpense.Domain.Contracts.IServices.IMessaging;
 using BudgetingExpense.Domain.Contracts.IServices.INotifications;
 using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
+using BudgetingExpenses.Service.Configuration.BackgroundServices;
 using BudgetingExpenses.Service.Service.Authentication;
 using BudgetingExpenses.Service.Service.Limitations;
 using BudgetingExpenses.Service.Service.ManageFinances;
-using BudgetingExpenses.Service.Service.Messaging;
+using BudgetingExpenses.Service.Service.Messaging.Email;
 using BudgetingExpenses.Service.Service.Notifications;
 using BudgetingExpenses.Service.Service.Reports;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BudgetingExpenses.Service.Configuration;
@@ -32,5 +34,6 @@ public static class ConfigureServiceInstances
         services.AddScoped<IForecastService<ExpenseRecord>, ExpenseForecastService>();
         services.AddScoped<IToggleNotificationsService, ToggleNotificationService>();
         services.AddScoped<ILimitNotificationService, LimitNotificationService>();
+        services.AddHostedService<LimitsCleanupService>();
     }
 }

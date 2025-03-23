@@ -4,9 +4,13 @@ using BudgetingExpense.DataAccess.SqlQueries;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System.Data.Common;
 
-namespace BudgetingExpense.Api.Configuration;
+namespace BudgetingExpense.DataAccess.Configuration;
 
 public class ConfigureDatabase : IHostedService
 {
@@ -95,15 +99,15 @@ public class ConfigureDatabase : IHostedService
                         {
                             transaction.Rollback();
                         }
-                       
+
                     }
-                    
+
                     return true;
                 }
             }
             return false;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
             return false;
@@ -121,7 +125,7 @@ public class ConfigureDatabase : IHostedService
             if (views != null)
             {
                 var viewQueries = views.Split("Go", StringSplitOptions.RemoveEmptyEntries);
-                foreach(var query in viewQueries)
+                foreach (var query in viewQueries)
                 {
                     queries.Add(query);
                 }
@@ -129,15 +133,15 @@ public class ConfigureDatabase : IHostedService
             var procedures = new GetSqlData("Procedures").GetData();
             if (procedures != null)
             {
-                var proceduresQueries = procedures.Split("Go",StringSplitOptions.RemoveEmptyEntries);
-                foreach(var query in proceduresQueries)
+                var proceduresQueries = procedures.Split("Go", StringSplitOptions.RemoveEmptyEntries);
+                foreach (var query in proceduresQueries)
                 {
                     queries.Add(query);
                 }
             }
             return queries;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
             return null;

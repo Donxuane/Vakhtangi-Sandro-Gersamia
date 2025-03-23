@@ -46,11 +46,11 @@ public class IncomeManageService : IIncomeManageService
             await _unitOfWork.BeginTransactionAsync();
             await _unitOfWork.IncomeManage.AddAsync(model);
             await _unitOfWork.SaveChangesAsync();
-            _logger.LogInformation("Added Income:{id}\nUser:{userId}", model.Id, model.UserId);
+            _logger.LogInformation("Added Income\nUser: {userId}", model.UserId);
             var sendEmail = await _notificationService.NotifyIncomeAsync(model);
             if (sendEmail)
             {
-                _logger.LogInformation("Email Sent To User:{id}",model.Id);
+                _logger.LogInformation("Email Sent To User: {id}",model.UserId);
                 return true;
             }
             return true;

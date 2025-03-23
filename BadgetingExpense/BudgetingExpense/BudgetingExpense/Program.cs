@@ -11,9 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.ConfigureDatabaseRules(builder.Configuration);
 builder.AddMultipleJsonFileConfiguration();
-builder.Services.AddHostedService<ConfigureDatabase>()
-    .AddILoggerConfiguration();
-builder.Services.AddHostedService<LimitsCleanupService>();
+builder.Services.AddHostedService<ConfigureDatabase>();
+builder.Services.AddILoggerConfiguration();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerAuthorization();
@@ -26,6 +25,7 @@ builder.Services.AddScoped<CategoryValidationFilter>();
 
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionLoggerMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
