@@ -68,9 +68,10 @@ public class IncomeManageRepository : IManageFinancesRepository<Income>
         await _connection.ExecuteAsync(query, new { category.Name, Type = 1, category.Id }, _transaction);
     }
 
-    public async Task UpdateAsync(Income model)
+    public async Task UpdateAsync(Update model)
     {
-        await _connection.ExecuteAsync("UpdateProcedure", new { TableName = "Incomes",model.Currency, model.Amount, model.Date, Id = model.Id, UserId = model.UserId },
+        await _connection.ExecuteAsync("UpdateProcedure",
+            new { TableName = "Incomes", model.Currency, model.Amount, model.Date, Id = model.Id, UserId = model.UserId },
             _transaction, commandType: System.Data.CommandType.StoredProcedure);
     }
 }

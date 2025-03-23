@@ -98,7 +98,7 @@ public class IncomeManageService : IIncomeManageService
         return null;
     }
 
-    public async Task<bool> UpdateIncomeAsync(Income income)
+    public async Task<bool> UpdateIncomeAsync(Update income)
     {
         try
         {

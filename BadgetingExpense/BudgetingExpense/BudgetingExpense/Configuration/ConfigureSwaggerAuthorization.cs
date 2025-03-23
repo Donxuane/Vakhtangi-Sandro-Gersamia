@@ -11,9 +11,11 @@ public static class ConfigureSwaggerAuthorization
              options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
              {
                  In = ParameterLocation.Header,
-                 Description = "Enter 'Bearer' [space] and then your token",
+                 Description = "Enter Only your token",
                  Name = "Authorization",
-                 Type = SecuritySchemeType.ApiKey
+                 Type = SecuritySchemeType.Http,
+                 Scheme = "Bearer",
+                 BearerFormat = "JWT"
              });
              options.AddSecurityRequirement(new OpenApiSecurityRequirement
              {

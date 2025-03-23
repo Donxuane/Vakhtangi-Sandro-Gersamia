@@ -9,6 +9,6 @@ public interface IIncomeManageService
     public Task<int> AddIncomeCategoryAsync(string CategoryName);
     public Task<IEnumerable<Income>?> GetAllIncomeRecordsAsync(string userId);
     public Task<IEnumerable<Category>?> GetAllIncomeCategoryRecordsAsync(string userId);
-    public Task<bool> UpdateIncomeAsync(Income income);
+    public Task<bool> UpdateIncomeAsync(Update income);
     public Task<bool> UpdateIncomeCategoryAsync(Category categoryDto);
 }

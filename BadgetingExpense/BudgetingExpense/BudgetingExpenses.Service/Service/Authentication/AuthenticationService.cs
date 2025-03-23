@@ -37,7 +37,7 @@ public class AuthenticationService : IAuthenticationService
         }
     }
 
-    public Task<string>? GenerateJwtTokenAsync(string userId, string userRole)
+    private Task<string>? GenerateJwtTokenAsync(string userId, string userRole)
     {
         try
         {
@@ -71,7 +71,7 @@ public class AuthenticationService : IAuthenticationService
         }
     }
 
-    public async Task<IList<string>?> GetRoleAsync(string email)
+    private async Task<IList<string>?> GetRoleAsync(string email)
     {
         try
         {
@@ -99,25 +99,28 @@ public class AuthenticationService : IAuthenticationService
         return null;
     }
 
-    public async Task<bool> LoginUserServiceAsync(Login user)
+    public async Task<string?> LoginUserServiceAsync(Login user)
     {
         try
         {
             var check = await _unitOfWork.Authentication.CheckUserAsync(user.Email, user.Password);
             if (check)
             {
+                var userModel = await GetUserAsync(user.Email);
+                var roles = await GetRoleAsync(user.Email);
+                var token = await GenerateJwtTokenAsync(userModel.Id, roles.FirstOrDefault());
                 _logger.LogInformation("Logged in user {email}", user.Email);
-                return true;
+                return token;
             }
         }
         catch (Exception ex)
         {
             _logger.LogError("Log in fail email:{email} ex:{ex}",user.Email, ex.Message);
         }
-        return false;
+        return null;
     }
 
-    public async Task<bool> RegisterUserServiceAsync(Register user)
+    public async Task<bool> RegisterUserAsync(Register user)
     {
         try
         {
@@ -131,6 +134,7 @@ public class AuthenticationService : IAuthenticationService
             var result = await _unitOfWork.Authentication.RegisterUserAsync(userMapped);
             if (result)
             {
+                await AddUserRolesAsync(user.Email, "User");
                 _logger.LogInformation("New user registered {email}", user.Email);
                 return true;
             }

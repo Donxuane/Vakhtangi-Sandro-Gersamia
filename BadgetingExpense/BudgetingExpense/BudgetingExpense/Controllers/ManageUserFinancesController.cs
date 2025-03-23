@@ -3,6 +3,7 @@ using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
 using BudgetingExpense.Domain.Contracts.IServices.ILimitations;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.DtoModels;
+using BudgetingExpenses.Service.MapService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,7 +36,7 @@ public class ManageUserFinancesController : ControllerBase
         var result = await _incomeService.AddIncomeCategoryAsync(category);
         if (result > 0)
         {
-            return Ok($"{result} Category added Successfully");
+            return Ok($"ID: {result}; {category} Category added Successfully");
         }
         return BadRequest("Couldn't Process Add");
     }
@@ -45,15 +46,7 @@ public class ManageUserFinancesController : ControllerBase
     public async Task<IActionResult> AddIncomeAsync([FromForm] IncomeDto dtoModel)
     {
         string userId = HttpContext.Items["UserId"].ToString();
-        var model = new Income
-        {
-            Amount = dtoModel.Amount,
-            CategoryId = dtoModel.CategoryId,
-            Currency = dtoModel.Currency,
-            Date = dtoModel.Date,
-            UserId = userId
-        };
-        var result = await _incomeService.AddIncomeAsync(model);
+        var result = await _incomeService.AddIncomeAsync(dtoModel.Map(userId));
         if (result)
         {
             return Ok("Income Added Successfully");
@@ -75,16 +68,8 @@ public class ManageUserFinancesController : ControllerBase
     [HttpPut("UpdateIncome")]
     public async Task<IActionResult> UpdateIncomeAsync([FromForm] UpdateIncomeDto model)
     {
-        var income = new Income()
-        {
-            Id = model.Id,
-            Amount = model.Amount,
-            CategoryId = model.CategoryId,
-            Currency = model.Currency,
-            Date = model.Date,
-            UserId = HttpContext.Items["UserId"].ToString()
-        };
-        var incomeUpdated = await _incomeService.UpdateIncomeAsync(income);
+        var incomeUpdated = await _incomeService.UpdateIncomeAsync(
+            model.Map(HttpContext.Items["UserId"].ToString()));
         if (incomeUpdated)
         {
             return Ok("Successfully Updated");
@@ -98,15 +83,8 @@ public class ManageUserFinancesController : ControllerBase
     [HttpPost("AddExpenses")]
     public async Task<IActionResult> AddExpensesAsync([FromForm] ExpenseDto expenseDto)
     {
-        var expense = new Expense
-        {
-            Amount = expenseDto.Amount,
-            CategoryId = expenseDto.CategoryId,
-            Currency = expenseDto.Currency,
-            Date = expenseDto.Date,
-            UserId = HttpContext.Items["UserId"].ToString()
-        };
-        var result = await _expenseManageService.AddExpenseAsync(expense);
+        var result = await _expenseManageService.AddExpenseAsync(
+            expenseDto.Map(HttpContext.Items["UserId"].ToString()));
         if (result)
         {
             return Ok("Added Successfully");
@@ -128,16 +106,8 @@ public class ManageUserFinancesController : ControllerBase
     [HttpPut("UpdateExpenses")]
     public async Task<IActionResult> UpdateExpensesAsync([FromForm] UpdateExpenseDto model)
     {
-        var expenses = new Expense()
-        {
-            Id = model.Id,
-            Currency = model.Currency,
-            Amount = model.Amount,
-            CategoryId = model.CategoryId,
-            Date = model.Date,
-            UserId = HttpContext.Items["UserId"].ToString()
-        };
-        var result = await _expenseManageService.UpdateExpenseAsync(expenses);
+        var result = await _expenseManageService.UpdateExpenseAsync(
+            model.Map(HttpContext.Items["UserId"].ToString()));
         if (result)
         {
             return Ok("Updated Successfully");
@@ -162,15 +132,8 @@ public class ManageUserFinancesController : ControllerBase
     [HttpPost("AddLimit")]
     public async Task<IActionResult> AddLimitAsync([FromForm] LimitsDto limitDto)
     {
-        var limits = new Limits()
-        {
-            CategoryId = limitDto.CategoryId,
-            Amount = limitDto.Amount,
-            PeriodCategory = limitDto.Period,
-            DateAdded = limitDto.DateAdded,
-            UserId = HttpContext.Items["UserId"].ToString()
-        };
-        var result = await _limitsManageService.SetLimitsAsync(limits);
+        var result = await _limitsManageService.SetLimitsAsync(
+            limitDto.Map(HttpContext.Items["UserId"].ToString()));
         if (result)
         {
             return Ok("Limit added successfully");
@@ -186,29 +149,18 @@ public class ManageUserFinancesController : ControllerBase
         {
             return Ok("Limit deleted successfully");
         }
-
         return BadRequest("something went wrong");
     }
 
     [HttpPut("UpdateLimitsAsync")]
     public async Task<IActionResult> UpdateLimitAsync([FromForm] UpdateLimitDto updateLimitDto)
     {
-        var updateLimits = new Limits()
-        {
-            Id = updateLimitDto.Id,
-            Amount = updateLimitDto.Amount,
-            CategoryId = updateLimitDto.CategoryId,
-            PeriodCategory = updateLimitDto.PeriodCategory,
-            DateAdded = updateLimitDto.StartupDate,
-            UserId = HttpContext.Items["UserId"].ToString()
-
-        };
-        var result = await _limitsManageService.UpdateLimitsAsync(updateLimits);
+        var result = await _limitsManageService.UpdateLimitsAsync(
+            updateLimitDto.Map(HttpContext.Items["UserId"].ToString()));
         if (result)
         {
             return Ok(" limit updated successfully");
         }
-
         return BadRequest();
     }
 }

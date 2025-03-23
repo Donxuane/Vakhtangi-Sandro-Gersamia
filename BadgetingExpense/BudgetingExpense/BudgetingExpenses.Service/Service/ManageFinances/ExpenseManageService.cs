@@ -91,7 +91,7 @@ public class ExpenseManageService : IExpenseManageService
         return null;
     }
 
-    public async Task<bool> UpdateExpenseAsync(Expense expense)
+    public async Task<bool> UpdateExpenseAsync(Update expense)
     {
         try
         {

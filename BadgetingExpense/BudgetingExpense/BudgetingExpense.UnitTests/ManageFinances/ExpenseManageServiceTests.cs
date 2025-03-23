@@ -88,13 +88,13 @@ public class ExpenseManageServiceTests
     [Fact]
     public async Task UpdateExpenseAsync_ShouldNotProceedUpdate_WhileExceptionThrown()
     {
-        _mockUnitOfWork.Setup(x => x.ExpenseManage.UpdateAsync(It.IsAny<Expense>()))
+        _mockUnitOfWork.Setup(x => x.ExpenseManage.UpdateAsync(It.IsAny<Update>()))
             .ThrowsAsync(new Exception());
 
-        var result = await _service.UpdateExpenseAsync(It.IsAny<Expense>());
+        var result = await _service.UpdateExpenseAsync(It.IsAny<Update>());
         Assert.False(result);
         _mockUnitOfWork.Verify(x => x.BeginTransactionAsync(), Times.Once);
-        _mockUnitOfWork.Verify(x => x.ExpenseManage.UpdateAsync(It.IsAny<Expense>()), Times.Once);
+        _mockUnitOfWork.Verify(x => x.ExpenseManage.UpdateAsync(It.IsAny<Update>()), Times.Once);
         _mockUnitOfWork.Verify(x => x.RollBackAsync(), Times.Once);
     }
 

@@ -2,6 +2,7 @@
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 using BudgetingExpenses.Service.DtoModels.ReportsDtoModels;
+using BudgetingExpenses.Service.MapService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,22 +36,11 @@ public class ReportsController : ControllerBase
     [HttpGet("IncomeRecordsBasedCurrency")]
     public async Task<IActionResult> IncomeRecordsBasedCurrencyAsync([FromQuery] GetRecordsCurrencyDto model)
     {
-        var record = new RecordCurrency
-        {
-            UserId = HttpContext.Items["UserId"].ToString(),
-            Currency = model.Currency,
-            Period = model.Period
-        };
-        var result = await _service.RecordsBasedCurrencyPeriodAsync(record);
+        var result = await _service.RecordsBasedCurrencyPeriodAsync(
+            model.Map(HttpContext.Items["UserId"].ToString()));
         if (result != null && result.Any())
         {
-            var finalRecords = result.Select(x => new RecordsDto
-            {
-                Amount = x.Amount,
-                CategoryName = x.CategoryName,
-                Currency = x.Currency.ToString(),
-                Date = x.IncomeDate
-            });
+            var finalRecords = result.Select(x => x.Map());
             return Ok(finalRecords.ToList());
         }
         return BadRequest("Records Not Found");
@@ -59,22 +49,10 @@ public class ReportsController : ControllerBase
     [HttpGet("IncomeRecordsBasedCategory")]
     public async Task<IActionResult> IncomeRecordsBasedCategoryAsync([FromQuery]GetRecordsCategoryDto model)
     {
-        var record = new RecordCategory
-        {
-            Category = model.CategoryName,
-            Period = model.Period,
-            UserId = HttpContext.Items["UserId"].ToString()
-        };
-        var result = await _service.RecordsBasedCategoryPeriodAsync(record);
+        var result = await _service.RecordsBasedCategoryPeriodAsync(model.Map(HttpContext.Items["UserId"].ToString()));
         if (result != null && result.Any())
         {
-            var finalRecords = result.Select(x => new RecordsDto
-            {
-                Amount = x.Amount,
-                CategoryName = x.CategoryName,
-                Currency = x.Currency.ToString(),
-                Date = x.IncomeDate
-            });
+            var finalRecords = result.Select(x => x.Map());
             return Ok(finalRecords);
         }
         return BadRequest("Records Not Found");
@@ -86,13 +64,7 @@ public class ReportsController : ControllerBase
         var result = await _service.GetAllRecordsAsync(HttpContext.Items["UserId"].ToString());
         if (result != null && result.Any())
         {
-            var records = result.Select(x => new RecordsDto
-            {
-                Amount = x.Amount,
-                CategoryName = x.CategoryName,
-                Currency = x.Currency.ToString(),
-                Date = x.IncomeDate
-            });
+            var records = result.Select(x => x.Map());
             return Ok(records);
         }
         return BadRequest("Records Not Found");
@@ -114,21 +86,11 @@ public class ReportsController : ControllerBase
     [HttpGet("TopExpenses")]
     public async Task<IActionResult> GetMostExpenseRecordsAsync(int period)
     {
-        var model = new RecordsPeriod
-        {
-            Period = period,
-            UserId = HttpContext.Items["UserId"].ToString()
-        };
-        var result = await _expenseRecordsService.BiggestExpensesBasedPeriodAsync(model);
+        var result = await _expenseRecordsService.BiggestExpensesBasedPeriodAsync(
+            new RecordsPeriod { Period = period, UserId = HttpContext.Items["UserId"].ToString() });
         if (result != null && result.Any())
         {
-            var finalResult = result.Select(x => new RecordsDto
-            {
-                Amount = x.Amount,
-                CategoryName = x.CategoryName,
-                Currency = x.Currency.ToString(),
-                Date = x.Date
-            });
+            var finalResult = result.Select(x => x.Map());
             return Ok(finalResult.ToList());
         }
         return BadRequest("Records Not Found");
@@ -136,22 +98,11 @@ public class ReportsController : ControllerBase
     [HttpGet("ExpensesBasedCategoryPeriod")]
     public async Task<IActionResult> GetExpensesBasedCategoryPeriodAsync([FromQuery] GetRecordsCategoryDto model)
     {
-        var categoryModel = new RecordCategory
-        {
-            Category = model.CategoryName,
-            Period = model.Period,
-            UserId = HttpContext.Items["UserId"].ToString()
-        };
-        var records = await _expenseRecordsService.RecordsBasedCategoryPeriodAsync(categoryModel);
+        var records = await _expenseRecordsService.RecordsBasedCategoryPeriodAsync(
+            model.Map(HttpContext.Items["UserId"].ToString()));
         if (records != null && records.Any())
         {
-            var finalRecord = records.Select(x => new RecordsDto
-            {
-                Amount = x.Amount,
-                CategoryName = x.CategoryName,
-                Currency = x.Currency.ToString(),
-                Date = x.Date
-            });
+            var finalRecord = records.Select(x => x.Map());
             return Ok(finalRecord);
         }
         return BadRequest("Records Not Found");
@@ -159,22 +110,11 @@ public class ReportsController : ControllerBase
     [HttpGet("ExpensesBasedCurrencyPeriod")]
     public async Task<IActionResult> GetExpensesBasedCurrencyPeriodAsync([FromQuery] GetRecordsCurrencyDto model)
     {
-        var currencyModel = new RecordCurrency
-        {
-            Currency = model.Currency,
-            Period = model.Period,
-            UserId = HttpContext.Items["UserId"].ToString()
-        };
-        var records = await _expenseRecordsService.RecordsBasedCurrencyPeriodAsync(currencyModel);
+        var records = await _expenseRecordsService.RecordsBasedCurrencyPeriodAsync(
+            model.Map(HttpContext.Items["UserId"].ToString()));
         if (records != null && records.Any())
         {
-            var final = records.Select(x => new RecordsDto
-            {
-                Amount = x.Amount,
-                CategoryName = x.CategoryName,
-                Currency = x.Currency.ToString(),
-                Date = x.Date
-            });
+            var final = records.Select(x => x.Map());
             return Ok(final);
         }
         return BadRequest("Records Not Found");
@@ -185,13 +125,7 @@ public class ReportsController : ControllerBase
         var records = await _expenseRecordsService.GetAllRecordsAsync(HttpContext.Items["UserId"].ToString());
         if (records != null && records.Any())
         {
-            var final = records.Select(x => new RecordsDto
-            {
-                Amount = x.Amount,
-                CategoryName = x.CategoryName,
-                Currency = x.Currency.ToString(),
-                Date = x.Date
-            });
+            var final = records.Select(x => x.Map());
             return Ok(final);
         }
         return BadRequest("Records Not Found");

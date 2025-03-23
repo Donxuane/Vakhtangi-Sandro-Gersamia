@@ -71,7 +71,7 @@ public class ExpenseManageRepository : IManageFinancesRepository<Expense>
 
     }
 
-    public async Task UpdateAsync(Expense model)
+    public async Task UpdateAsync(Update model)
     {
         await _connection.ExecuteAsync("UpdateProcedure", new { TableName = "Expenses",model.Currency,
             model.Amount,model.CategoryId, model.Date, Id = model.Id, UserId = model.UserId},
