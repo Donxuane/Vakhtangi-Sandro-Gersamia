@@ -154,14 +154,14 @@
     {
       "UserId": "null",
       "CategoryId": 4,
-      "Amount": 400,
+      "Amount": 1400,
       "PeriodCategory": 1,
       "DateAdded": "23 february 2025"
     },
     {
       "UserId": "null",
       "CategoryId": 5,
-      "Amount": 150,
+      "Amount": 1150,
       "PeriodCategory": 1,
       "DateAdded": "10 february 2025"
     }
