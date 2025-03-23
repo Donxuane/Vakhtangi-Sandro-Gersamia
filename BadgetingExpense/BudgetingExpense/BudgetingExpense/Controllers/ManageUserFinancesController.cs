@@ -12,7 +12,6 @@ namespace BudgetingExpense.api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class ManageUserFinancesController : ControllerBase
-
 {
     private readonly IIncomeManageService _incomeService;
     private readonly IExpenseManageService _expenseManageService;
