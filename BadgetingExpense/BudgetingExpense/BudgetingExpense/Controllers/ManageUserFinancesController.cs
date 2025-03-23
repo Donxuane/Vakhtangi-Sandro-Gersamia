@@ -1,7 +1,6 @@
 ﻿using BudgetingExpense.Api.CustomFilters;
 using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
 using BudgetingExpense.Domain.Contracts.IServices.ILimitations;
-using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.DtoModels;
 using BudgetingExpenses.Service.MapService;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +12,6 @@ namespace BudgetingExpense.api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public class ManageUserFinancesController : ControllerBase
-
 {
     private readonly IIncomeManageService _incomeService;
     private readonly IExpenseManageService _expenseManageService;
