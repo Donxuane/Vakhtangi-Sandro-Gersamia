@@ -25,9 +25,10 @@ public class ExpenseForecastService : IForecastService<ExpenseRecord>
         try
         {
             var count = _configuration.GetSection("ConfigureForcastCounts")["ExpenseForecastCount"];
+            var amount = int.TryParse(count, out int number);
             var expenseRecords = await _unitOfWork.ExpenseRecords.GetUserExpenseRecordsAsync(userId);
             var model = expenseRecords.GroupBy(x => new { x.Currency, x.CategoryName })
-                .Where(x=>x.Count()>=Convert.ToInt32(count))
+                .Where(x => x.Count() >= number)
                 .Select(x => new ForecastCategory
                 {
                     CategoryName = x.Key.CategoryName,

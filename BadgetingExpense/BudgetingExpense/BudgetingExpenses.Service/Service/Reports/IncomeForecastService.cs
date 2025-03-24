@@ -25,9 +25,10 @@ public class IncomeForecastService : IForecastService<IncomeRecord>
         try
         {
             var count = _configuration.GetSection("ConfigureForcastCounts")["IncomeForecastCount"];
+            var amount = int.TryParse(count, out int number);
             var incomeRecords = await _unitOfWork.IncomeRecords.GetUserIncomeRecordsAsync(userId);
             var model = incomeRecords.GroupBy(x => new { x.Currency, x.CategoryName })
-                .Where(x => x.Count() >= Convert.ToInt32(count))
+                .Where(x => x.Count() >= number)
                 .Select(x => new ForecastCategory
                 {
                     CategoryName = x.Key.CategoryName,
