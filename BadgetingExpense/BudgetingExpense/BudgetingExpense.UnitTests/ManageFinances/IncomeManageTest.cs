@@ -16,7 +16,7 @@ using Moq;
 namespace BudgetingExpense.UnitTests.ManageFinances
 {
     
-    public class IncomeManageTest
+    public class IncomeManageTest :VerifyLogs
     {
         private readonly Mock<IUnitOfWork> _mockUnitOfWork;
         private readonly Mock<ILogger<IncomeManageService>> _mockIncomeManageServiceLogger;
@@ -75,7 +75,7 @@ namespace BudgetingExpense.UnitTests.ManageFinances
         {
             var model = new Income
                 { Amount = 100, CategoryId = 1, Currency = Currencies.GEL, Date = DateTime.UtcNow, UserId = "User Id" };
-            _mockUnitOfWork.Setup(x => x.IncomeManage.AddAsync(model)).GetType();
+            _mockUnitOfWork.Setup(x => x.IncomeManage.AddAsync(model)).Returns(Task.CompletedTask);
             var result = await _IncomeManageService.AddIncomeAsync(model);
             Assert.True(result);
             
@@ -171,32 +171,8 @@ namespace BudgetingExpense.UnitTests.ManageFinances
 
         }
 
-
-
-
-
-        private void VerifyLogInformation<T>(Mock<ILogger<T>> loggerMock) 
-        {
-            loggerMock.Verify(x => x.Log(
-                LogLevel.Information,
-                It.IsAny<EventId>(),
-                It.IsAny<It.IsAnyType>(), 
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()
-            ), Times.Once);
-        }
-
-        private void VerifyLogError<T>(Mock<ILogger<T>> loggerMock)
-        {
-            loggerMock.Verify(x => x.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.IsAny<It.IsAnyType>(),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()
-
-               ),Times.Once);
-        }
+        
+        
 
     }
 }
