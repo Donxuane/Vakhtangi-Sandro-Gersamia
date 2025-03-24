@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 using BudgetingExpense.Domain.Contracts.IServices.INotifications;
@@ -128,6 +129,39 @@ namespace BudgetingExpense.UnitTests.ManageFinances
             _mockUnitOfWork.Verify(x => x.RollBackAsync());
             VerifyLogError(_mockIncomeManageServiceLogger);
         }
+
+        [Fact]
+        public async Task GetAllIncomeCategoryRecordsAsync_ShouldReturnAllIncomeCategoryRecords_BasedUserId()
+        {
+            string userId = "user Id";
+            var returnCollection = new List<Income>()
+            {
+                new()
+                {
+                    Id = 1, Amount = 10, CategoryId = 1, Currency = Currencies.GEL, Date = DateTime.UtcNow.AddDays(-3),
+                    UserId = userId
+                },
+                new()
+                {
+                    Id = 2, Amount = 20, CategoryId = 1, Currency = Currencies.GEL, Date = DateTime.UtcNow.AddDays(-5),
+                    UserId = userId
+                },
+            };
+            _mockUnitOfWork.Setup(x => x.IncomeManage.GetAllAsync(userId)).ReturnsAsync(returnCollection);
+            var result = await _IncomeManageService.GetAllIncomeRecordsAsync(userId);
+            Assert.Equal(returnCollection,result);
+            Assert.NotNull(result);
+            Assert.All(returnCollection,record =>
+                Assert.Contains(result,rec => rec.Id ==  record.Id));
+            _mockUnitOfWork.Verify(x=>x.IncomeManage.GetAllAsync(userId),Times.Once);
+            
+        }
+
+      
+
+
+
+
 
         private void VerifyLogInformation<T>(Mock<ILogger<T>> loggerMock) 
         {
