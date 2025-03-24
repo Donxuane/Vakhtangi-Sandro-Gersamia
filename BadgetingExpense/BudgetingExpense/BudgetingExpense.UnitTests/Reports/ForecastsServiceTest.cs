@@ -33,6 +33,8 @@ public class ForecastsServiceTest
     public async Task GetForecastCategoriesAsync_ShouldReturnIncomeForecast_BasedCategoriesAndCurrencies()
     {
         string userId = "User Id";
+        _configuration.Setup(x => x.GetSection("ConfigureForcastCounts")["IncomeForecastCount"])
+            .Returns("2");
         var repositoryModelCollection = new List<IncomeRecord> {
             new() { Amount = 500,CategoryName = "salary",IncomeDate = DateTime.UtcNow.AddMonths(-1),Currency = Currencies.GEL,UserId = userId},
             new() { Amount = 500,CategoryName = "salary",IncomeDate = DateTime.UtcNow.AddMonths(-2),Currency = Currencies.GEL,UserId = userId},
@@ -67,7 +69,7 @@ public class ForecastsServiceTest
         var result = await _expenseForecastService.GetForecastCategoriesAsync(userId);
 
         Assert.Null(result);
-        _mockedUnitOfWork.Verify(x => x.ExpenseRecords.GetUserExpenseRecordsAsync(userId), Times.Once);
+        _mockedUnitOfWork.Verify(x => x.ExpenseRecords.GetUserExpenseRecordsAsync(userId), Times.Never);
         _mockedExpenseForecastLogger.Verify(x=>x.Log(LogLevel.Error,
             It.IsAny<EventId>(),
             It.Is<It.IsAnyType>((o, t) => true),
