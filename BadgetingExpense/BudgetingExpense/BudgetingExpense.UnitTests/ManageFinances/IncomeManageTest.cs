@@ -131,7 +131,7 @@ namespace BudgetingExpense.UnitTests.ManageFinances
         }
 
         [Fact]
-        public async Task GetAllIncomeCategoryRecordsAsync_ShouldReturnAllIncomeCategoryRecords_BasedUserId()
+        public async Task GetAllIncomeRecordsAsync_ShouldReturnAllIncomeCategoryRecords_BasedUserId()
         {
             string userId = "user Id";
             var returnCollection = new List<Income>()
@@ -157,7 +157,19 @@ namespace BudgetingExpense.UnitTests.ManageFinances
             
         }
 
-      
+        [Fact]
+
+        public async Task
+            GetAllIncomeRecordsAsync_ShouldNotReturnAllIncomeCategoryRecords_WhileExceptionThrown_BasedUserId()
+        {
+            _mockUnitOfWork.Setup(x => x.IncomeManage.GetAllAsync(It.IsAny<string>())).ThrowsAsync(new Exception());
+            var result = await _IncomeManageService.GetAllIncomeRecordsAsync(It.IsAny<string>());
+            Assert.Null(result);
+            _mockUnitOfWork.Verify(x => x.IncomeManage.GetAllAsync(It.IsAny<string>()), Times.Once);
+            VerifyLogError(_mockIncomeManageServiceLogger);
+
+
+        }
 
 
 

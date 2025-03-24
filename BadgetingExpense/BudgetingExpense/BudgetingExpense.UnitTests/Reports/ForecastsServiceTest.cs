@@ -4,6 +4,7 @@ using BudgetingExpense.Domain.Enums;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 using BudgetingExpenses.Service.Service.Reports;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -13,17 +14,19 @@ public class ForecastsServiceTest
 {
     private readonly Mock<IUnitOfWork> _mockedUnitOfWork;
     private readonly Mock<ILogger<IncomeForecastService>> _mockedIncomeForecastLogger;
-    private readonly Mock<ILogger<ExpenseForecastService>> _mockedExpenseForcastLogger;
+    private readonly Mock<ILogger<ExpenseForecastService>> _mockedExpenseForecastLogger;
     private readonly IForecastService<IncomeRecord> _incomeForecastService;
-    private readonly IForecastService<ExpenseRecord> _expenseForcastService;
+    private readonly IForecastService<ExpenseRecord> _expenseForecastService;
+    private readonly Mock<IConfiguration> _configuration;
 
     public ForecastsServiceTest()
     {
         _mockedUnitOfWork = new Mock<IUnitOfWork>();
         _mockedIncomeForecastLogger = new Mock<ILogger<IncomeForecastService>>();
-        _mockedExpenseForcastLogger = new Mock<ILogger<ExpenseForecastService>>();
-        _incomeForecastService = new IncomeForecastService(_mockedUnitOfWork.Object,_mockedIncomeForecastLogger.Object);
-        _expenseForcastService = new ExpenseForecastService(_mockedUnitOfWork.Object, _mockedExpenseForcastLogger.Object);
+        _mockedExpenseForecastLogger = new Mock<ILogger<ExpenseForecastService>>();
+        _configuration = new Mock<IConfiguration>();
+        _incomeForecastService = new IncomeForecastService(_mockedUnitOfWork.Object,_mockedIncomeForecastLogger.Object,_configuration.Object);
+        _expenseForecastService = new ExpenseForecastService(_mockedUnitOfWork.Object, _mockedExpenseForecastLogger.Object,_configuration.Object);
     }
 
     [Fact]
@@ -61,11 +64,11 @@ public class ForecastsServiceTest
         _mockedUnitOfWork.Setup(x => x.ExpenseRecords.GetUserExpenseRecordsAsync(userId))
             .ThrowsAsync(new Exception());
 
-        var result = await _expenseForcastService.GetForecastCategoriesAsync(userId);
+        var result = await _expenseForecastService.GetForecastCategoriesAsync(userId);
 
         Assert.Null(result);
         _mockedUnitOfWork.Verify(x => x.ExpenseRecords.GetUserExpenseRecordsAsync(userId), Times.Once);
-        _mockedExpenseForcastLogger.Verify(x=>x.Log(LogLevel.Error,
+        _mockedExpenseForecastLogger.Verify(x=>x.Log(LogLevel.Error,
             It.IsAny<EventId>(),
             It.Is<It.IsAnyType>((o, t) => true),
             It.IsAny<Exception>(),
