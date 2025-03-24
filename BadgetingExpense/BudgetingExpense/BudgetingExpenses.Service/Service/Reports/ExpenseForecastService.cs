@@ -2,6 +2,7 @@
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace BudgetingExpenses.Service.Service.Reports;
@@ -10,18 +11,23 @@ public class ExpenseForecastService : IForecastService<ExpenseRecord>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ExpenseForecastService> _logger;
+    private readonly IConfiguration _configuration;
 
-    public ExpenseForecastService(IUnitOfWork unitOfWork, ILogger<ExpenseForecastService> logger)
+    public ExpenseForecastService(IUnitOfWork unitOfWork, ILogger<ExpenseForecastService> logger,
+        IConfiguration configuration)
     {
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _configuration = configuration;
     }
-    public async Task<IEnumerable<ForecastCategory>> GetForecastCategoriesAsync(string userId)
+    public async Task<IEnumerable<ForecastCategory>?> GetForecastCategoriesAsync(string userId)
     {
         try
         {
+            var count = _configuration.GetSection("ConfigureForcastCounts")["ExpenseForecastCount"];
             var expenseRecords = await _unitOfWork.ExpenseRecords.GetUserExpenseRecordsAsync(userId);
             var model = expenseRecords.GroupBy(x => new { x.Currency, x.CategoryName })
+                .Where(x=>x.Count()>=Convert.ToInt32(count))
                 .Select(x => new ForecastCategory
                 {
                     CategoryName = x.Key.CategoryName,

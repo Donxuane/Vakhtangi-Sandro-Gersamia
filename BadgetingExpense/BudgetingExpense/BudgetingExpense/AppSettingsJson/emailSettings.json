@@ -1,9 +1,17 @@
 ﻿{
   "EmailSettings": {
-      "CompanyName": "Bank",
-      "CompanyEmail": "budgetingandexpensetracker12@gmail.com",
-      "Host": "smtp.gmail.com",
-      "Port": 587,
-      "AppPassword": "mnyteecfzwylmqoo"
-    }
+    "CompanyName": "Bank",
+    "CompanyEmail": "budgetingandexpensetracker12@gmail.com",
+    "Host": "smtp.gmail.com",
+    "Port": 587,
+    "AppPassword": "mnyteecfzwylmqoo"
+  },
+  "IncomeEmail": {
+    "Subject": "Check-Out!",
+    "Message": "<strong><h1>Recieved</h1></strong><h2>{category} : {amount}{currency}</h2><p>Check your profile for detailed info</p><p>Date Recieved {date}</p>"
+  },
+  "LimitEmail": {
+    "Subject": "you exceeded",
+    "Message": "<strong><h1 > Limit Exceeded</h1></strong><h2>{category} : {amount} {currency} Limit  :{limitAmount}{LimitCurrency} </h2><p>Check your profile for detailed info</p><p>Date Recieved {date}</p>"
+  }
 }
