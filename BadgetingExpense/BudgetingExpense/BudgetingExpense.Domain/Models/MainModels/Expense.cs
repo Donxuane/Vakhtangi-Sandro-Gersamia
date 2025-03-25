@@ -1,6 +1,6 @@
-﻿using BudgetingExpense.Domain.CustomAttributes;
-using BudgetingExpense.Domain.Enums;
+﻿using BudgetingExpense.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
+using BudgetingExpense.Domain.CustomValidationAttributes;
 
 namespace BudgetingExpense.Domain.Models.MainModels;
 
