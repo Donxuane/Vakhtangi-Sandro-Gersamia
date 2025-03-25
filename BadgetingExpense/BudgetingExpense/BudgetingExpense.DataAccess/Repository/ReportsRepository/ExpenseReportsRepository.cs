@@ -16,7 +16,6 @@ public class ExpenseReportsRepository : IExpenseRecordsRepository
 
     public async Task<(IEnumerable<ExpenseRecord> records,int pageAmount)> AllExpenseRecordsAsync(string userId, int page)
     {
-        int pageSize = 2;
         var offset = (page - 1) * pageSize;
         var query = "SELECT * FROM ExpenseCategories WHERE UserId = @userId ORDER BY Date DESC " +
             "OFFSET @offset ROWS FETCH NEXT @pageSize ROWS ONLY";
