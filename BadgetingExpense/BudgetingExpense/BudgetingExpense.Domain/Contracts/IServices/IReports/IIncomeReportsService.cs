@@ -7,5 +7,5 @@ public interface IIncomeReportsService
 {
     public Task<IEnumerable<IncomeRecord>?> RecordsBasedCurrencyPeriodAsync(RecordCurrency model);
     public Task<IEnumerable<IncomeRecord>?> RecordsBasedCategoryPeriodAsync(RecordCategory model);
-    public Task<IEnumerable<IncomeRecord>?> GetAllRecordsAsync(string userId);
+    public Task<(IEnumerable<IncomeRecord> records, int pageAmount)?> GetAllRecordsAsync(string userId, int page);
 }

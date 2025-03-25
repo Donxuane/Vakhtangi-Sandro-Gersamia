@@ -59,13 +59,13 @@ public class ReportsController : ControllerBase
     }
 
     [HttpGet("AllIncomeRecords")]
-    public async Task<IActionResult> IncomeRecordsAsync()
+    public async Task<IActionResult> IncomeRecordsAsync(int page)
     {
-        var result = await _service.GetAllRecordsAsync(HttpContext.Items["UserId"].ToString());
-        if (result != null && result.Any())
+        var result = await _service.GetAllRecordsAsync(HttpContext.Items["UserId"].ToString(),page);
+        if (result != null && result.Value.records.Any())
         {
-            var records = result.Select(x => x.Map());
-            return Ok(records);
+            var records = result.Value.records.Select(x => x.Map());
+            return Ok(new { result.Value.pageAmount, records });
         }
         return BadRequest("Records Not Found");
     }

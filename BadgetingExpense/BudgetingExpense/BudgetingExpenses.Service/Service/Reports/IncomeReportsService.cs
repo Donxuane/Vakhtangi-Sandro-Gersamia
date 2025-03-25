@@ -17,14 +17,14 @@ public class IncomeReportsService : IIncomeReportsService
         _logger = logger;
     }
 
-    public async Task<IEnumerable<IncomeRecord>?> GetAllRecordsAsync(string userId)
+    public async Task<(IEnumerable<IncomeRecord> records, int pageAmount)?> GetAllRecordsAsync(string userId, int page)
     {
         try
         {
-            var records = await _unitOfWork.IncomeRecords.GetUserIncomeRecordsAsync(userId);
+            var records = await _unitOfWork.IncomeRecords.AllIncomeRecordsAsync(userId, page);
             if (records != null)
             {
-                return records.OrderByDescending(x => x.IncomeDate);
+                return records;
             }
             return null;
         }
@@ -39,7 +39,7 @@ public class IncomeReportsService : IIncomeReportsService
     {
         try
         {
-            var records = await _unitOfWork.IncomeRecords.GetUserIncomeRecordsAsync(model.UserId);
+            var records = await _unitOfWork.IncomeRecords.IncomeRecordsAsync(model.UserId);
             if (records != null && records.Any())
             {
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
@@ -62,7 +62,7 @@ public class IncomeReportsService : IIncomeReportsService
     {
         try
         {
-            var records = await _unitOfWork.IncomeRecords.GetUserIncomeRecordsAsync(model.UserId);
+            var records = await _unitOfWork.IncomeRecords.IncomeRecordsAsync(model.UserId);
             if (records != null)
             {
                 var period = DateTime.UtcNow.AddMonths(-model.Period);

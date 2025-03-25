@@ -31,14 +31,14 @@ public class IncomeReportsTests
             new() { UserId = userId, IncomeDate = DateTime.UtcNow.AddMonths(-3)},
             new() { UserId = userId, IncomeDate = DateTime.UtcNow.AddMonths(-4)}
         };
-        _mockedUnitOfWork.Setup(x => x.IncomeRecords.GetUserIncomeRecordsAsync(userId))
+        _mockedUnitOfWork.Setup(x => x.IncomeRecords.IncomeRecordsAsync(userId))
             .ReturnsAsync(returnResult);
 
         var result = await _incomeReportsService.GetAllRecordsAsync(userId);
         Assert.NotNull(result);
         Assert.Equal(returnResult.OrderByDescending(x => x.IncomeDate), result);
 
-        _mockedUnitOfWork.Verify(x => x.IncomeRecords.GetUserIncomeRecordsAsync(userId), Times.Once);
+        _mockedUnitOfWork.Verify(x => x.IncomeRecords.IncomeRecordsAsync(userId), Times.Once);
     }
 
     [Fact]
@@ -46,18 +46,18 @@ public class IncomeReportsTests
     {
         var model = new RecordCategory { UserId = "User Id" };
 
-        _mockedUnitOfWork.Setup(x => x.IncomeRecords.GetUserIncomeRecordsAsync(model.UserId))
+        _mockedUnitOfWork.Setup(x => x.IncomeRecords.IncomeRecordsAsync(model.UserId))
             .ReturnsAsync([]);
         var result = await _incomeReportsService.RecordsBasedCategoryPeriodAsync(model);
         Assert.Null(result);
-        _mockedUnitOfWork.Verify(x => x.IncomeRecords.GetUserIncomeRecordsAsync(model.UserId), Times.Once);
+        _mockedUnitOfWork.Verify(x => x.IncomeRecords.IncomeRecordsAsync(model.UserId), Times.Once);
     }
 
     [Fact]
     public async Task RecordsBasedCurrencyPeriodAsync_ShouldReturnNull_WhileException()
     {
         var model = new RecordCurrency { UserId = "User Id" };
-        _mockedUnitOfWork.Setup(x => x.IncomeRecords.GetUserIncomeRecordsAsync(model.UserId))
+        _mockedUnitOfWork.Setup(x => x.IncomeRecords.IncomeRecordsAsync(model.UserId))
             .ThrowsAsync(new Exception());
 
         var result = await _incomeReportsService.RecordsBasedCurrencyPeriodAsync(model);

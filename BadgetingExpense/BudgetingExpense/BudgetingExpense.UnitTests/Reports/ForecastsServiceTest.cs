@@ -44,7 +44,7 @@ public class ForecastsServiceTest
             new() {CategoryName = "salary",Currency = Currencies.GEL.ToString(),Expected = 500} 
         };
 
-        _mockedUnitOfWork.Setup(x => x.IncomeRecords.GetUserIncomeRecordsAsync(userId))
+        _mockedUnitOfWork.Setup(x => x.IncomeRecords.IncomeRecordsAsync(userId))
             .ReturnsAsync(repositoryModelCollection);
 
         var result = await _incomeForecastService.GetForecastCategoriesAsync(userId);
@@ -56,7 +56,7 @@ public class ForecastsServiceTest
             Assert.Contains(result, actual => actual.CategoryName == expected.CategoryName &&
             actual.Currency == expected.Currency && actual.Expected == expected.Expected);
         });
-        _mockedUnitOfWork.Verify(x=>x.IncomeRecords.GetUserIncomeRecordsAsync(userId), Times.Once);
+        _mockedUnitOfWork.Verify(x=>x.IncomeRecords.IncomeRecordsAsync(userId), Times.Once);
     }
 
     [Fact]
