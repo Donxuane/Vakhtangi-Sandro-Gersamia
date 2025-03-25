@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 ﻿using BudgetingExpense.Domain.CustomValidationAttributes;
 using BudgetingExpense.Domain.Enums;
+=======
+﻿using BudgetingExpense.Domain.Enums;
+>>>>>>> 578beaae104d3c323dff0b084b9ee2acc55bb79d
 using System.ComponentModel.DataAnnotations;
+using BudgetingExpense.Domain.CustomValidationAttributes;
 
 namespace BudgetingExpense.Domain.Models.MainModels;
 
