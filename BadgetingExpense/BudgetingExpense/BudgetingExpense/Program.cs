@@ -20,7 +20,6 @@ builder.Services.ConfigureJWTBearerToken(builder.Configuration);
 builder.Services.AddRepositoryInstances();
 builder.Services.AddServiceInstances();
 builder.Services.AddScoped<ConfigureSeeding>();
-
 builder.Services.AddScoped<CategoryValidationFilter>();
 
 
