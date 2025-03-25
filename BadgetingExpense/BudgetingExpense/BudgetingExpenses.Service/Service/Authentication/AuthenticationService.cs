@@ -70,23 +70,6 @@ public class AuthenticationService : IAuthenticationService
     {
         try
         {
-            //string keyObject = email + "object";
-            //var check = _cache.TryGetValue(email, out string? code);
-            //if (check)
-            //{
-            //    if (verificationCode == code)
-            //    {
-            //        _cache.TryGetValue(keyObject, out Register? value);
-            //        var result = await RegisterUserAsync(value);
-            //        if (result)
-            //        {
-            //            _cache.Remove(email);
-            //            _cache.Remove(keyObject);
-            //            _logger.LogInformation("Cache memory cleaned up keys:{a},{b}", email, keyObject);
-            //            return true;
-            //        }
-            //    }
-            //}
             var check = _cache.TryGetValue(email, out Tuple<string, Register>? value);
             if (check)
             {
@@ -111,7 +94,6 @@ public class AuthenticationService : IAuthenticationService
     {
         try
         {
-            //string keyObject = user.Email + "object";
             string key = user.Email;
             var options = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
             if (!_cache.TryGetValue(key, out Tuple<string, Register>? value))
@@ -125,23 +107,6 @@ public class AuthenticationService : IAuthenticationService
                     Subject = "Verify Email"
                 });
             }
-            //if (!_cache.TryGetValue(keyObject, out Register? _))
-            //{
-            //    Register? registeredUser = user;
-            //    _cache.Set(keyObject, registeredUser, options);
-            //}
-
-            //if (!_cache.TryGetValue(key, out string? _))
-            //{
-            //    string code = new Random().Next(0, 10000).ToString("D4");
-            //    _cache.Set(key, code, options);
-            //    _emailService.SendEmailAsync(new EmailModel
-            //    {
-            //        Email = user.Email,
-            //        Message = $"<h1>Verification Code: <strong>{code}</strong></h1>",
-            //        Subject = "Verify Email"
-            //    });
-            //}
             return true;
         }
         catch(Exception ex)
@@ -149,7 +114,6 @@ public class AuthenticationService : IAuthenticationService
             _logger.LogError("Exception ex:{wx}",ex);
             return false;
         }
-    }
     private async Task<bool> RegisterUserAsync(Register user)
     {
         try
