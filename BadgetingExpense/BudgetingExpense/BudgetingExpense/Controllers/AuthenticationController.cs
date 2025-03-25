@@ -1,5 +1,6 @@
 ﻿using BudgetingExpense.Domain.Contracts.IServices.IAuthentication;
 using BudgetingExpense.Domain.Models.AuthenticationModels;
+using BudgetingExpenses.Service.DtoModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetingExpense.api.Controllers;
@@ -24,14 +25,25 @@ public class AuthenticationController : ControllerBase
         return BadRequest("Couldn't Process Login");
     }
 
-    [HttpPost("RegisterUser")]
-    public async Task<IActionResult> RegisterUserAsync([FromForm]Register user)
+    [HttpPost("RegisterUserWithValidation")]
+    public IActionResult GenerateValidationCode([FromForm]Register user)
     {
-        var register = await _auth.RegisterUserAsync(user);
-        if(register == true)
+        var result = _auth.CacheNewUserCredentialsInMemory(user);
+        if (result)
         {
-            return Ok("You Registered Successfully");
+            return Ok("Check email for verification!");
         }
-        return BadRequest();
+        return BadRequest("Code can't be generated fro now!\nTry later");
+    }
+
+    [HttpPost("ValidateEmail")]
+    public async Task<IActionResult> ValidateAndRegisterUser([FromForm]EmailValidation model)
+    {
+        var result = await _auth.VerifyUserEmailAsync(model.Email, model.Code);
+        if (result)
+        {
+            return Ok("You registered successfully!");
+        }
+        return BadRequest("Code does not match!\nTry again");
     }
 }

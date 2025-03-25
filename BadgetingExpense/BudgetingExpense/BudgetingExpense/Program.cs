@@ -8,21 +8,19 @@ using BudgetingExpenses.Service.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
-
-builder.Services.ConfigureDatabaseRules(builder.Configuration);
-builder.AddMultipleJsonFileConfiguration();
-builder.Services.AddHostedService<ConfigureDatabase>();
-builder.Services.AddILoggerConfiguration();
 builder.Services.AddControllers();
+builder.Services.AddHostedService<ConfigureDatabase>();
+builder.AddMultipleJsonFileConfiguration();
+builder.Services.AddILoggerConfiguration();
+builder.Services.ConfigureDatabaseRules(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerAuthorization();
 builder.Services.ConfigureJWTBearerToken(builder.Configuration);
 builder.Services.AddRepositoryInstances();
 builder.Services.AddServiceInstances();
 builder.Services.AddScoped<ConfigureSeeding>();
-
 builder.Services.AddScoped<CategoryValidationFilter>();
-
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionLoggerMiddleware>();

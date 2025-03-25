@@ -1,5 +1,4 @@
-﻿
-using BudgetingExpense.Domain.CustomValidationAttributes;
+﻿using BudgetingExpense.Domain.CustomValidationAttributes;
 using BudgetingExpense.Domain.Enums;
 
 namespace BudgetingExpenses.Service.DtoModels;
