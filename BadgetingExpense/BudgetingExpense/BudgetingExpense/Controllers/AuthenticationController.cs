@@ -25,7 +25,7 @@ public class AuthenticationController : ControllerBase
         return BadRequest("Couldn't Process Login");
     }
 
-    [HttpPost("RegisterUserWithValidation")]
+    [HttpPost("RegisterWithValidation")]
     public IActionResult GenerateValidationCode([FromForm]Register user)
     {
         var result = _auth.CacheNewUserCredentialsInMemory(user);

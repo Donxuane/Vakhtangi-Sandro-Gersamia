@@ -80,6 +80,7 @@ public class AuthenticationService : IAuthenticationService
                     {
                         _cache.Remove(email);
                         _logger.LogInformation("Cache memory cleaned up Key: {key}", email);
+                        return true;
                     }
                 }
             }
@@ -99,21 +100,23 @@ public class AuthenticationService : IAuthenticationService
             if (!_cache.TryGetValue(key, out Tuple<string, Register>? value))
             {
                 string code = new Random().Next(0, 10000).ToString("D4");
-                _cache.Set(key, (code, user), options);
+                _cache.Set(key, Tuple.Create(code, user), options);
                 _emailService.SendEmailAsync(new EmailModel
                 {
                     Email = user.Email,
                     Message = $"<h1>Verification Code: <strong>{code}</strong></h1>",
                     Subject = "Verify Email"
                 });
+                return true;
             }
-            return true;
+            
         }
         catch(Exception ex)
         {
             _logger.LogError("Exception ex:{wx}",ex);
-            return false;
         }
+        return false;
+    }
     private async Task<bool> RegisterUserAsync(Register user)
     {
         try
