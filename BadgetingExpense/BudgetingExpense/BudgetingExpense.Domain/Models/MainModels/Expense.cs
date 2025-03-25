@@ -1,4 +1,4 @@
-﻿using BudgetingExpense.Domain.CustomAttributes;
+﻿using BudgetingExpense.Domain.CustomValidationAttributes;
 using BudgetingExpense.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 

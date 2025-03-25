@@ -7,5 +7,6 @@ public interface IAuthenticationService
 {
     public Task<string?> LoginUserServiceAsync(Login user);
     public Task AddUserRolesAsync(string email, string role);
-    public Task<User?> GetUserAsync(string email);
+    public Task<bool> VerifyUserEmailAsync(string email, string verificationCode);
+    public bool CacheNewUserCredentialsInMemory(Register user);
 }
