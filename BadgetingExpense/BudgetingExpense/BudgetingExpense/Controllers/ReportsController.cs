@@ -120,13 +120,13 @@ public class ReportsController : ControllerBase
         return BadRequest("Records Not Found");
     }
     [HttpGet("AllExpenseRecords")]
-    public async Task<IActionResult> GetAllExpenseRecordsAsync()
+    public async Task<IActionResult> GetAllExpenseRecordsAsync(int page)
     {
-        var records = await _expenseRecordsService.GetAllRecordsAsync(HttpContext.Items["UserId"].ToString());
-        if (records != null && records.Any())
+        var records = await _expenseRecordsService.GetAllRecordsAsync(HttpContext.Items["UserId"].ToString(), page);
+        if (records != null && records.Value.records.Any())
         {
-            var final = records.Select(x => x.Map());
-            return Ok(final);
+            var final = records.Value.records.Select(x => x.Map());
+            return Ok(new { PageAmount = records.Value.pageAmount, final });
         }
         return BadRequest("Records Not Found");
     }

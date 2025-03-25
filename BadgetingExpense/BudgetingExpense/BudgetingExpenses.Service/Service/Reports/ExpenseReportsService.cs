@@ -21,7 +21,7 @@ public class ExpenseReportsService : IExpenseReportsService
     {
         try
         {
-            var records = await _unitOfWork.ExpenseRecords.GetUserExpenseRecordsAsync(model.UserId);
+            var records = await _unitOfWork.ExpenseRecords.ExpenseRecordsAsync(model.UserId);
             if (records != null)
             {
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
@@ -38,14 +38,14 @@ public class ExpenseReportsService : IExpenseReportsService
         }
     }
 
-    public async Task<IEnumerable<ExpenseRecord>?> GetAllRecordsAsync(string userId)
+    public async Task<(IEnumerable<ExpenseRecord>? records, int pageAmount)?> GetAllRecordsAsync(string userId, int page)
     {
         try
         {
-            var records = await _unitOfWork.ExpenseRecords.GetUserExpenseRecordsAsync(userId);
-            if (records != null && records.Any())
+            var records = await _unitOfWork.ExpenseRecords.AllExpenseRecordsAsync(userId, page);
+            if (records.records != null && records.records.Any())
             {
-                return records.OrderByDescending(x => x.Date);
+                return records;
             }
             return null;
         }
@@ -60,7 +60,7 @@ public class ExpenseReportsService : IExpenseReportsService
     {
         try
         {
-            var records = await _unitOfWork.ExpenseRecords.GetUserExpenseRecordsAsync(model.UserId);
+            var records = await _unitOfWork.ExpenseRecords.ExpenseRecordsAsync(model.UserId);
             if (records != null)
             {
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
@@ -83,7 +83,7 @@ public class ExpenseReportsService : IExpenseReportsService
     {
         try
         {
-            var records = await _unitOfWork.ExpenseRecords.GetUserExpenseRecordsAsync(model.UserId);
+            var records = await _unitOfWork.ExpenseRecords.ExpenseRecordsAsync(model.UserId);
             if (records != null)
             {
                 var period = DateTime.UtcNow.AddMonths(-model.Period);

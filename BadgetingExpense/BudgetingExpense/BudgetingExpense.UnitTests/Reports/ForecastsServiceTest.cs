@@ -63,13 +63,13 @@ public class ForecastsServiceTest
     public async Task GetForecastCategoriesAsync_ShouldReturnNull_WhileException()
     {
         string userId = "User Id";
-        _mockedUnitOfWork.Setup(x => x.ExpenseRecords.GetUserExpenseRecordsAsync(userId))
+        _mockedUnitOfWork.Setup(x => x.ExpenseRecords.ExpenseRecordsAsync(userId))
             .ThrowsAsync(new Exception());
 
         var result = await _expenseForecastService.GetForecastCategoriesAsync(userId);
 
         Assert.Null(result);
-        _mockedUnitOfWork.Verify(x => x.ExpenseRecords.GetUserExpenseRecordsAsync(userId), Times.Never);
+        _mockedUnitOfWork.Verify(x => x.ExpenseRecords.ExpenseRecordsAsync(userId), Times.Never);
         _mockedExpenseForecastLogger.Verify(x=>x.Log(LogLevel.Error,
             It.IsAny<EventId>(),
             It.Is<It.IsAnyType>((o, t) => true),
