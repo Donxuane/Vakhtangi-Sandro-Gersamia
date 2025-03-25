@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace BudgetingExpense.api.Configuration;
+namespace BudgetingExpense.DataAccess.Configuration;
 
 public class ConfigureSeeding
 {
@@ -16,7 +16,7 @@ public class ConfigureSeeding
     private readonly UserManager<IdentityModel> _userManager;
 
     public ConfigureSeeding(RoleManager<IdentityRole> roleManager, IConfiguration configuration,
-        ILogger<ConfigureSeeding> logger,IUnitOfWork unitOfWork, UserManager<IdentityModel> userManager)
+        ILogger<ConfigureSeeding> logger, IUnitOfWork unitOfWork, UserManager<IdentityModel> userManager)
     {
         _roleManager = roleManager;
         _configuration = configuration;
@@ -66,17 +66,17 @@ public class ConfigureSeeding
 
                 if (item.Type == 1)
                 {
-                   
+
                     await _unitOfWork.IncomeManage.AddCategoryAsync(item);
-                    
+
                     _logger.LogInformation("New income category added {item}", item.Name);
                 }
 
                 else
                 {
-                  
+
                     await _unitOfWork.ExpenseManage.AddCategoryAsync(item);
-                  
+
                     _logger.LogInformation("New expense category added {item}", item.Name);
                 }
             }
@@ -92,28 +92,28 @@ public class ConfigureSeeding
                     var userId = userModel.Id;
                     foreach (var item in incomes)
                     {
-                      
+
                         item.UserId = userId;
                         await _unitOfWork.IncomeManage.AddAsync(item);
-            
+
                         _logger.LogInformation("New incomes  added{item} ", item);
                     }
 
                     foreach (var item in expenses)
                     {
-                       
+
                         item.UserId = userId;
                         await _unitOfWork.ExpenseManage.AddAsync(item);
-                      
+
                         _logger.LogInformation("New expenses  added{item} ", item);
                     }
 
                     foreach (var item in limits)
                     {
-                   
+
                         item.UserId = userId;
                         await _unitOfWork.LimitsRepository.AddLimitAsync(item);
-                      
+
                         _logger.LogInformation("New limits  added{item} ", item);
                     }
                 }

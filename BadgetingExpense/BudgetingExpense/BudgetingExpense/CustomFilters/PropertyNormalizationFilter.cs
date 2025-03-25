@@ -14,7 +14,7 @@ public class PropertyNormalizationFilter : IActionFilter
         {
             if(argument.Value is string value)
             {
-                if (!value.Contains('@')&& argument.Key!="Password")
+                if (!value.Contains('@')&& !string.Equals(argument.Key,"Password",StringComparison.OrdinalIgnoreCase))
                 {
                     context.ActionArguments[argument.Key] = value.Trim().ToLower();
                 }

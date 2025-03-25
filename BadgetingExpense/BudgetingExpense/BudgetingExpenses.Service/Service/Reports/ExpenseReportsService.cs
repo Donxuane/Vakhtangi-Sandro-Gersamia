@@ -43,7 +43,7 @@ public class ExpenseReportsService : IExpenseReportsService
         try
         {
             var records = await _unitOfWork.ExpenseRecords.AllExpenseRecordsAsync(userId, page);
-            if (records.records != null && records.records.Any())
+            if (records.Value.records != null && records.Value.records.Any())
             {
                 return records;
             }

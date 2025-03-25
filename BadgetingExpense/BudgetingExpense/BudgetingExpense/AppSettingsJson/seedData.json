@@ -5,20 +5,22 @@
   ],
   "Users": [
     {
-      "Id": "dasdnfkds",
+      "Id": "Id",
       "Name": "Sandro",
       "Surname": "Gersamia",
       "Email": "sandrogersamia77@gmail.com",
       "Password": "1234567",
-      "RegisterDate": "19 june 2005"
+      "RegisterDate": "19 june 2005",
+      "Notifications": true
     },
     {
-      "Id": "dasdnfkdssadnsakd",
+      "Id": "Id",
       "Name": "Vakhtangi",
       "Surname": "Chitashvili",
       "Email": "vaxtangichitashvili@gmail.com",
       "Password": "1234567",
-      "RegisterDate": "12 february 2004"
+      "RegisterDate": "12 february 2004",
+      "Notifications": true
     }
   ],
 

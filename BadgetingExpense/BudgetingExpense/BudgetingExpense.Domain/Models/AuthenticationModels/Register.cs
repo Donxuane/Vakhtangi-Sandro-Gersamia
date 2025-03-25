@@ -1,21 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BudgetingExpense.Domain.CustomBinder;
+using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace BudgetingExpense.Domain.Models.AuthenticationModels;
-
+[ModelBinder(typeof(CustomModelBinder<Register>))]
 public class Register
 {
     [Required(ErrorMessage ="Name is required!")]
-    public required string Name { get; set; }
+    public string Name { get; set; }
     [Required(ErrorMessage ="Surname is required!")]
-    public required string Surname { get; set; }
+    public string Surname { get; set; }
     [Required(ErrorMessage ="Email is required!")]
     [EmailAddress]
-    public required string Email { get; set; }
+    public string Email { get; set; }
     [Required]
     [DataType(DataType.Password, ErrorMessage = "Enter password")]
-    public required string Password { get; set; }
+    public string Password { get; set; }
     [Required]
     [Compare("Password", ErrorMessage = "Password does not much!")]
     [DataType(DataType.Password, ErrorMessage = "Repeat password!")]
-    public required string RepeatPassword { get; set; }
+    public string RepeatPassword { get; set; }
 }

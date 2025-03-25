@@ -4,14 +4,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace BudgetingExpenses.Service.Configuration.BackgroundServices;
+namespace BudgetingExpenses.Service.BackgroundServices;
 
 public class LimitsCleanupService : BackgroundService
 {
 
     private readonly ILogger<LimitsCleanupService> _logger;
     private readonly IServiceScopeFactory _serviceProvider;
-    public LimitsCleanupService(ILogger<LimitsCleanupService> logger, 
+    public LimitsCleanupService(ILogger<LimitsCleanupService> logger,
         IServiceScopeFactory serviceProvider)
     {
         _logger = logger;
@@ -45,7 +45,7 @@ public class LimitsCleanupService : BackgroundService
             var notificationService = scope.ServiceProvider.GetRequiredService<ILimitNotificationService>();
             var userCredentialsRepository = scope.ServiceProvider.GetRequiredService<IGetUserCredentials>();
             var collection = await userCredentialsRepository.GetAllUsersIdiesAsync();
-            foreach(var record in collection)
+            foreach (var record in collection)
             {
                 var result = await notificationService.NotifyLimitExceededAsync(record);
                 if (result == false)
@@ -60,11 +60,11 @@ public class LimitsCleanupService : BackgroundService
             {
                 await asyncDisposable.DisposeAsync();
             }
-            else if(scope is IDisposable disposable)
+            else if (scope is IDisposable disposable)
             {
                 disposable.Dispose();
             }
-           
+
         }
     }
 }

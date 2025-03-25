@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace BudgetingExpense.Domain.CustomValidationAttributes;
 [AttributeUsage(AttributeTargets.Property, AllowMultiple =true, Inherited =false)]
-public class NormalizeInputAttribute : ValidationAttribute
+public class CheckNumbersAttribute : ValidationAttribute
 {
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {

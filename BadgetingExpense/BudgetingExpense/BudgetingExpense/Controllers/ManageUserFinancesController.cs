@@ -1,6 +1,7 @@
 ﻿using BudgetingExpense.Api.CustomFilters;
 using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
 using BudgetingExpense.Domain.Contracts.IServices.ILimitations;
+using BudgetingExpense.Domain.CustomValidationAttributes;
 using BudgetingExpenses.Service.DtoModels;
 using BudgetingExpenses.Service.MapService;
 using Microsoft.AspNetCore.Authorization;
@@ -28,6 +29,7 @@ public class ManageUserFinancesController : ControllerBase
     /// <summary>
     /// Manage Income
     /// </summary>
+    [ServiceFilter(typeof(PropertyNormalizationFilter))]
     [HttpPost("AddIncomeCategory")]
     public async Task<IActionResult> AddIncomeCategoryAsync(string category)
     {
@@ -113,6 +115,7 @@ public class ManageUserFinancesController : ControllerBase
         return BadRequest("Couldn't Process Update");
     }
 
+    [ServiceFilter(typeof(PropertyNormalizationFilter))]
     [HttpPost("AddExpenseCategory")]
     public async Task<IActionResult> AddExpenseCategoryAsync(string category)
     {
@@ -127,6 +130,8 @@ public class ManageUserFinancesController : ControllerBase
     /// <summary>
     /// Manage Limits On Expenses
     /// </summary>
+
+    [ServiceFilter(typeof(CategoryValidationFilter))]
     [HttpPost("AddLimit")]
     public async Task<IActionResult> AddLimitAsync([FromForm] LimitsDto limitDto)
     {
@@ -150,6 +155,7 @@ public class ManageUserFinancesController : ControllerBase
         return BadRequest("something went wrong");
     }
 
+    [ServiceFilter(typeof(CategoryValidationFilter))]
     [HttpPut("UpdateLimitsAsync")]
     public async Task<IActionResult> UpdateLimitAsync([FromForm] UpdateLimitDto updateLimitDto)
     {

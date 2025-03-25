@@ -20,6 +20,7 @@ builder.Services.AddRepositoryInstances();
 builder.Services.AddServiceInstances();
 builder.Services.AddScoped<ConfigureSeeding>();
 builder.Services.AddScoped<CategoryValidationFilter>();
+builder.Services.AddScoped<PropertyNormalizationFilter>();
 builder.Services.AddMemoryCache();
 
 var app = builder.Build();

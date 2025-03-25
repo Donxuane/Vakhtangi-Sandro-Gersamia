@@ -1,5 +1,4 @@
-﻿using BudgetingExpense.api.Configuration;
-using BudgetingExpense.DataAccess.Repository.Identity;
+﻿using BudgetingExpense.DataAccess.Repository.Identity;
 using BudgetingExpense.DataAccess.SqlQueries;
 using Dapper;
 using Microsoft.Data.SqlClient;
