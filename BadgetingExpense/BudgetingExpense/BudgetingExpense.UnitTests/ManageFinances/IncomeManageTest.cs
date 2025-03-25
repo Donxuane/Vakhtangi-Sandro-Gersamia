@@ -9,6 +9,7 @@ using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Enums;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.Service.ManageFinances;
+using BudgetingExpenses.Service.Service.Notifications;
 using Castle.Components.DictionaryAdapter.Xml;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -159,8 +160,7 @@ namespace BudgetingExpense.UnitTests.ManageFinances
 
         [Fact]
 
-        public async Task
-            GetAllIncomeRecordsAsync_ShouldNotReturnAllIncomeCategoryRecords_WhileExceptionThrown_BasedUserId()
+        public async Task GetAllIncomeRecordsAsync_ShouldNotReturnAllIncomeCategoryRecords_WhileExceptionThrown_BasedUserId()
         {
             _mockUnitOfWork.Setup(x => x.IncomeManage.GetAllAsync(It.IsAny<string>())).ThrowsAsync(new Exception());
             var result = await _IncomeManageService.GetAllIncomeRecordsAsync(It.IsAny<string>());
@@ -171,8 +171,60 @@ namespace BudgetingExpense.UnitTests.ManageFinances
 
         }
 
+        [Fact]
+        public async Task GetAllIncomeCategoryRecordsAsync_ShouldReturnAllIncomeCategoryRecords_BasedOnUserId()
+        {
+            var userId = "User Id";
+            var list = new List<Category>()
+            {
+                new() { Id = 1, Name = "Salary", Type = 1 },
+                new() { Id = 2, Name = "Business", Type = 1 },
+                new() { Id = 3, Name = "Salary", Type = 1 }
+            };
+            _mockUnitOfWork.Setup(x => x.IncomeManage.GetCategoriesAsync(userId)).ReturnsAsync(list);
+            var result = await _IncomeManageService.GetAllIncomeCategoryRecordsAsync(userId);
+            Assert.NotNull(result);
+            Assert.All(list, item =>
+            Assert.Contains(result, category =>
+                category.Id == item.Id && category.Name == item.Name && category.Type == item.Type
+            ));
+            Assert.Equal(list, result);
+        }
+        [Fact]
+        public async Task UpdateIncomeAsync_ShouldUpdateIncome_ShouldReturnTrue()
+        {
+            var updateIncome = new Update
+            {
+                Amount = 100, CategoryId = 1, Currency = Currencies.EUR, Date = DateTime.UtcNow, Id = 1,
+                UserId = "userId"
+            };
+            _mockUnitOfWork.Setup(x => x.IncomeManage.UpdateAsync(updateIncome)).Returns(Task.CompletedTask);
+            var result = await _IncomeManageService.UpdateIncomeAsync(updateIncome);
+            Assert.True(result);
+            _mockUnitOfWork.Verify(x=>x.BeginTransactionAsync(),Times.Once);
+            _mockUnitOfWork.Verify(x=>x.IncomeManage.UpdateAsync(updateIncome),Times.Once);
+            _mockUnitOfWork.Verify(x => x.SaveChangesAsync(),Times.Once);
+            _mockUnitOfWork.Verify(x => x.RollBackAsync(), Times.Never);
+            VerifyLogInformation(_mockIncomeManageServiceLogger);
+        }
+        [Fact]
+        public async Task UpdateIncomeAsync_ShouldNotUpdateIncome_WhileExceptionThrown_ShouldReturnFalse()
+        {
+            _mockUnitOfWork.Setup(x => x.IncomeManage.UpdateAsync(It.IsAny<Update>())).ThrowsAsync(new Exception());
+            var result = await _IncomeManageService.UpdateIncomeAsync(It.IsAny<Update>());
+            Assert.False(result);
+            _mockUnitOfWork.Verify(x => x.BeginTransactionAsync(), Times.Once);
+            _mockUnitOfWork.Verify(x => x.IncomeManage.UpdateAsync(It.IsAny<Update>()), Times.Once);
+            _mockUnitOfWork.Verify(x => x.RollBackAsync(), Times.Once);
+            VerifyLogError(_mockIncomeManageServiceLogger);
+
+        }
+
         
-        
+
+        }
+
+
 
     }
 }
