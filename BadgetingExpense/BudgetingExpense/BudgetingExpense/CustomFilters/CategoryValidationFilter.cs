@@ -1,5 +1,5 @@
 ﻿using BudgetingExpense.Domain.Contracts.IRepository.IGet;
-using BudgetingExpense.Domain.CustomAttributes;
+using BudgetingExpense.Domain.CustomValidationAttributes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Reflection;

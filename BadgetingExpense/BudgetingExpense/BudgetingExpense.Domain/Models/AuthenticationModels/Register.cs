@@ -4,18 +4,18 @@ namespace BudgetingExpense.Domain.Models.AuthenticationModels;
 
 public class Register
 {
-    [Required]
-    public string Name { get; set; }
-    [Required]
-    public string Surname { get; set; }
-    [Required]
+    [Required(ErrorMessage ="Name is required!")]
+    public required string Name { get; set; }
+    [Required(ErrorMessage ="Surname is required!")]
+    public required string Surname { get; set; }
+    [Required(ErrorMessage ="Email is required!")]
     [EmailAddress]
-    public string Email { get; set; }
+    public required string Email { get; set; }
     [Required]
-    [DataType(DataType.Password, ErrorMessage = "Enter Password")]
-    public string Password { get; set; }
+    [DataType(DataType.Password, ErrorMessage = "Enter password")]
+    public required string Password { get; set; }
     [Required]
     [Compare("Password", ErrorMessage = "Password does not much!")]
-    [DataType(DataType.Password, ErrorMessage = "Repeat Password!")]
-    public string RepeatPassword { get; set; }
+    [DataType(DataType.Password, ErrorMessage = "Repeat password!")]
+    public required string RepeatPassword { get; set; }
 }
