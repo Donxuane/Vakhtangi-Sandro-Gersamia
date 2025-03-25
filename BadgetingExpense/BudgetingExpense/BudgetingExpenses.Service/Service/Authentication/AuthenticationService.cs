@@ -70,20 +70,33 @@ public class AuthenticationService : IAuthenticationService
     {
         try
         {
-            string keyObject = email + "object";
-            var check = _cache.TryGetValue(email, out string? code);
+            //string keyObject = email + "object";
+            //var check = _cache.TryGetValue(email, out string? code);
+            //if (check)
+            //{
+            //    if (verificationCode == code)
+            //    {
+            //        _cache.TryGetValue(keyObject, out Register? value);
+            //        var result = await RegisterUserAsync(value);
+            //        if (result)
+            //        {
+            //            _cache.Remove(email);
+            //            _cache.Remove(keyObject);
+            //            _logger.LogInformation("Cache memory cleaned up keys:{a},{b}", email, keyObject);
+            //            return true;
+            //        }
+            //    }
+            //}
+            var check = _cache.TryGetValue(email, out Tuple<string, Register>? value);
             if (check)
             {
-                if (verificationCode == code)
+                if(verificationCode == value.Item1)
                 {
-                    _cache.TryGetValue(keyObject, out Register? value);
-                    var result = await RegisterUserAsync(value);
-                    if (result)
+                    var registerUser = await RegisterUserAsync(value.Item2);
+                    if (registerUser)
                     {
                         _cache.Remove(email);
-                        _cache.Remove(keyObject);
-                        _logger.LogInformation("Cache memory cleaned up keys:{1},{2}", email, keyObject);
-                        return true;
+                        _logger.LogInformation("Cache memory cleaned up Key: {key}", email);
                     }
                 }
             }
@@ -98,19 +111,13 @@ public class AuthenticationService : IAuthenticationService
     {
         try
         {
-            string keyObject = user.Email + "object";
+            //string keyObject = user.Email + "object";
             string key = user.Email;
             var options = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
-            if (!_cache.TryGetValue(keyObject, out Register? _))
-            {
-                Register? registeredUser = user;
-                _cache.Set(keyObject, registeredUser, options);
-            }
-
-            if (!_cache.TryGetValue(key, out string? _))
+            if (!_cache.TryGetValue(key, out Tuple<string, Register>? value))
             {
                 string code = new Random().Next(0, 10000).ToString("D4");
-                _cache.Set(key, code, options);
+                _cache.Set(key, (code, user), options);
                 _emailService.SendEmailAsync(new EmailModel
                 {
                     Email = user.Email,
@@ -118,6 +125,23 @@ public class AuthenticationService : IAuthenticationService
                     Subject = "Verify Email"
                 });
             }
+            //if (!_cache.TryGetValue(keyObject, out Register? _))
+            //{
+            //    Register? registeredUser = user;
+            //    _cache.Set(keyObject, registeredUser, options);
+            //}
+
+            //if (!_cache.TryGetValue(key, out string? _))
+            //{
+            //    string code = new Random().Next(0, 10000).ToString("D4");
+            //    _cache.Set(key, code, options);
+            //    _emailService.SendEmailAsync(new EmailModel
+            //    {
+            //        Email = user.Email,
+            //        Message = $"<h1>Verification Code: <strong>{code}</strong></h1>",
+            //        Subject = "Verify Email"
+            //    });
+            //}
             return true;
         }
         catch(Exception ex)

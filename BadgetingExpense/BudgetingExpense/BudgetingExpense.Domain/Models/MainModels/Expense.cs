@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿using BudgetingExpense.Domain.CustomValidationAttributes;
+using BudgetingExpense.Domain.CustomValidationAttributes;
 using BudgetingExpense.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 
