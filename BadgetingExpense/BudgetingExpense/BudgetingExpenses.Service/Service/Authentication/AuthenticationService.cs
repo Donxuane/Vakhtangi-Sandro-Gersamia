@@ -10,6 +10,7 @@ using BudgetingExpense.Domain.Contracts.IServices.IAuthentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Caching.Memory;
 using BudgetingExpense.Domain.Contracts.IServices.IMessaging;
+using BudgetingExpenses.Service.Service.Messaging.Email;
 
 namespace BudgetingExpenses.Service.Service.Authentication;
 
@@ -95,17 +96,21 @@ public class AuthenticationService : IAuthenticationService
     {
         try
         {
+            var email = _configuration.GetSection("VerifyEmail");
+            string? subject = email["Subject"];
+            string? message = email["Message"];
             string key = user.Email;
             var options = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
             if (!_cache.TryGetValue(key, out Tuple<string, Register>? value))
             {
                 string code = new Random().Next(0, 10000).ToString("D4");
                 _cache.Set(key, Tuple.Create(code, user), options);
+                message = message.Replace("{code}", code);
                 _emailService.SendEmailAsync(new EmailModel
                 {
                     Email = user.Email,
-                    Message = $"<h1>Verification Code: <strong>{code}</strong></h1>",
-                    Subject = "Verify Email"
+                    Message = message,
+                    Subject = subject
                 });
                 return true;
             }
