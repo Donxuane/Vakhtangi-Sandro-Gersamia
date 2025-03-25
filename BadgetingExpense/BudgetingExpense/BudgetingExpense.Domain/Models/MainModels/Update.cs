@@ -1,7 +1,4 @@
-﻿using BudgetingExpense.Domain.CustomAttributes;
 using BudgetingExpense.Domain.Enums;
-using System.ComponentModel.DataAnnotations;
-
 namespace BudgetingExpense.Domain.Models.MainModels;
 
 public class Update
