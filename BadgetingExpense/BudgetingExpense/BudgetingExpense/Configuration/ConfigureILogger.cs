@@ -11,7 +11,7 @@ public static class ConfigureILogger
          Log.Logger = new LoggerConfiguration()
             .WriteTo.Console(theme: AnsiConsoleTheme.Code)
             .WriteTo.File("Logs/ErrorLogs.log", restrictedToMinimumLevel: LogEventLevel.Error)
-            .WriteTo.File("Logs/InformationLogs.log", restrictedToMinimumLevel: LogEventLevel.Information)
+            //.WriteTo.File("Logs/InformationLogs.log", restrictedToMinimumLevel: LogEventLevel.Information)
             .CreateLogger();
         services.AddLogging(options =>
         {
