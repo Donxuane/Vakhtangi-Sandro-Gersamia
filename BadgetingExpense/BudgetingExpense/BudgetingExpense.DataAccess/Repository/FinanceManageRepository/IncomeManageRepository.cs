@@ -33,10 +33,10 @@ public class IncomeManageRepository : IManageFinancesRepository<Income>
         }, _transaction);
     }
 
-    public async Task DeleteAsync(int Id)
+    public async Task DeleteAsync(int Id, string userId)
     {
-        var query = "DELETE FROM Incomes Where Id = @Id";
-        await _connection.ExecuteAsync(query, new { Id }, _transaction);
+        var query = "DELETE FROM Incomes Where Id = @Id AND UserId = @userId";
+        await _connection.ExecuteAsync(query, new { Id, userId }, _transaction);
     }
 
     public async Task<IEnumerable<Income>> GetAllAsync(string UserId)

@@ -56,12 +56,12 @@ public class ExpenseManageService : IExpenseManageService
         }
     }
 
-    public async Task<bool> DeleteExpenseAsync(int expenseId)
+    public async Task<bool> DeleteExpenseAsync(int expenseId, string userId)
     {
         try
         {
             await _unitOfWork.BeginTransactionAsync();
-            await _unitOfWork.ExpenseManage.DeleteAsync(expenseId);
+            await _unitOfWork.ExpenseManage.DeleteAsync(expenseId, userId);
             await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Deleted Expense:{id}", expenseId);
             return true;

@@ -5,7 +5,7 @@ namespace BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
 public interface IIncomeManageService
 {
     public Task<bool> AddIncomeAsync(Income model);
-    public Task<bool> DeleteIncomeAsync(int incomeTypeId);
+    public Task<bool> DeleteIncomeAsync(int incomeTypeId, string userId);
     public Task<int> AddIncomeCategoryAsync(string CategoryName);
     public Task<IEnumerable<Income>?> GetAllIncomeRecordsAsync(string userId);
     public Task<IEnumerable<Category>?> GetAllIncomeCategoryRecordsAsync(string userId);

@@ -63,12 +63,12 @@ public class IncomeManageService : IIncomeManageService
         }
     }
 
-    public async Task<bool> DeleteIncomeAsync(int incomeTypeId)
+    public async Task<bool> DeleteIncomeAsync(int incomeTypeId, string userId)
     {
         try
         {
             await _unitOfWork.BeginTransactionAsync();
-            await _unitOfWork.IncomeManage.DeleteAsync(incomeTypeId);
+            await _unitOfWork.IncomeManage.DeleteAsync(incomeTypeId, userId);
             await _unitOfWork.SaveChangesAsync();
             _logger.LogInformation("Deleted Income:{id}", incomeTypeId);
             return true;

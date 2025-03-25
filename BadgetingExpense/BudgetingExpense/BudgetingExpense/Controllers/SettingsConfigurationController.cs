@@ -7,9 +7,10 @@ namespace BudgetingExpense.Api.Controllers;
 [Authorize(Roles = "User")]
 [ApiController]
 [Route("notifications/[controller]")]
-public class SettingsConfigurationController : ControllerBase
+public class SettingsConfigurationController : BaseControllerExstention
 {
     private readonly IToggleNotificationsService _toggleNotificationsService;
+
 
     public SettingsConfigurationController(IToggleNotificationsService toggleNotificationsRepository)
     {
@@ -19,7 +20,7 @@ public class SettingsConfigurationController : ControllerBase
     [HttpPut("toggleNotifications")]
     public async Task<IActionResult> ToggleNotificationAsync(bool notification)
     {
-        var result = await _toggleNotificationsService.ToggleNotificationsAsync(HttpContext.Items["UserId"].ToString(),
+        var result = await _toggleNotificationsService.ToggleNotificationsAsync(UserId,
             notification);
         if (result)
         {

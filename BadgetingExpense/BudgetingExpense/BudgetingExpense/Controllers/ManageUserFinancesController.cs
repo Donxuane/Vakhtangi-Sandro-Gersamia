@@ -1,4 +1,5 @@
-﻿using BudgetingExpense.Api.CustomFilters;
+﻿using BudgetingExpense.Api.Controllers;
+using BudgetingExpense.Api.CustomFilters;
 using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
 using BudgetingExpense.Domain.Contracts.IServices.ILimitations;
 using BudgetingExpenses.Service.DtoModels;
@@ -11,7 +12,7 @@ namespace BudgetingExpense.api.Controllers;
 [Authorize(Roles = "User")]
 [ApiController]
 [Route("api/[controller]")]
-public class ManageUserFinancesController : ControllerBase
+public class ManageUserFinancesController : BaseControllerExstention
 {
     private readonly IIncomeManageService _incomeService;
     private readonly IExpenseManageService _expenseManageService;
@@ -44,8 +45,7 @@ public class ManageUserFinancesController : ControllerBase
     [HttpPost("AddIncome")]
     public async Task<IActionResult> AddIncomeAsync([FromForm] IncomeDto dtoModel)
     {
-        string userId = HttpContext.Items["UserId"].ToString();
-        var result = await _incomeService.AddIncomeAsync(dtoModel.Map(userId));
+        var result = await _incomeService.AddIncomeAsync(dtoModel.Map(UserId));
         if (result)
         {
             return Ok("Income Added Successfully");
@@ -56,7 +56,7 @@ public class ManageUserFinancesController : ControllerBase
     [HttpDelete("Income")]
     public async Task<IActionResult> DeleteIncomeAsync(int incomeTypeId)
     {
-        var result = await _incomeService.DeleteIncomeAsync(incomeTypeId);
+        var result = await _incomeService.DeleteIncomeAsync(incomeTypeId, UserId);
         if (result)
         {
             return Ok("Income Source Deleted Successfully");
@@ -68,7 +68,7 @@ public class ManageUserFinancesController : ControllerBase
     public async Task<IActionResult> UpdateIncomeAsync([FromForm] UpdateIncomeDto model)
     {
         var incomeUpdated = await _incomeService.UpdateIncomeAsync(
-            model.Map(HttpContext.Items["UserId"].ToString()));
+            model.Map(UserId));
         if (incomeUpdated)
         {
             return Ok("Successfully Updated");
@@ -83,7 +83,7 @@ public class ManageUserFinancesController : ControllerBase
     public async Task<IActionResult> AddExpensesAsync([FromForm] ExpenseDto expenseDto)
     {
         var result = await _expenseManageService.AddExpenseAsync(
-            expenseDto.Map(HttpContext.Items["UserId"].ToString()));
+            expenseDto.Map(UserId));
         if (result)
         {
             return Ok("Added Successfully");
@@ -94,7 +94,7 @@ public class ManageUserFinancesController : ControllerBase
     [HttpDelete("Expenses")]
     public async Task<IActionResult> DeleteExpensesAsync(int expenseId)
     {
-        var result = await _expenseManageService.DeleteExpenseAsync(expenseId);
+        var result = await _expenseManageService.DeleteExpenseAsync(expenseId, UserId);
         if (result)
         {
             return Ok("deleted successfully");
@@ -106,7 +106,7 @@ public class ManageUserFinancesController : ControllerBase
     public async Task<IActionResult> UpdateExpensesAsync([FromForm] UpdateExpenseDto model)
     {
         var result = await _expenseManageService.UpdateExpenseAsync(
-            model.Map(HttpContext.Items["UserId"].ToString()));
+            model.Map(UserId));
         if (result)
         {
             return Ok("Updated Successfully");
@@ -135,7 +135,7 @@ public class ManageUserFinancesController : ControllerBase
     public async Task<IActionResult> AddLimitAsync([FromForm] LimitsDto limitDto)
     {
         var result = await _limitsManageService.SetLimitsAsync(
-            limitDto.Map(HttpContext.Items["UserId"].ToString()));
+            limitDto.Map(UserId));
         if (result)
         {
             return Ok("Limit added successfully");
@@ -146,7 +146,7 @@ public class ManageUserFinancesController : ControllerBase
     [HttpDelete("DeleteLimit")]
     public async Task<IActionResult> DeleteLimitAsync(int limitId)
     {
-        var result = await _limitsManageService.DeleteLimitsAsync(limitId, HttpContext.Items["UserId"].ToString());
+        var result = await _limitsManageService.DeleteLimitsAsync(limitId, UserId);
         if (result)
         {
             return Ok("Limit deleted successfully");
@@ -159,7 +159,7 @@ public class ManageUserFinancesController : ControllerBase
     public async Task<IActionResult> UpdateLimitAsync([FromForm] UpdateLimitDto updateLimitDto)
     {
         var result = await _limitsManageService.UpdateLimitsAsync(
-            updateLimitDto.Map(HttpContext.Items["UserId"].ToString()));
+            updateLimitDto.Map(UserId));
         if (result)
         {
             return Ok(" limit updated successfully");

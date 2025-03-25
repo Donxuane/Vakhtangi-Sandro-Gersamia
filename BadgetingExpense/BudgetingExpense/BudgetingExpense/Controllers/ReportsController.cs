@@ -11,7 +11,7 @@ namespace BudgetingExpense.Api.Controllers;
 [Authorize(Roles = "User")]
 [ApiController]
 [Route("Api/[controller]")]
-public class ReportsController : ControllerBase
+public class ReportsController : BaseControllerExstention
 {
     private readonly IIncomeReportsService _service;
     private readonly IForecastService<IncomeRecord> _forecastService;
@@ -36,8 +36,7 @@ public class ReportsController : ControllerBase
     [HttpGet("IncomeRecordsBasedCurrency")]
     public async Task<IActionResult> IncomeRecordsBasedCurrencyAsync([FromQuery] GetRecordsCurrencyDto model)
     {
-        var result = await _service.RecordsBasedCurrencyPeriodAsync(
-            model.Map(HttpContext.Items["UserId"].ToString()));
+        var result = await _service.RecordsBasedCurrencyPeriodAsync(model.Map(UserId));
         if (result != null && result.Any())
         {
             var finalRecords = result.Select(x => x.Map());
@@ -49,7 +48,7 @@ public class ReportsController : ControllerBase
     [HttpGet("IncomeRecordsBasedCategory")]
     public async Task<IActionResult> IncomeRecordsBasedCategoryAsync([FromQuery]GetRecordsCategoryDto model)
     {
-        var result = await _service.RecordsBasedCategoryPeriodAsync(model.Map(HttpContext.Items["UserId"].ToString()));
+        var result = await _service.RecordsBasedCategoryPeriodAsync(model.Map(UserId));
         if (result != null && result.Any())
         {
             var finalRecords = result.Select(x => x.Map());
@@ -61,7 +60,7 @@ public class ReportsController : ControllerBase
     [HttpGet("AllIncomeRecords")]
     public async Task<IActionResult> IncomeRecordsAsync(int page)
     {
-        var result = await _service.GetAllRecordsAsync(HttpContext.Items["UserId"].ToString(),page);
+        var result = await _service.GetAllRecordsAsync(UserId, page);
         if (result != null && result.Value.records.Any())
         {
             var records = result.Value.records.Select(x => x.Map());
@@ -72,7 +71,7 @@ public class ReportsController : ControllerBase
     [HttpGet("IncomeForecast")]
     public async Task<IActionResult> IncomeForecastAsync()
     {
-        var result = await _forecastService.GetForecastCategoriesAsync(HttpContext.Items["UserId"].ToString());
+        var result = await _forecastService.GetForecastCategoriesAsync(UserId);
         if (result != null)
         {
             return Ok(new { result });
@@ -87,7 +86,7 @@ public class ReportsController : ControllerBase
     public async Task<IActionResult> GetMostExpenseRecordsAsync(int period)
     {
         var result = await _expenseRecordsService.BiggestExpensesBasedPeriodAsync(
-            new RecordsPeriod { Period = period, UserId = HttpContext.Items["UserId"].ToString() });
+            new RecordsPeriod { Period = period, UserId = UserId });
         if (result != null && result.Any())
         {
             var finalResult = result.Select(x => x.Map());
@@ -99,7 +98,7 @@ public class ReportsController : ControllerBase
     public async Task<IActionResult> GetExpensesBasedCategoryPeriodAsync([FromQuery] GetRecordsCategoryDto model)
     {
         var records = await _expenseRecordsService.RecordsBasedCategoryPeriodAsync(
-            model.Map(HttpContext.Items["UserId"].ToString()));
+            model.Map(UserId));
         if (records != null && records.Any())
         {
             var finalRecord = records.Select(x => x.Map());
@@ -111,7 +110,7 @@ public class ReportsController : ControllerBase
     public async Task<IActionResult> GetExpensesBasedCurrencyPeriodAsync([FromQuery] GetRecordsCurrencyDto model)
     {
         var records = await _expenseRecordsService.RecordsBasedCurrencyPeriodAsync(
-            model.Map(HttpContext.Items["UserId"].ToString()));
+            model.Map(UserId));
         if (records != null && records.Any())
         {
             var final = records.Select(x => x.Map());
@@ -122,7 +121,7 @@ public class ReportsController : ControllerBase
     [HttpGet("AllExpenseRecords")]
     public async Task<IActionResult> GetAllExpenseRecordsAsync(int page)
     {
-        var records = await _expenseRecordsService.GetAllRecordsAsync(HttpContext.Items["UserId"].ToString(), page);
+        var records = await _expenseRecordsService.GetAllRecordsAsync(UserId, page);
         if (records != null && records.Value.records.Any())
         {
             var final = records.Value.records.Select(x => x.Map());
@@ -134,7 +133,7 @@ public class ReportsController : ControllerBase
     [HttpGet("expenseForecast")]
     public async Task<IActionResult> ExpenseForecastAsync()
     {
-        var result = await _expenseForecastService.GetForecastCategoriesAsync(HttpContext.Items["UserId"].ToString());
+        var result = await _expenseForecastService.GetForecastCategoriesAsync(UserId);
         if (result.Any())
         {
             return Ok(result);
@@ -148,7 +147,7 @@ public class ReportsController : ControllerBase
     [HttpGet("savingAnalyticByPeriod")]
     public async Task<IActionResult> SavingAnalyticByPeriodAsync(int month)
     {
-        var value = await _analyticsService.GetSavingsAnalyticsAsync(HttpContext.Items["UserId"].ToString(), month);
+        var value = await _analyticsService.GetSavingsAnalyticsAsync(UserId, month);
         if (value != null)
         {
             return Ok(value);
