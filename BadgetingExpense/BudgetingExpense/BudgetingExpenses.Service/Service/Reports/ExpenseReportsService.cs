@@ -2,6 +2,7 @@
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace BudgetingExpenses.Service.Service.Reports;
@@ -10,11 +11,14 @@ public class ExpenseReportsService : IExpenseReportsService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ExpenseReportsService> _logger;
+    private readonly IConfiguration _configuration;
 
-    public ExpenseReportsService(IUnitOfWork unitOfWork, ILogger<ExpenseReportsService> logger)
+    public ExpenseReportsService(IUnitOfWork unitOfWork, ILogger<ExpenseReportsService> logger,
+        IConfiguration configuration)
     {
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _configuration = configuration;
     }
 
     public async Task<IEnumerable<ExpenseRecord>?> BiggestExpensesBasedPeriodAsync(RecordsPeriod model)
@@ -24,9 +28,10 @@ public class ExpenseReportsService : IExpenseReportsService
             var records = await _unitOfWork.ExpenseRecords.ExpenseRecordsAsync(model.UserId);
             if (records != null)
             {
+                var check = int.TryParse(_configuration.GetSection("TopExpenseAmounts")["Amount"], out int amount);
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
                 var final = records.Where(x => x.Date >= period)
-                    .OrderByDescending(x => x.Amount).Take(10).ToList();
+                    .OrderByDescending(x => x.Amount).Take(check ? amount : 10).ToList();
                 return final;
             }
             return null;

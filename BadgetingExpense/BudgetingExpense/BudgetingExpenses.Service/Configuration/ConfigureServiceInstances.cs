@@ -33,6 +33,7 @@ public static class ConfigureServiceInstances
         services.AddScoped<IForecastService<ExpenseRecord>, ExpenseForecastService>();
         services.AddScoped<IToggleNotificationsService, ToggleNotificationService>();
         services.AddScoped<ILimitNotificationService, LimitNotificationService>();
+        services.AddScoped<IExpenseAddedNotificationService, ExpenseAddedNotificationService>();
         services.AddHostedService<LimitsCleanupService>();
     }
 }

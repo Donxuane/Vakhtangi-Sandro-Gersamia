@@ -10,12 +10,15 @@ public class ExpenseManageService : IExpenseManageService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ExpenseManageService> _logger;
+    private readonly IExpenseAddedNotificationService _expenseNotify;
     private readonly ILimitNotificationService _limitNotificationService;
-    public ExpenseManageService(IUnitOfWork unitOfWork, ILogger<ExpenseManageService> logger,ILimitNotificationService limitNotificationService)
+    public ExpenseManageService(IUnitOfWork unitOfWork, ILogger<ExpenseManageService> logger,
+        ILimitNotificationService limitNotificationService, IExpenseAddedNotificationService expenseNotify)
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
         _limitNotificationService = limitNotificationService;
+        _expenseNotify = expenseNotify;
     }
 
     public async Task<int> AddExpenseCategoryAsync(string categoryName)
@@ -44,6 +47,11 @@ public class ExpenseManageService : IExpenseManageService
             await _unitOfWork.BeginTransactionAsync();
             await _unitOfWork.ExpenseManage.AddAsync(model);
             await _unitOfWork.SaveChangesAsync();
+            var check = await _expenseNotify.SendEmailWhileExpenseAddedAsync(model);
+            if (check)
+            {
+                _logger.LogInformation("Email send to {user}", model.UserId);
+            }
             await _limitNotificationService.NotifyLimitExceededAsync(model.UserId);
             _logger.LogInformation("Added Expense:{id}\nUser:{userId}", model.Id, model.UserId);
             return true;
@@ -145,5 +153,4 @@ public class ExpenseManageService : IExpenseManageService
         }
         return null;
     }
-
 }
