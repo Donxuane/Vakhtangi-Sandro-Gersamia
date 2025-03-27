@@ -1,6 +1,5 @@
 ﻿using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
-using BudgetingExpense.Domain.Models.GetModel.Reports;
 using BudgetingExpenses.Service.DtoModels;
 using BudgetingExpenses.Service.DtoModels.ReportsDtoModels;
 using BudgetingExpenses.Service.MapService;
