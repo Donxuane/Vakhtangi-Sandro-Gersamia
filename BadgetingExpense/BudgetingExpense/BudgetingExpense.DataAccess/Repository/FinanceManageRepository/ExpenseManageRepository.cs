@@ -1,4 +1,5 @@
 ﻿using BudgetingExpense.Domain.Contracts.IRepository.IFinance;
+using BudgetingExpense.Domain.Enums;
 using BudgetingExpense.Domain.Models.MainModels;
 using Dapper;
 using System.Data.Common;
@@ -49,16 +50,14 @@ public class ExpenseManageRepository : IManageFinancesRepository<Expense>
     public Task<int> AddCategoryAsync(Category category)
     {
         var query = "INSERT INTO Categories(Name, Type) OUTPUT INSERTED.Id VALUES(@Name,@Type)";
-        var id = _connection.QuerySingleAsync<int>(query, new { category.Name, Type = 0 }, _transaction);
+        var id = _connection.QuerySingleAsync<int>(query, new { category.Name, Type = FinancialTypes.Expense }, _transaction);
         return id;
     }
 
     public Task<IEnumerable<Category>> GetCategoriesAsync(string userId)
     {
-        var query = @"SELECT DISTINCT c.Id,c.Name,c.Type                       
-                      FROM Categories c
-                      JOIN Expenses ex ON c.Id = ex.CategoryId WHERE ex.UserId = @userId";
-        var expenseCategories = _connection.QueryAsync<Category>(query, new { userId }, _transaction);
+        var query = @"SELECT * FROM Categories WHERE Type = @Type";
+        var expenseCategories = _connection.QueryAsync<Category>(query, new { Type = FinancialTypes.Expense }, _transaction);
         return expenseCategories;
     }
 

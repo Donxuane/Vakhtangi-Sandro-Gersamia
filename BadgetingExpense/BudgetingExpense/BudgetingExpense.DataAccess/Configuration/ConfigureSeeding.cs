@@ -63,7 +63,6 @@ public class ConfigureSeeding
             await _unitOfWork.BeginTransactionAsync();
             foreach (var item in category)
             {
-
                 if (item.Type == 1)
                 {
 

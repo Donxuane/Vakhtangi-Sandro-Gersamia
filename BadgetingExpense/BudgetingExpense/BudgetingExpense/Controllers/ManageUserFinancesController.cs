@@ -41,6 +41,17 @@ public class ManageUserFinancesController : BaseControllerExstention
         return BadRequest("Couldn't Process Add");
     }
 
+    [HttpGet("IncomeCategories")]
+    public async Task<IActionResult> GetAllIncomeCategories()
+    {
+        var result = await _incomeService.GetAllIncomeCategoryRecordsAsync(UserId);
+        if(result!=null && result.Any())
+        {
+            return Ok(result);
+        }
+        return BadRequest("Records not found!");
+    }
+
     [ServiceFilter(typeof(CategoryValidationFilter))]
     [HttpPost("AddIncome")]
     public async Task<IActionResult> AddIncomeAsync([FromForm] IncomeDto dtoModel)
@@ -78,6 +89,30 @@ public class ManageUserFinancesController : BaseControllerExstention
     /// <summary>
     /// Manage Expenses
     /// </summary>
+
+    [ServiceFilter(typeof(PropertyNormalizationFilter))]
+    [HttpPost("AddExpenseCategory")]
+    public async Task<IActionResult> AddExpenseCategoryAsync(string category)
+    {
+        var result = await _expenseManageService.AddExpenseCategoryAsync(category);
+        if (result > 0)
+        {
+            return Ok($"{result} Category Added Successfully");
+        }
+        return BadRequest("Couldn't Process Add");
+    }
+
+    [HttpGet("AllExpenseCategories")]
+    public async Task<IActionResult> GetAllExpenseCategories()
+    {
+        var result = await _expenseManageService.GetAllExpenseCategoryRecordsAsync(UserId);
+        if(result!=null && result.Any())
+        {
+            return Ok(result);
+        }
+        return BadRequest("Records not found!");
+    }
+
     [ServiceFilter(typeof(CategoryValidationFilter))]
     [HttpPost("AddExpenses")]
     public async Task<IActionResult> AddExpensesAsync([FromForm] ExpenseDto expenseDto)
@@ -112,18 +147,6 @@ public class ManageUserFinancesController : BaseControllerExstention
             return Ok("Updated Successfully");
         }
         return BadRequest("Couldn't Process Update");
-    }
-
-    [ServiceFilter(typeof(PropertyNormalizationFilter))]
-    [HttpPost("AddExpenseCategory")]
-    public async Task<IActionResult> AddExpenseCategoryAsync(string category)
-    {
-        var result = await _expenseManageService.AddExpenseCategoryAsync(category);
-        if (result > 0)
-        {
-            return Ok($"{result} Category Added Successfully");
-        }
-        return BadRequest("Couldn't Process Add");
     }
 
     /// <summary>

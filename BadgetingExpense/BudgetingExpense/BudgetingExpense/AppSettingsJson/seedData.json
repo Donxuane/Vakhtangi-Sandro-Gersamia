@@ -6,8 +6,8 @@
   "Users": [
     {
       "Id": "Id",
-      "Name": "Sandro",
-      "Surname": "Gersamia",
+      "Name": "sandro",
+      "Surname": "gersamia",
       "Email": "sandrogersamia77@gmail.com",
       "Password": "1234567",
       "RegisterDate": "19 june 2005",
@@ -15,8 +15,8 @@
     },
     {
       "Id": "Id",
-      "Name": "Vakhtangi",
-      "Surname": "Chitashvili",
+      "Name": "vakhtangi",
+      "Surname": "chitashvili",
       "Email": "vaxtangichitashvili@gmail.com",
       "Password": "1234567",
       "RegisterDate": "12 february 2004",
@@ -128,27 +128,27 @@
   ],
   "Category": [
     {
-      "Name": "Salary",
+      "Name": "salary",
       "Type": "1"
     },
     {
-      "Name": "Business",
+      "Name": "business",
       "Type": "1"
     },
     {
-      "Name": "FreeLancing",
+      "Name": "freeLancing",
       "Type": "1"
     },
     {
-      "Name": "Health",
+      "Name": "health",
       "Type": "0"
     },
     {
-      "Name": "Shopping",
+      "Name": "shopping",
       "Type": "0"
     },
     {
-      "Name": "Car",
+      "Name": "car",
       "Type": "0"
     }
   ],
