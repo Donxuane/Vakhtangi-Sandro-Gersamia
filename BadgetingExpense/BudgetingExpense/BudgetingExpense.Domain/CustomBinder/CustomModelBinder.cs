@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Globalization;
 
 namespace BudgetingExpense.Domain.CustomBinder;
 
@@ -7,12 +8,15 @@ public class CustomModelBinder<T> : IModelBinder where T : class, new()
     public Task BindModelAsync(ModelBindingContext bindingContext)
     {
         var model = new T();
+        bool check = false;
 
         foreach (var property in typeof(T).GetProperties())
-        {
+        { 
+            var propertyResult = bindingContext.ValueProvider.GetValue(property.Name);
+            var result = propertyResult.FirstOrDefault();
+            object? valueToSet = null;
             if (property.PropertyType == typeof(string) && property.CanWrite)
             {
-                var propertyResult = bindingContext.ValueProvider.GetValue(property.Name);
                 if (propertyResult.Length != 0)
                 {
                     if (!string.IsNullOrEmpty(result))
@@ -20,13 +24,24 @@ public class CustomModelBinder<T> : IModelBinder where T : class, new()
                         if (!result.Contains('@') && !property.Name.Equals("Password", StringComparison.OrdinalIgnoreCase)
                            && !property.Name.Equals("RepeatPassword", StringComparison.OrdinalIgnoreCase))
                         {
-                            result = result.Trim().ToLower();
+                            valueToSet = result.Trim().ToLower();
+                            check = true;
                         }
+                        
                     }
                 }
             }
+            else
+            {
+                valueToSet = Convert.ChangeType(result, property.PropertyType, CultureInfo.InvariantCulture);
+            }
+            property.SetValue(model, valueToSet);
         }
-        bindingContext.Result = ModelBindingResult.Success(model);
+        if (check == true)
+        {
+            bindingContext.Result = ModelBindingResult.Success(model);
+        }
+        check = false;
         return Task.CompletedTask;
     }
 }
