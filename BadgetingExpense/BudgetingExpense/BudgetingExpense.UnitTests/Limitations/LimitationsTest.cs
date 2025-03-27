@@ -11,7 +11,7 @@ using Moq;
 
 namespace BudgetingExpense.UnitTests.Limitations
 {
-    public class LimitationsTest
+    public class LimitationsTest :VerifyLogs
     {
         private readonly Mock<IUnitOfWork> _mockUnitOfWork;
         private readonly Mock<ILogger<LimitsService>> _mockLimitsServiceLogger;
@@ -39,6 +39,36 @@ namespace BudgetingExpense.UnitTests.Limitations
             _mockUnitOfWork.Verify(x => x.LimitsRepository.AddLimitAsync(limit), Times.Once);
             _mockUnitOfWork.Verify(x=>x.SaveChangesAsync(),Times.Once);
             _mockUnitOfWork.Verify(x=>x.RollBackAsync(),Times.Once);
+            VerifyLogInformation(_mockLimitsServiceLogger);
+        }
+
+        [Fact]
+        public async Task SetLimitsAsync_ShouldNotSetLimits_WhileExceptionThrown_ShouldReturnFalse()
+        {
+            _mockUnitOfWork.Setup(x => x.LimitsRepository.AddLimitAsync(It.IsAny<Limits>()))
+                .ThrowsAsync(new Exception());
+            var result = await _limitsService.SetLimitsAsync(It.IsAny<Limits>());
+            Assert.False(result);
+            _mockUnitOfWork.Verify(x => x.BeginTransactionAsync(), Times.Once);
+            _mockUnitOfWork.Verify(x => x.LimitsRepository.AddLimitAsync(It.IsAny<Limits>()), Times.Once);
+            _mockUnitOfWork.Verify(x => x.RollBackAsync(), Times.Once);
+            VerifyLogError(_mockLimitsServiceLogger);
+        }
+
+        [Fact]
+        public async Task DeleteLimitsAsync_ShouldDeleteLimits_ShouldReturnTrue()
+        {
+            int limitId = 1;
+            _mockUnitOfWork.Setup(x => x.LimitsRepository.DeleteLimitsAsync(limitId, It.IsAny<string>()))
+                .Returns(Task.CompletedTask);
+            var result = await _limitsService.DeleteLimitsAsync(limitId, It.IsAny<string>());
+            Assert.True(result);
+            _mockUnitOfWork.Verify(x=> x.BeginTransactionAsync(), Times.Once);
+            _mockUnitOfWork.Verify(x => x.LimitsRepository.DeleteLimitsAsync(limitId, It.IsAny<string>()), Times.Once);
+            _mockUnitOfWork.Verify(x => x.SaveChangesAsync(), Times.Once);
+            VerifyLogInformation(_mockLimitsServiceLogger);
+
+
         }
         
     }
