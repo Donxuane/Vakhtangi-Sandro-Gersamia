@@ -153,7 +153,7 @@ public class ManageUserFinancesController : BaseControllerExstention
         }
         return BadRequest("something went wrong");
     }
-
+    
     [ServiceFilter(typeof(CategoryValidationFilter))]
     [HttpPut("UpdateLimitsAsync")]
     public async Task<IActionResult> UpdateLimitAsync([FromForm] UpdateLimitDto updateLimitDto)
