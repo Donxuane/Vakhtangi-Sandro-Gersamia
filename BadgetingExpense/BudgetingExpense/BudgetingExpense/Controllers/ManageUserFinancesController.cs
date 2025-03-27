@@ -114,18 +114,6 @@ public class ManageUserFinancesController : BaseControllerExstention
         return BadRequest("Couldn't Process Update");
     }
 
-    [ServiceFilter(typeof(PropertyNormalizationFilter))]
-    [HttpPost("AddExpenseCategory")]
-    public async Task<IActionResult> AddExpenseCategoryAsync(string category)
-    {
-        var result = await _expenseManageService.AddExpenseCategoryAsync(category);
-        if (result > 0)
-        {
-            return Ok($"{result} Category Added Successfully");
-        }
-        return BadRequest("Couldn't Process Add");
-    }
-
     /// <summary>
     /// Manage Limits On Expenses
     /// </summary>

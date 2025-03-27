@@ -15,8 +15,6 @@ public class CustomModelBinder<T> : IModelBinder where T : class, new()
                 var propertyResult = bindingContext.ValueProvider.GetValue(property.Name);
                 if (propertyResult.Length != 0)
                 {
-                    var result = propertyResult.FirstOrDefault();
-
                     if (!string.IsNullOrEmpty(result))
                     {
                         if (!result.Contains('@') && !property.Name.Equals("Password", StringComparison.OrdinalIgnoreCase)
@@ -24,7 +22,6 @@ public class CustomModelBinder<T> : IModelBinder where T : class, new()
                         {
                             result = result.Trim().ToLower();
                         }
-                        property.SetValue(model, result);
                     }
                 }
             }
