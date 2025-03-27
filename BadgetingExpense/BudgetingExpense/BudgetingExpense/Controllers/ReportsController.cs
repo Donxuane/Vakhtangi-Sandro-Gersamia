@@ -1,6 +1,7 @@
 ﻿using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
+using BudgetingExpenses.Service.DtoModels;
 using BudgetingExpenses.Service.DtoModels.ReportsDtoModels;
 using BudgetingExpenses.Service.MapService;
 using Microsoft.AspNetCore.Authorization;
@@ -83,10 +84,9 @@ public class ReportsController : BaseControllerExstention
     /// Expense Reports And Analitycs
     /// </summary>
     [HttpGet("TopExpenses")]
-    public async Task<IActionResult> GetMostExpenseRecordsAsync(int period)
+    public async Task<IActionResult> GetMostExpenseRecordsAsync([FromQuery]TopExpenseDto model)
     {
-        var result = await _expenseRecordsService.BiggestExpensesBasedPeriodAsync(
-            new RecordsPeriod { Period = period, UserId = UserId });
+        var result = await _expenseRecordsService.BiggestExpensesBasedPeriodAsync(model.Map(UserId));
         if (result != null && result.Any())
         {
             var finalResult = result.Select(x => x.Map());

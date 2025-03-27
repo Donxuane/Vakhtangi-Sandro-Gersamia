@@ -30,7 +30,7 @@ public class ExpenseReportsService : IExpenseReportsService
             {
                 var check = int.TryParse(_configuration.GetSection("TopExpenseAmounts")["Amount"], out int amount);
                 var period = DateTime.UtcNow.AddMonths(-model.Period);
-                var final = records.Where(x => x.Date >= period)
+                var final = records.Where(x => x.Date >= period && x.Currency == model.Currency)
                     .OrderByDescending(x => x.Amount).Take(check ? amount : 10).ToList();
                 return final;
             }
