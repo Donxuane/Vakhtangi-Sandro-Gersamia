@@ -28,13 +28,10 @@ public class LimitNotificationService : ILimitNotificationService
             var getBudgetPlaningView = await _unitOfWork.BudgetPlaningRepository.GetBudgetPlaningViewAsync(userId);
             foreach (var budgetItem in getBudgetPlaningView)
             {
-                if (budgetItem.TotalExpenses >= budgetItem.LimitAmount * 0.9)
-                {
                     var enabled = await _unitOfWork.GetRepository.GetNotificationActiveStatusAsync(userId);
                     if (enabled)
                     {
                         var email = await _unitOfWork.GetRepository.GetEmailAsync(userId);
-
                         var categoryName = await _unitOfWork.GetRepository.GetCategoryNameAsync(budgetItem.CategoryId);
                         var (subject, templateMessage) = await GetEmailPattern();
                         var message = templateMessage

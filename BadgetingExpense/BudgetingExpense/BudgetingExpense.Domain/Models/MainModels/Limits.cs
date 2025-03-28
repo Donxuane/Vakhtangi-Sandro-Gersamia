@@ -14,7 +14,6 @@ public class Limits
     public double Amount { get; set; }
     [Required]
     public int PeriodCategory { get; set; }
-
     [Required]
     public DateTime DateAdded { get; set; }
 }
