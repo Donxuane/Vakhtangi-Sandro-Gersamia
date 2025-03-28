@@ -12,7 +12,11 @@
   },
   "LimitEmail": {
     "Subject": "Alert: Limit Exceeded",
-    "Message": "<html><head><style>body { font-family: Arial, sans-serif; color: #333; line-height: 1.5; }h1 { color: #E76F51; } h2 { color: #264653; } p { font-size: 16px; }.footer { margin-top: 30px; font-size: 12px; color: #777; }</style></head><body><h1>Limit Exceeded</h1><h2>{category}: {amount} {currency} - Limit: {limitAmount}{LimitCurrency}</h2><p>You've exceeded your limit. Please review your account or contact us for assistance.</p><p><strong>Date Received:</strong> {date}</p><div class='footer'><p>If you need help, reach out to us at <a href='mailto:budgetingandexpensetracker12@gmail.com'>support@yourbank.com</a>.</p><p>YourBank - All rights reserved</p></div></body></html>"
+    "Message": "<html><head><style>body { font-family: Arial, sans-serif; color: #333; line-height: 1.5; }h1 { color: #E76F51; } h2 { color: #264653; } p { font-size: 16px; }.footer { margin-top: 30px; font-size: 12px; color: #777; }</style></head><body><h1>Limit Exceeded</h1><h2>{optional} {category}: {amount} {currency} - Limit: {limitAmount}{LimitCurrency}</h2><p>You've exceeded your limit. Please review your account or contact us for assistance.</p><p><strong>Date Received:</strong> {date}</p><div class='footer'><p>If you need help, reach out to us at <a href='mailto:budgetingandexpensetracker12@gmail.com'>support@yourbank.com</a>.</p><p>YourBank - All rights reserved</p></div></body></html>"
+  },
+  "LimitEmailWarning": {
+    "Subject": "Alert: Limit ",
+    "Message": "<html><head><style>body { font-family: Arial, sans-serif; color: #333; line-height: 1.5; }h1 { color: #E76F51; } h2 { color: #264653; } p { font-size: 16px; }.footer { margin-top: 30px; font-size: 12px; color: #777; }</style></head><body><h1>Limit Exceeded</h1><h2>{optional} {category}: {amount} {currency} - Limit: {limitAmount}{LimitCurrency}</h2><p>You've exceeded your limit. Please review your account or contact us for assistance.</p><p><strong>Date Received:</strong> {date}</p><div class='footer'><p>If you need help, reach out to us at <a href='mailto:budgetingandexpensetracker12@gmail.com'>support@yourbank.com</a>.</p><p>YourBank - All rights reserved</p></div></body></html>"
   },
   "ExpenseEmail": {
     "Subject": "Expense Recorded!",

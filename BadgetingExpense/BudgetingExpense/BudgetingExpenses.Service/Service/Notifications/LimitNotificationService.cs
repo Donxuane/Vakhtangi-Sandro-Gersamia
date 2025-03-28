@@ -28,40 +28,48 @@ public class LimitNotificationService : ILimitNotificationService
             var getBudgetPlaningView = await _unitOfWork.BudgetPlaningRepository.GetBudgetPlaningViewAsync(userId);
             foreach (var budgetItem in getBudgetPlaningView)
             {
-                var enabled = await _unitOfWork.GetRepository.GetNotificationActiveStatusAsync(userId);
-                if (enabled)
+                if (budgetItem.DateAdded.AddMonths(budgetItem.LimitPeriod) >= DateTime.UtcNow)
                 {
-                    var check = int.TryParse(_configuration.GetSection("PercentageToNotifyLimits")["Percentage"], out int percentage);
-                    double actualPercentage = check == true ? (percentage / 100.0) : 0.9;
-                    if (budgetItem.TotalExpenses >= budgetItem.LimitAmount * actualPercentage)
+                    var enabled = await _unitOfWork.GetRepository.GetNotificationActiveStatusAsync(userId);
+                    if (enabled)
                     {
-                        var email = await _unitOfWork.GetRepository.GetEmailAsync(userId);
-                        var categoryName = await _unitOfWork.GetRepository.GetCategoryNameAsync(budgetItem.CategoryId);
-                        var (subject, templateMessage) = await GetEmailPattern();
-                        var message = templateMessage
-                            .Replace("{category}", string.IsNullOrEmpty(categoryName) ? "Undefined" : categoryName)
-                            .Replace("{amount}", budgetItem.TotalExpenses.ToString())
-                            .Replace("{currency}", budgetItem.Currency.ToString())
-                            .Replace("{limitAmount}", budgetItem.LimitAmount.ToString())
-                            .Replace("{LimitCurrency}", budgetItem.Currency.ToString())
-                            .Replace("{date}", DateTime.Now.ToString());
-
-                        if (budgetItem.TotalExpenses <= budgetItem.LimitAmount)
+                        var check = int.TryParse(_configuration.GetSection("PercentageToNotifyLimits")["Percentage"], out int percentage);
+                        double actualPercentage = check == true ? (percentage / 100.0) : 0.9;
+                        if (budgetItem.TotalExpenses >= budgetItem.LimitAmount * actualPercentage)
                         {
-                            message = message.Replace("{category}", "your expense exceeded 90% of of your limit");
+                            var email = await _unitOfWork.GetRepository.GetEmailAsync(userId);
+                            var categoryName = await _unitOfWork.GetRepository.GetCategoryNameAsync(budgetItem.CategoryId);
+                            var (subject, templateMessage) = await GetEmailPattern();
+                            var message = templateMessage
+                                .Replace("{optional}","\n")
+                                .Replace("{category}", string.IsNullOrEmpty(categoryName) ? "Undefined" : categoryName)
+                                .Replace("{amount}", budgetItem.TotalExpenses.ToString())
+                                .Replace("{currency}", budgetItem.Currency.ToString())
+                                .Replace("{limitAmount}", budgetItem.LimitAmount.ToString())
+                                .Replace("{LimitCurrency}", budgetItem.Currency.ToString())
+                                .Replace("{date}", DateTime.Now.ToString());
+
+                            if (budgetItem.TotalExpenses <= budgetItem.LimitAmount)
+                            {
+                                message = message.Replace("{optional}", $"your expense exceeded {percentage}% of of your limit");
+                            }
+                            await _emailService.SendEmailAsync(new EmailModel()
+                            {
+                                Email = email,
+                                Message = message,
+                                Subject = subject
+                            });
+
                         }
-                        await _emailService.SendEmailAsync(new EmailModel()
-                        {
-                            Email = email,
-                            Message = message,
-                            Subject = subject
-                        });
-
+                    }
+                    if (budgetItem.TotalExpenses > budgetItem.LimitAmount)
+                    {
+                        await _unitOfWork.LimitsRepository.DeleteLimitsAsync(budgetItem.Id, budgetItem.UserId);
                     }
                 }
-                if (budgetItem.TotalExpenses > budgetItem.LimitAmount)
+                else
                 {
-                    await _unitOfWork.LimitsRepository.DeleteLimitsAsync(budgetItem.Id, budgetItem.UserId);
+
                 }
             }
             return true;

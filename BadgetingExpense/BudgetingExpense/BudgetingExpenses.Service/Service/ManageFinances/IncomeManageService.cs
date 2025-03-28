@@ -41,6 +41,8 @@ public class IncomeManageService : IIncomeManageService
 
     public async Task<bool> AddIncomeAsync(Income model)
     {
+
+            throw new Exception();
         try
         {
             await _unitOfWork.BeginTransactionAsync();

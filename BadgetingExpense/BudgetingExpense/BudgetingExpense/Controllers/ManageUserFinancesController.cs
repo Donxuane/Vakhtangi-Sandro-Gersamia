@@ -78,6 +78,7 @@ public class ManageUserFinancesController : BaseControllerExstention
     [HttpPut("UpdateIncome")]
     public async Task<IActionResult> UpdateIncomeAsync([FromForm] UpdateIncomeDto model)
     {
+
         var incomeUpdated = await _incomeService.UpdateIncomeAsync(
             model.Map(UserId));
         if (incomeUpdated)

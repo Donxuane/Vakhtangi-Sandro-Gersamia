@@ -3,17 +3,17 @@ using BudgetingExpense.Domain.Contracts.IRepository.IGet;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using Dapper;
 
-namespace BudgetingExpense.DataAccess.Repository.Get;
+namespace BudgetingExpense.DataAccess.Repository.LimitsRepository;
 
-public class BudgetPlaningRepository:IBudgetPlaningRepository
+public class BudgetPlaningRepository : IBudgetPlaningRepository
 
 {
-  private readonly DbConnection _connection;
+    private readonly DbConnection _connection;
 
-  public BudgetPlaningRepository(DbConnection connection)
-  {
-      _connection = connection;
-  }
+    public BudgetPlaningRepository(DbConnection connection)
+    {
+        _connection = connection;
+    }
 
     public async Task<IEnumerable<BudgetPlanning>> GetBudgetPlaningViewAsync(string userId)
     {
