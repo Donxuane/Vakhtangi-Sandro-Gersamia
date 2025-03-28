@@ -19,7 +19,8 @@ BEGIN
 	IF @TableName = 'Limits'
 	   BEGIN
 	        SET @query ='UPDATE ' + QUOTENAME(@TableName) + ' SET CategoryId = COALESCE(@CategoryId, CategoryId), Amount = COALESCE(@Amount,Amount),
-		    PeriodCategory = COALESCE(@PeriodCategory,PeriodCategory), DateAdded = COALESCE(@Date,DateAdded) WHERE Id = @Id AND UserId = @UserId';
+		    PeriodCategory = COALESCE(@PeriodCategory,PeriodCategory), DateAdded = COALESCE(@Date,DateAdded), Currency = COALESCE(@Currency,Currency)
+            WHERE Id = @Id AND UserId = @UserId';
     END;
 	EXEC sp_executesql @query, 
              N'@Currency INT, @Amount DECIMAL(18,2), @CategoryId INT, @Date DATETIME, @PeriodCategory INT, @Id INT,@UserId NVARCHAR(450)',

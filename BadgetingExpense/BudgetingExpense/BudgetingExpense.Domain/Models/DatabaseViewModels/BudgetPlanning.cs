@@ -14,6 +14,4 @@ public class BudgetPlanning
     public double TotalExpenses { get; set; }
     public int ExpenseCount { get; set;  }
     public Currencies Currency { get; set; }
- 
-
 }

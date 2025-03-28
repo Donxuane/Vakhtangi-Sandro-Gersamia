@@ -28,8 +28,12 @@ public class LimitNotificationService : ILimitNotificationService
             var getBudgetPlaningView = await _unitOfWork.BudgetPlaningRepository.GetBudgetPlaningViewAsync(userId);
             foreach (var budgetItem in getBudgetPlaningView)
             {
-                    var enabled = await _unitOfWork.GetRepository.GetNotificationActiveStatusAsync(userId);
-                    if (enabled)
+                var enabled = await _unitOfWork.GetRepository.GetNotificationActiveStatusAsync(userId);
+                if (enabled)
+                {
+                    var check = int.TryParse(_configuration.GetSection("PercentageToNotifyLimits")["Percentage"], out int percentage);
+                    double actualPercentage = check == true ? (percentage / 100.0) : 0.9;
+                    if (budgetItem.TotalExpenses >= budgetItem.LimitAmount * actualPercentage)
                     {
                         var email = await _unitOfWork.GetRepository.GetEmailAsync(userId);
                         var categoryName = await _unitOfWork.GetRepository.GetCategoryNameAsync(budgetItem.CategoryId);
@@ -39,7 +43,8 @@ public class LimitNotificationService : ILimitNotificationService
                             .Replace("{amount}", budgetItem.TotalExpenses.ToString())
                             .Replace("{currency}", budgetItem.Currency.ToString())
                             .Replace("{limitAmount}", budgetItem.LimitAmount.ToString())
-                            .Replace("{LimitCurrency}", budgetItem.Currency.ToString());
+                            .Replace("{LimitCurrency}", budgetItem.Currency.ToString())
+                            .Replace("{date}", DateTime.Now.ToString());
 
                         if (budgetItem.TotalExpenses <= budgetItem.LimitAmount)
                         {
@@ -51,6 +56,7 @@ public class LimitNotificationService : ILimitNotificationService
                             Message = message,
                             Subject = subject
                         });
+
                     }
                 }
                 if (budgetItem.TotalExpenses > budgetItem.LimitAmount)

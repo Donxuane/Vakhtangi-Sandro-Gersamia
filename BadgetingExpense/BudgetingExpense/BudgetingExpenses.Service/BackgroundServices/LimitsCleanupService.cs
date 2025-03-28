@@ -23,8 +23,8 @@ public class LimitsCleanupService : BackgroundService
         {
             try
             {
-                _logger.LogInformation("Waiting Minute to Start Executing");
-                await Task.Delay(TimeSpan.FromMinutes(3), cancellationToken);
+                _logger.LogInformation("Waiting Background Service to Start Executing");
+                await Task.Delay(TimeSpan.FromMinutes(1), cancellationToken);
                 _logger.LogInformation("Limits Cleanup Execution Started");
                 await CleanupLimitsAsync();
                 _logger.LogInformation($"Limits Cleanup Execution finished ");

@@ -2,7 +2,7 @@ CREATE TABLE Categories
 (
     Id int primary key identity(1,1),
     [Name] nvarchar(max),
-    [Type] int
+    [Type] int CHECK([Type] IN (0,1))
 );
 CREATE TABLE Incomes
 (
@@ -34,6 +34,7 @@ Create table Limits
     Amount decimal(18,2),
     PeriodCategory int,
     DateAdded datetime DEFAULT GetDate(),
+    Currency int NULL,
 	Constraint FK_LimitsUserId_AspNetUser foreign key (userId) references AspNetUsers(Id)On Delete Cascade,
 	Constraint FK_LimitsCategoryId_Categories foreign key (CategoryId) references Categories(Id)On Delete Cascade
 );

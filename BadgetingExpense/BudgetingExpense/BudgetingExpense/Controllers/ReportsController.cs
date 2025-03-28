@@ -57,7 +57,7 @@ public class ReportsController : BaseControllerExstention
         return BadRequest("Records Not Found");
     }
 
-    [HttpGet("AllIncomeRecords")]
+    [HttpGet("IncomeRecords")]
     public async Task<IActionResult> IncomeRecordsAsync(int page)
     {
         var result = await _service.GetAllRecordsAsync(UserId, page);
@@ -117,7 +117,7 @@ public class ReportsController : BaseControllerExstention
         }
         return BadRequest("Records Not Found");
     }
-    [HttpGet("AllExpenseRecords")]
+    [HttpGet("ExpenseRecords")]
     public async Task<IActionResult> GetAllExpenseRecordsAsync(int page)
     {
         var records = await _expenseRecordsService.GetAllRecordsAsync(UserId, page);
@@ -129,7 +129,7 @@ public class ReportsController : BaseControllerExstention
         return BadRequest("Records Not Found");
     }
 
-    [HttpGet("expenseForecast")]
+    [HttpGet("ExpenseForecast")]
     public async Task<IActionResult> ExpenseForecastAsync()
     {
         var result = await _expenseForecastService.GetForecastCategoriesAsync(UserId);
@@ -143,7 +143,7 @@ public class ReportsController : BaseControllerExstention
     /// <summary>
     /// Savings 
     /// </summary>
-    [HttpGet("savingAnalyticByPeriod")]
+    [HttpGet("SavingAnalyticByPeriod")]
     public async Task<IActionResult> SavingAnalyticByPeriodAsync(int month)
     {
         var value = await _analyticsService.GetSavingsAnalyticsAsync(UserId, month);

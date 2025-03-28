@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BudgetingExpense.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BudgetingExpense.Domain.Models.MainModels;
 
@@ -16,4 +17,5 @@ public class Limits
     public int PeriodCategory { get; set; }
     [Required]
     public DateTime DateAdded { get; set; }
+    public Currencies Currency { get; set; }
 }

@@ -30,6 +30,7 @@ public  class LimitsRepository : IBudgetLimitsRepository
         await _connection.ExecuteAsync("UpdateProcedure", new
         {
             TableName = "Limits",
+            limits.Currency,
             limits.Amount,
             limits.CategoryId,
             Date = limits.DateAdded,
@@ -43,15 +44,16 @@ public  class LimitsRepository : IBudgetLimitsRepository
 
     public async Task AddLimitAsync(Limits limits)
     {
-        var query = "INSERT INTO Limits (UserId,CategoryId,Amount,PeriodCategory,DateAdded)" +
-                    "VALUES (@UserId,@CategoryId,@Amount,@PeriodCategory,@DateAdded)";
+        var query = "INSERT INTO Limits (UserId,CategoryId,Amount,PeriodCategory,DateAdded,Currency)" +
+                    "VALUES (@UserId,@CategoryId,@Amount,@PeriodCategory,@DateAdded,@Currency)";
         await _connection.ExecuteAsync(query, new
         {
             limits.UserId,
             limits.CategoryId,
             limits.Amount,
             limits.PeriodCategory,
-            limits.DateAdded
+            limits.DateAdded,
+            limits.Currency
         },
         _transaction);
     }
