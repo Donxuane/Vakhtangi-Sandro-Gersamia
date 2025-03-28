@@ -119,7 +119,6 @@ public class ExpenseManageService : IExpenseManageService
 
     public async Task<bool> UpdateCategoryAsync(Category Category)
     {
-
         try
         {
             await _unitOfWork.BeginTransactionAsync();
