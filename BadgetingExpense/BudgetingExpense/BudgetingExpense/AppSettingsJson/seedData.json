@@ -10,8 +10,8 @@
       "Surname": "gersamia",
       "Email": "sandrogersamia77@gmail.com",
       "Password": "1234567",
-      "RegisterDate": "19 june 2005",
-      "Notifications": true
+      "RegisterDate": "19 june 2005"
+     
     },
     {
       "Id": "Id",
@@ -19,8 +19,8 @@
       "Surname": "chitashvili",
       "Email": "vaxtangichitashvili@gmail.com",
       "Password": "1234567",
-      "RegisterDate": "12 february 2004",
-      "Notifications": true
+      "RegisterDate": "12 february 2004"
+      
     }
   ],
 

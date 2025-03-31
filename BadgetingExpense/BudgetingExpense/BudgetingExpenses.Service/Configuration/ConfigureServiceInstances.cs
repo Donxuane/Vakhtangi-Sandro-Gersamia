@@ -6,6 +6,7 @@ using BudgetingExpense.Domain.Contracts.IServices.INotifications;
 using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpenses.Service.BackgroundServices;
+using BudgetingExpenses.Service.Service.ApiService;
 using BudgetingExpenses.Service.Service.Authentication;
 using BudgetingExpenses.Service.Service.Limitations;
 using BudgetingExpenses.Service.Service.ManageFinances;
@@ -34,6 +35,7 @@ public static class ConfigureServiceInstances
         services.AddScoped<IToggleNotificationsService, ToggleNotificationService>();
         services.AddScoped<ILimitNotificationService, LimitNotificationService>();
         services.AddScoped<IExpenseAddedNotificationService, ExpenseAddedNotificationService>();
+        services.AddScoped<CurrencyRateService>();
         services.AddHostedService<LimitsCleanupService>();
     }
 }

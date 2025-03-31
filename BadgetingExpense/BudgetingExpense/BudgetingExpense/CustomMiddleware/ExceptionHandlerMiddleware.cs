@@ -27,7 +27,7 @@ public class ExceptionHandlerMiddleware
         {
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             var StatusCode = context.Response.StatusCode;
-            _logger.LogError("Sql Error Ocured: {error}", sqlEx.Message);
+            _logger.LogError("Sql Error Occurred: {error}", sqlEx.Message);
             await context.Response.WriteAsJsonAsync(new { 
                 StatusCode,
                 Error = sqlEx.Errors.Cast<SqlError>().Select(x=> new

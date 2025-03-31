@@ -83,12 +83,16 @@ public class ConfigureSeeding
             foreach (var user in users)
             {
                 var result = await _unitOfWork.Authentication.RegisterUserAsync(user);
+
                 await _unitOfWork.Authentication.AddUserRoleAsync(user.Email, "User");
 
                 if (result)
                 {
+                    
                     var userModel = await _userManager.FindByEmailAsync(user.Email);
+                    
                     var userId = userModel.Id;
+                    await _unitOfWork.ToggleNotificationsRepository.ToggleNotification(userId, true);
                     foreach (var item in incomes)
                     {
 

@@ -10,4 +10,5 @@ public  class LimitsDto
     public double Amount { get; set; }
     public int Period { get; set; }
     public DateTime DateAdded { get; set; }
+    public Currencies Currencies { get; set; }
 }

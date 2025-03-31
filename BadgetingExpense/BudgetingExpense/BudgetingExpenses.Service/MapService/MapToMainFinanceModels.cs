@@ -63,6 +63,7 @@ public static class MapToMainFinanceModels
             CategoryId = dto.CategoryId,
             DateAdded = dto.DateAdded,
             PeriodCategory = dto.Period,
+            Currency = dto.Currencies,
             UserId = userId
         };
     }
