@@ -76,6 +76,5 @@ public class Authentication : IAuthentication
         var result = await _userManager.CreateAsync(userDetails, user.Password);
         if (result.Succeeded)
             return true;
-        return false;
     }
 }

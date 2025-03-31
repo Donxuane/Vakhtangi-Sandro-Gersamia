@@ -18,7 +18,6 @@ public class LimitsService : ILimitsManageService
     {
         try
         {
-           
             await _unitOfWork.BeginTransactionAsync();
             await _unitOfWork.LimitsRepository.AddLimitAsync(limits);
             await _unitOfWork.SaveChangesAsync();
@@ -32,7 +31,6 @@ public class LimitsService : ILimitsManageService
             _logger.LogError("Exception ex:{ex}", ex.Message);
             return false;
         }
-
     }
 
     public async Task<bool> DeleteLimitsAsync(int limitId, string userId)

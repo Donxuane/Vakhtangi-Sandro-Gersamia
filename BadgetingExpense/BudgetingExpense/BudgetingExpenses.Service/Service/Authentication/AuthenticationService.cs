@@ -10,7 +10,6 @@ using BudgetingExpense.Domain.Contracts.IServices.IAuthentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Caching.Memory;
 using BudgetingExpense.Domain.Contracts.IServices.IMessaging;
-using BudgetingExpenses.Service.Service.Messaging.Email;
 
 namespace BudgetingExpenses.Service.Service.Authentication;
 
@@ -145,7 +144,6 @@ public class AuthenticationService : IAuthenticationService
         {
             _logger.LogError("Register new user {ex}", ex.Message);
         }
-        return false;
     }
     private Task<string>? GenerateJwtTokenAsync(string userId, string userRole)
     {
@@ -192,7 +190,6 @@ public class AuthenticationService : IAuthenticationService
         {
             _logger.LogError("Getting roles {ex}", ex.Message);
         }
-        return null;
     }
 
     private async Task<User?> GetUserAsync(string email)
@@ -206,6 +203,5 @@ public class AuthenticationService : IAuthenticationService
         {
             _logger.LogError("Getting user {ex}", ex.Message);
         }
-        return null;
     }
 }

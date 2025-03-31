@@ -31,10 +31,4 @@ public class UserCredentialsMiddleware
             }
             await _next(context);
         }
-        catch(Exception ex)
-        {
-            _logger.LogError("Exception ex:{ex}", ex.Message);
-            context.Response.StatusCode = 401;
-        }
-    } 
 }

@@ -88,11 +88,8 @@ public class IncomeManageService : IIncomeManageService
         try
         {
             var categories = await _unitOfWork.IncomeManage.GetCategoriesAsync(userId);
-            if (categories.Any())
-            {
                 return categories;
             }
-        }
         catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
@@ -141,16 +138,11 @@ public class IncomeManageService : IIncomeManageService
         try
         {
             var incomeRecords = await _unitOfWork.IncomeManage.GetAllAsync(userId);
-            if (incomeRecords.Any())
-            {
                 return incomeRecords;
             }
-            
-        }
         catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
         }
-        return null;
     }
 }

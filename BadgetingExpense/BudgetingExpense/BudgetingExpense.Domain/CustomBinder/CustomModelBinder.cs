@@ -41,7 +41,6 @@ public class CustomModelBinder<T> : IModelBinder where T : class, new()
         {
             bindingContext.Result = ModelBindingResult.Success(model);
         }
-        check = false;
         return Task.CompletedTask;
     }
 }

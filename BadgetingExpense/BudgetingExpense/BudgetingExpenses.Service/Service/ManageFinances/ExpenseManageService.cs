@@ -87,16 +87,12 @@ public class ExpenseManageService : IExpenseManageService
         try
         {
             var categories = await _unitOfWork.ExpenseManage.GetCategoriesAsync(userId);
-            if (categories.Any())
-            {
                 return categories;
             }
-        }
         catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
         }
-        return null;
     }
 
     public async Task<bool> UpdateExpenseAsync(Update expense)
@@ -141,15 +137,11 @@ public class ExpenseManageService : IExpenseManageService
         try
         {
             var records = await _unitOfWork.ExpenseManage.GetAllAsync(userId);
-            if (records.Any())
-            {
                 return records;
             }
-        }
         catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
         }
-        return null;
     }
 }
