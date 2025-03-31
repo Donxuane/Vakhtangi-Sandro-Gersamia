@@ -1,22 +1,22 @@
-﻿Create View IncomeCategories As
-Select 
-i.UserId As UserId,
-i.Date As IncomeDate,
+﻿CREATE VIEW IncomeCategories AS
+SELECT 
+i.UserId AS UserId,
+i.Date AS IncomeDate,
 i.Amount, 
 i.Currency,
-Coalesce(NullIf(c.Name,''),'General') As CategoryName
-From Incomes i
-Left Join Categories c On i.CategoryId = c.Id where c.Type = 1;
+Coalesce(NullIf(c.Name,''),'General') AS CategoryName
+FROM Incomes i
+LEFT JOIN Categories c ON i.CategoryId = c.Id WHERE c.Type = 1;
 Go
-Create View ExpenseCategories As
-Select
+CREATE VIEW ExpenseCategories AS
+SELECT
 ex.UserId,
 ex.Amount,
 ex.Currency,
 ex.Date,
-Coalesce(NullIf(c.Name,''),'General') As CategoryName
-From Expenses ex
-Left Join Categories c on ex.CategoryId = c.Id where c.Type = 0;
+Coalesce(NullIf(c.Name,''),'General') AS CategoryName
+FROM Expenses ex
+LEFT JOIN Categories c ON ex.CategoryId = c.Id WHERE c.Type = 0;
 Go
 CREATE VIEW BudgetPlaning AS
  SELECT 
