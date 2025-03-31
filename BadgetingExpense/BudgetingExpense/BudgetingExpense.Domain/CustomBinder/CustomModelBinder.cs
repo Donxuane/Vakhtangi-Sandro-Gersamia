@@ -8,7 +8,6 @@ public class CustomModelBinder<T> : IModelBinder where T : class, new()
     public Task BindModelAsync(ModelBindingContext bindingContext)
     {
         var model = new T();
-        bool check = false;
 
         foreach (var property in typeof(T).GetProperties())
         { 
@@ -25,7 +24,10 @@ public class CustomModelBinder<T> : IModelBinder where T : class, new()
                            && !property.Name.Equals("RepeatPassword", StringComparison.OrdinalIgnoreCase))
                         {
                             valueToSet = result.Trim().ToLower();
-                            check = true;
+                        }
+                        else
+                        {
+                            valueToSet = result;
                         }
                         
                     }
@@ -33,14 +35,13 @@ public class CustomModelBinder<T> : IModelBinder where T : class, new()
             }
             else
             {
-                valueToSet = Convert.ChangeType(result, property.PropertyType, CultureInfo.InvariantCulture);
+                valueToSet = result;
             }
             property.SetValue(model, valueToSet);
         }
-        if (check == true)
-        {
-            bindingContext.Result = ModelBindingResult.Success(model);
-        }
+
+        bindingContext.Result = ModelBindingResult.Success(model);
+       
         return Task.CompletedTask;
     }
 }

@@ -24,7 +24,7 @@ builder.Services.AddScoped<PropertyNormalizationFilter>();
 builder.Services.AddMemoryCache();
 
 var app = builder.Build();
-app.UseMiddleware<ExceptionLoggerMiddleware>();
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

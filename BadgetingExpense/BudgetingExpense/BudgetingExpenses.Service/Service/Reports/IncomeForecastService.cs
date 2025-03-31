@@ -25,10 +25,10 @@ public class IncomeForecastService : IForecastService<IncomeRecord>
         try
         {
             var count = _configuration.GetSection("ConfigureForcastCounts")["IncomeForecastCount"];
-            var amount = int.TryParse(count, out int number);
+            var amount = int.Parse(count);
             var incomeRecords = await _unitOfWork.IncomeRecords.IncomeRecordsAsync(userId);
             var model = incomeRecords.GroupBy(x => new { x.Currency, x.CategoryName })
-                .Where(x => x.Count() >= number)
+                .Where(x => x.Count() >= amount)
                 .Select(x => new ForecastCategory
                 {
                     CategoryName = x.Key.CategoryName,
@@ -40,7 +40,7 @@ public class IncomeForecastService : IForecastService<IncomeRecord>
         catch(Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
-            return null;
+            throw;
         }
     }
 }

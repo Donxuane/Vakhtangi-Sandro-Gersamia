@@ -65,10 +65,12 @@ public class Authentication : IAuthentication
 
     public async Task<bool> RegisterUserAsync(User user)
     {
-        var userDetails = new IdentityModel {
-            UserName = user.Email,
+
+        var userDetails = new IdentityModel
+        {
+            UserName = user.Name + user.Surname,
             Email = user.Email,
-            Name = user.Name, 
+            Name = user.Name,
             Surname = user.Surname,
             RegisterDate = DateTime.Now,
             Notifications = false
@@ -76,5 +78,10 @@ public class Authentication : IAuthentication
         var result = await _userManager.CreateAsync(userDetails, user.Password);
         if (result.Succeeded)
             return true;
+        if (result.Errors.Any())
+        {
+            throw new Exception(result.Errors.ToString());
+        }
+        return false;
     }
 }

@@ -54,7 +54,7 @@ public class IncomeReportsService : IIncomeReportsService
         catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
-            return null;
+            throw;
         }
     }
 
@@ -77,7 +77,7 @@ public class IncomeReportsService : IIncomeReportsService
         catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
-            return null;
+            throw;
         }
     }
 }

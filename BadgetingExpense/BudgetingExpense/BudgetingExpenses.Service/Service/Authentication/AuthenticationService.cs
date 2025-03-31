@@ -40,6 +40,7 @@ public class AuthenticationService : IAuthenticationService
         catch (Exception ex)
         {
             _logger.LogError("Exception: {ex}", ex.Message);
+            throw;
         }
     }
 
@@ -60,6 +61,7 @@ public class AuthenticationService : IAuthenticationService
         catch (Exception ex)
         {
             _logger.LogError("Log in fail email:{email} ex:{ex}",user.Email, ex.Message);
+            throw;
         }
         return null;
     }
@@ -84,11 +86,12 @@ public class AuthenticationService : IAuthenticationService
                     }
                 }
             }
+            return false;
         }catch(Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex);
+            throw;
         }
-        return false;
     }
 
     public bool CacheNewUserCredentialsInMemory(Register user)
@@ -139,17 +142,19 @@ public class AuthenticationService : IAuthenticationService
                 _logger.LogInformation("New user registered {email}", user.Email);
                 return true;
             }
+            return false;
         }
         catch (Exception ex)
         {
             _logger.LogError("Register new user {ex}", ex.Message);
+            throw;
         }
     }
-    private Task<string>? GenerateJwtTokenAsync(string userId, string userRole)
+    private async Task<string>? GenerateJwtTokenAsync(string userId, string userRole)
     {
         try
         {
-            return Task.Run(() =>
+            return await Task.Run(() =>
             {
                 var tokenConfiguration = _configuration.GetSection("Jwt");
                 var tokenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration["Key"]));
@@ -175,7 +180,7 @@ public class AuthenticationService : IAuthenticationService
         catch (Exception ex)
         {
             _logger.LogError("Exception {ex}", ex.Message);
-            return null;
+            throw;
         }
     }
 
@@ -189,6 +194,7 @@ public class AuthenticationService : IAuthenticationService
         catch (Exception ex)
         {
             _logger.LogError("Getting roles {ex}", ex.Message);
+            throw;
         }
     }
 
@@ -202,6 +208,7 @@ public class AuthenticationService : IAuthenticationService
         catch (Exception ex)
         {
             _logger.LogError("Getting user {ex}", ex.Message);
+            throw;
         }
     }
 }

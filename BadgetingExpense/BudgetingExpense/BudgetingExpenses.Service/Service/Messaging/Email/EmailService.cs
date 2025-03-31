@@ -41,6 +41,7 @@ public class EmailService : IEmailService
         catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
+            throw;
         }
     }
 }

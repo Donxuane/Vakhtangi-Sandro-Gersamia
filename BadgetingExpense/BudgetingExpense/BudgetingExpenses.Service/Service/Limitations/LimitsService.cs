@@ -40,7 +40,7 @@ public class LimitsService : ILimitsManageService
             await _unitOfWork.BeginTransactionAsync();
             await _unitOfWork.LimitsRepository.DeleteLimitsAsync(limitId,userId);
             await _unitOfWork.SaveChangesAsync();
-            _logger.LogInformation("Limitation Deletes Id:{id}",limitId);
+            _logger.LogInformation("Limitation deleted Id:{id}",limitId);
             return true;
         }
         catch (Exception ex)

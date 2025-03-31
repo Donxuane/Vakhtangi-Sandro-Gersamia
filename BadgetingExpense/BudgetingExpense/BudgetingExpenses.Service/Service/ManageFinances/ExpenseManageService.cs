@@ -36,7 +36,7 @@ public class ExpenseManageService : IExpenseManageService
         {
             await _unitOfWork.RollBackAsync();
             _logger.LogError("Exception ex:{ex}",ex.Message);
-            return 0;
+            throw;
         }
     }
 
@@ -87,11 +87,12 @@ public class ExpenseManageService : IExpenseManageService
         try
         {
             var categories = await _unitOfWork.ExpenseManage.GetCategoriesAsync(userId);
-                return categories;
-            }
+            return categories;
+        }
         catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
+            throw;
         }
     }
 
@@ -137,11 +138,12 @@ public class ExpenseManageService : IExpenseManageService
         try
         {
             var records = await _unitOfWork.ExpenseManage.GetAllAsync(userId);
-                return records;
-            }
+            return records;
+        }
         catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
+            throw;
         }
     }
 }

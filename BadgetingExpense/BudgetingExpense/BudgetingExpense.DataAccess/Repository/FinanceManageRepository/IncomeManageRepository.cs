@@ -42,7 +42,7 @@ public class IncomeManageRepository : IManageFinancesRepository<Income>
 
     public async Task<IEnumerable<Income>> GetAllAsync(string UserId)
     {
-        var query = "SELECT FROM Incomes WHERE UserId = @UserId";
+        var query = "SELECT * FROM Incomes WHERE UserId = @UserId";
         var collection = await _connection.QueryAsync<Income>(query, new { UserId }, _transaction);
         return collection;
     }

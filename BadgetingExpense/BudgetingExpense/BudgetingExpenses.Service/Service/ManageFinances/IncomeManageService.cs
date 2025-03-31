@@ -35,14 +35,12 @@ public class IncomeManageService : IIncomeManageService
         {
             await _unitOfWork.RollBackAsync();
             _logger.LogError("Exception ex:{ex}", ex.Message);
-            return 0;
+            throw;
         }
     }
 
     public async Task<bool> AddIncomeAsync(Income model)
     {
-
-            throw new Exception();
         try
         {
             await _unitOfWork.BeginTransactionAsync();
@@ -88,13 +86,13 @@ public class IncomeManageService : IIncomeManageService
         try
         {
             var categories = await _unitOfWork.IncomeManage.GetCategoriesAsync(userId);
-                return categories;
-            }
+            return categories;
+        }
         catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
+            throw;
         }
-        return null;
     }
 
     public async Task<bool> UpdateIncomeAsync(Update income)
@@ -138,11 +136,12 @@ public class IncomeManageService : IIncomeManageService
         try
         {
             var incomeRecords = await _unitOfWork.IncomeManage.GetAllAsync(userId);
-                return incomeRecords;
-            }
+            return incomeRecords;
+        }
         catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
+            throw;
         }
     }
 }

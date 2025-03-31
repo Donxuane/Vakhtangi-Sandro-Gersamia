@@ -28,7 +28,7 @@ public class LimitNotificationService : ILimitNotificationService
             var getBudgetPlaningView = await _unitOfWork.BudgetPlaningRepository.GetBudgetPlaningViewAsync(userId);
             foreach (var budgetItem in getBudgetPlaningView)
             {
-                if (budgetItem.DateAdded.AddMonths(budgetItem.LimitPeriod) >= DateTime.UtcNow)
+                if (budgetItem.DateAdded.AddMonths(budgetItem.LimitPeriod) <= DateTime.UtcNow)
                 {
                     var enabled = await _unitOfWork.GetRepository.GetNotificationActiveStatusAsync(userId);
                     if (enabled)
@@ -67,8 +67,8 @@ public class LimitNotificationService : ILimitNotificationService
                         await _unitOfWork.LimitsRepository.DeleteLimitsAsync(budgetItem.Id, budgetItem.UserId);
                     }
                 }
-
-                }
+               
+            }
             return true;
         }catch(Exception ex)
         {
@@ -92,8 +92,8 @@ public class LimitNotificationService : ILimitNotificationService
         }
         catch (Exception ex)
         {
-           _logger.LogError("Exception ex:{ex}",ex.Message);
-           return (null,null);
+            _logger.LogError("Exception ex:{ex}", ex.Message);
+            throw;
         }
     }
 }

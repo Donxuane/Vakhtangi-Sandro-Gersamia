@@ -39,7 +39,7 @@ public class ExpenseReportsService : IExpenseReportsService
         catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
-            return null;
+            throw;
         }
     }
 
@@ -57,7 +57,7 @@ public class ExpenseReportsService : IExpenseReportsService
         catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
-            return null;
+            throw;
         }
     }
 
@@ -80,7 +80,7 @@ public class ExpenseReportsService : IExpenseReportsService
         catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
-            return null;
+            throw;
         }
     }
 
@@ -103,7 +103,7 @@ public class ExpenseReportsService : IExpenseReportsService
         catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
-            return null;
+            throw;
         }
     }
 }

@@ -4,6 +4,7 @@ using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Reflection.Metadata.Ecma335;
 
 namespace BudgetingExpenses.Service.Service.Reports;
 
@@ -25,10 +26,10 @@ public class ExpenseForecastService : IForecastService<ExpenseRecord>
         try
         {
             var count = _configuration.GetSection("ConfigureForcastCounts")["ExpenseForecastCount"];
-            var amount = int.TryParse(count, out int number);
+            var amount = int.Parse(count);
             var expenseRecords = await _unitOfWork.ExpenseRecords.ExpenseRecordsAsync(userId);
             var model = expenseRecords.GroupBy(x => new { x.Currency, x.CategoryName })
-                .Where(x => x.Count() >= number)
+                .Where(x => x.Count() >= amount)
                 .Select(x => new ForecastCategory
                 {
                     CategoryName = x.Key.CategoryName,
@@ -40,7 +41,7 @@ public class ExpenseForecastService : IForecastService<ExpenseRecord>
         catch(Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
-            return null;
+            throw;
         }
     }
 }

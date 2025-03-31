@@ -2,6 +2,7 @@
 using BudgetingExpense.Domain.Enums;
 using BudgetingExpense.Domain.Models.MainModels;
 using Dapper;
+using Microsoft.Data.SqlClient;
 using System.Data.Common;
 
 namespace BudgetingExpense.DataAccess.Repository.FinanceManageRepository;
@@ -42,7 +43,7 @@ public class ExpenseManageRepository : IManageFinancesRepository<Expense>
 
     public async Task<IEnumerable<Expense>> GetAllAsync(string UserId)
     {
-        var query = "SELECT FROM Expenses WHERE UserId = @UserId";
+        var query = "SELECT * FROM Expenses WHERE UserId = @UserId";
         var collection = await _connection.QueryAsync<Expense>(query, new { UserId }, _transaction);
         return collection;
     }

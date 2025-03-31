@@ -15,20 +15,19 @@ public class UserCredentialsMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        try
+
+        var claims = context.User.Claims.ToList();
+        foreach (var claim in claims)
         {
-            var claims = context.User.Claims.ToList();
-            foreach (var claim in claims)
-            {
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine($"\tType: {claim.Type} , Value {claim.Value}");
-            }
-            Console.ForegroundColor = ConsoleColor.Gray;
-            var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
-            if (!string.IsNullOrEmpty(userId))
-            {
-                context.Items["UserId"] = userId;
-            }
-            await _next(context);
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            _logger.LogInformation("\tType: {claim.Type} , Value: {claim.Value}", claim.Type, claim.Value);
         }
+        Console.ForegroundColor = ConsoleColor.Gray;
+        var userId = context.User.FindFirst(ClaimTypes.Name)?.Value;
+        if (!string.IsNullOrEmpty(userId))
+        {
+            context.Items["UserId"] = userId;
+        }
+        await _next(context);
+    } 
 }

@@ -28,7 +28,7 @@ public class SavingsAnalyticService : ISavingsAnalyticService
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
             await _unitOfWork.RollBackAsync();
-            return null;
+            throw;
         }
     }
 }
