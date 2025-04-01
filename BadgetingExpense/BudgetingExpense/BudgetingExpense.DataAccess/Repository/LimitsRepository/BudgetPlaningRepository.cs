@@ -1,5 +1,5 @@
 ﻿using System.Data.Common;
-using BudgetingExpense.Domain.Contracts.IRepository.IGet;
+using BudgetingExpense.Domain.Contracts.IRepository.ILimitations;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using Dapper;
 
@@ -18,5 +18,12 @@ public class BudgetPlaningRepository : IBudgetPlaningRepository
     {
         var query = "SELECT * FROM BudgetPlaning WHERE UserId =@UserId;";
         return await _connection.QueryAsync<BudgetPlanning>(query, new { userId });
+    }
+
+    public async Task<IEnumerable<LimitationsView>> GetLimitsInfo(string userId)
+    {
+        var query = "SELECT LimitAmount,LimitPeriod,DateAdded,CategoryId," +
+            "TotalExpenses,ExpenseCount,Currency FROM BudgetPlaning WHERE UserId = @userId";
+        return await _connection.QueryAsync<LimitationsView>(query, new { userId });
     }
 }

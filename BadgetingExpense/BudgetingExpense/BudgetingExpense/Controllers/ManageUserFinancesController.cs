@@ -193,6 +193,18 @@ public class ManageUserFinancesController : BaseControllerExstention
         return BadRequest();
     }
 
+    [HttpGet("ActiveLimitsDetails")]
+    public async Task<IActionResult> GetLimitsDetails()
+    {
+        var result = await _limitsManageService.GetLimitsDetails(UserId);
+        var model = result.Select(x => x.Item1.Map(x.Item2));
+        if (result.Any())
+        {
+            return Ok(model);
+        }
+        return BadRequest("Records not found");
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetCurrencies()
     {

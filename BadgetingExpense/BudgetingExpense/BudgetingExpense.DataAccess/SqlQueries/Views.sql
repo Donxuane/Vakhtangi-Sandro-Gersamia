@@ -22,7 +22,7 @@ CREATE VIEW BudgetPlaning AS
  SELECT 
     l.Id,
     l.UserId,
-    l.Amount AS limitAmount,
+    l.Amount AS LimitAmount,
     l.PeriodCategory AS LimitPeriod,
     l.DateAdded,
     l.CategoryId,

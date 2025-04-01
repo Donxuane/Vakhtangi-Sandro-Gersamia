@@ -26,4 +26,18 @@ public static class MapModelsToDtos
             Date = model.Date
         };
     }
+
+    public static LimitationsViewDto Map(this LimitationsView model,string category)
+    {
+        return new LimitationsViewDto
+        {
+            Category = category,
+            Currency = model.Currency.ToString(),
+            DateAdded = model.DateAdded,
+            LimitAmount = model.LimitAmount,
+            RecordsCount = model.ExpenseCount,
+            TotalExpenses = model.TotalExpenses,
+            ValidTo = model.DateAdded.AddMonths(model.LimitPeriod)
+        };
+    }
 }

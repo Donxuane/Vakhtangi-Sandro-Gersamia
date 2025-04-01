@@ -1,4 +1,5 @@
-﻿using BudgetingExpense.Domain.Models.MainModels;
+﻿using BudgetingExpense.Domain.Models.DatabaseViewModels;
+using BudgetingExpense.Domain.Models.MainModels;
 using System.Data.Common;
 
 namespace BudgetingExpense.Domain.Contracts.IRepository.ILimitations;

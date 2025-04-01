@@ -2,6 +2,8 @@
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Contracts.IServices.ILimitations;
 using Microsoft.Extensions.Logging;
+using BudgetingExpense.Domain.Models.DatabaseViewModels;
+using BudgetingExpense.Domain.Contracts.IRepository.IGet;
 
 namespace BudgetingExpenses.Service.Service.Limitations;
 
@@ -9,10 +11,12 @@ public class LimitsService : ILimitsManageService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<LimitsService> _logger;
-    public LimitsService(IUnitOfWork unitOfWork, ILogger<LimitsService> logger)
+    private readonly IGetRepository _getRepository;
+    public LimitsService(IUnitOfWork unitOfWork, ILogger<LimitsService> logger, IGetRepository getRepository)
     {
         _unitOfWork = unitOfWork;
         _logger = logger;
+        _getRepository = getRepository;
     }
     public async Task<bool> SetLimitsAsync(Limits limits)
     {
@@ -68,6 +72,25 @@ public class LimitsService : ILimitsManageService
             return false;
         }
 
+    }
+
+    public async Task<IEnumerable<(LimitationsView,string)>> GetLimitsDetails(string userId)
+    {
+        try
+        {
+            List<(LimitationsView, string)> list = [];
+            var result = await _unitOfWork.BudgetPlaningRepository.GetLimitsInfo(userId);
+            foreach(var record in result)
+            {
+                list.Add((record, await _getRepository.GetCategoryNameAsync(record.CategoryId)));
+            }
+            return list;
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError("Exception ex:{ex}", ex.Message);
+            throw;
+        }
     }
 }
 
