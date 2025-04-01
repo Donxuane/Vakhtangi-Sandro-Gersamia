@@ -147,9 +147,9 @@ public class ReportsController : BaseControllerExstention
     public async Task<IActionResult> SavingAnalyticByPeriodAsync(int month)
     {
         var value = await _analyticsService.GetSavingsAnalyticsAsync(UserId, month);
-        if (value != null)
+        if (value.Item1 != null)
         {
-            return Ok(value);
+            return Ok(new{value.Item1,value.Item2});
         }
         return BadRequest("Records Not Found");
     }

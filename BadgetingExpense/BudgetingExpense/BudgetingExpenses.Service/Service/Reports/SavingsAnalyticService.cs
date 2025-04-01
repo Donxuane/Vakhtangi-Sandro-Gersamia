@@ -27,18 +27,31 @@ public class SavingsAnalyticService : ISavingsAnalyticService
             
             await _unitOfWork.SaveChangesAsync();
             var currencies = await _currencyRateService.GetCurrencyRates();
-            var savingPeriod = new SavingsPeriod();
+            var savingPeriod = new SavingsPeriod
+            {
+                Currency = Currencies.GEL,
+            };
 
             foreach (var item in records)
             {
-                
-                if (item.Currency.ToString() == currencies.Select(x => new{x.Key}).ToString())
+
+                if (currencies.Any(x => x.Key == item.Currency.ToString()))
                 {
-                    savingPeriod.AverageIncome += item.AverageIncome * currencies
-                        .Where(X => X.Key.ToString() == item.Currency.ToString()).Select(x => new { x.Value });
+                    var currencyRate = currencies.FirstOrDefault(x => x.Key == item.Currency.ToString()).Value;
+                    savingPeriod.AverageIncome +=Math.Round( (item.AverageIncome * (double)currencyRate),2);
+                    savingPeriod.AverageExpense +=Math.Round( (item.AverageExpense * (double)currencyRate),2);
+                  
                 }
+                else
+                {
+                    savingPeriod.AverageIncome +=Math.Round( item.AverageIncome,2);
+                    savingPeriod.AverageExpense +=Math.Round( item.AverageExpense,2);
+                } 
+                savingPeriod.Percentage += Math.Round(item.Percentage,2);
+                
             }
-            
+            savingPeriod.Savings =  savingPeriod.AverageIncome - savingPeriod.AverageExpense;
+            return (records, savingPeriod);
         }
         catch (Exception ex)
         {
