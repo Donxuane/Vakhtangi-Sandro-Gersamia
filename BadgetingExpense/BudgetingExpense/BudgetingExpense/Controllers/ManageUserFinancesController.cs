@@ -209,7 +209,7 @@ public class ManageUserFinancesController : BaseControllerExstention
     public async Task<IActionResult> GetCurrencies()
     {
         
-      var result1 =   await _currencyRateService.GetCurrencies();
+      var result1 =   await _currencyRateService.GetCurrencyRates();
         
        
             return Ok(result1);

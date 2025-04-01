@@ -22,11 +22,7 @@ public class IncomeReportsService : IIncomeReportsService
         try
         {
             var records = await _unitOfWork.IncomeRecords.AllIncomeRecordsAsync(userId, page);
-            if (records != null)
-            {
-                return records;
-            }
-            return null;
+            return records;
         }
         catch (Exception ex)
         {
