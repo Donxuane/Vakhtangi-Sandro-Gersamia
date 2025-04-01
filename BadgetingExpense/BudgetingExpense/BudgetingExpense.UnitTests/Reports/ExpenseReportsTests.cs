@@ -3,6 +3,7 @@ using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 using BudgetingExpenses.Service.Service.Reports;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -12,14 +13,16 @@ public class ExpenseReportsTests
 {
     private readonly Mock<IUnitOfWork> _mockedUnitOfWork;
     private readonly Mock<ILogger<ExpenseReportsService>> _mockedLogger;
+    private readonly Mock<IConfiguration> _mockConfiguration;
     private readonly IExpenseReportsService _expenseReportsService;
 
     public ExpenseReportsTests()
     {
         _mockedUnitOfWork = new Mock<IUnitOfWork>();
         _mockedLogger = new Mock<ILogger<ExpenseReportsService>>();
+        _mockConfiguration = new Mock<IConfiguration>();
         _expenseReportsService = new ExpenseReportsService(_mockedUnitOfWork.Object,
-            _mockedLogger.Object);
+            _mockedLogger.Object,_mockConfiguration.Object);
     }
 
     [Fact]
@@ -48,11 +51,12 @@ public class ExpenseReportsTests
     [Fact]
     public async Task GetAllRecordsAsync_ShouldReturnNull_RecordsNotFound()
     {
+        int page = 1;
         string userId = "User Id";
         var list = new List<ExpenseRecord> { };
         _mockedUnitOfWork.Setup(x => x.ExpenseRecords.ExpenseRecordsAsync(userId))
             .ReturnsAsync(list);
-        var result = await _expenseReportsService.GetAllRecordsAsync(userId);
+        var result = await _expenseReportsService.GetAllRecordsAsync(userId,page);
 
         Assert.Null(result);
         _mockedUnitOfWork.Verify(x => x.ExpenseRecords.ExpenseRecordsAsync(userId), Times.Once);

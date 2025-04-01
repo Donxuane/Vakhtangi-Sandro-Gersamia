@@ -109,11 +109,12 @@ namespace BudgetingExpense.UnitTests.ManageFinances
         public async Task DeleteIncomeAsync_ShouldDeleteIncome_ShouldReturnTrue()
         {
             int expenceId = 1;
-            _mockUnitOfWork.Setup(x => x.IncomeManage.DeleteAsync(expenceId)).Returns(Task.CompletedTask);
-            var result = await _IncomeManageService.DeleteIncomeAsync(expenceId);
+            string userId = "userId";
+            _mockUnitOfWork.Setup(x => x.IncomeManage.DeleteAsync(expenceId,userId)).Returns(Task.CompletedTask);
+            var result = await _IncomeManageService.DeleteIncomeAsync(expenceId,userId);
             Assert.True(result);
             _mockUnitOfWork.Verify(x => x.BeginTransactionAsync(), Times.Once);
-            _mockUnitOfWork.Verify(x => x.IncomeManage.DeleteAsync(expenceId), Times.Once);
+            _mockUnitOfWork.Verify(x => x.IncomeManage.DeleteAsync(expenceId, userId), Times.Once);
             _mockUnitOfWork.Verify(x=>x.SaveChangesAsync(),Times.Once);
 
             VerifyLogInformation(_mockIncomeManageServiceLogger);
@@ -122,11 +123,11 @@ namespace BudgetingExpense.UnitTests.ManageFinances
         [Fact]
         public async Task   DeleteIncomeAsync_ShouldNot_WhileExceptionThrown_ShouldReturnFalse()
         {
-            _mockUnitOfWork.Setup(x => x.IncomeManage.DeleteAsync(It.IsAny<int>())).ThrowsAsync(new Exception());
-            var result = _IncomeManageService.DeleteIncomeAsync(It.IsAny<int>());
+            _mockUnitOfWork.Setup(x => x.IncomeManage.DeleteAsync(It.IsAny<int>(),It.IsAny<string>())).ThrowsAsync(new Exception());
+            var result = _IncomeManageService.DeleteIncomeAsync(It.IsAny<int>(),It.IsAny<string>());
             Assert.NotNull(result);
             _mockUnitOfWork.Verify(x => x.BeginTransactionAsync(), Times.Once);
-            _mockUnitOfWork.Verify(x => x.IncomeManage.DeleteAsync(It.IsAny<int>()), Times.Once);
+            _mockUnitOfWork.Verify(x => x.IncomeManage.DeleteAsync(It.IsAny<int>(), It.IsAny<string>()), Times.Once);
             _mockUnitOfWork.Verify(x => x.RollBackAsync());
             VerifyLogError(_mockIncomeManageServiceLogger);
         }

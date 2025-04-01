@@ -1,5 +1,6 @@
 ﻿using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
+using BudgetingExpense.Domain.Enums;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 using BudgetingExpenses.Service.Service.Reports;
@@ -24,21 +25,27 @@ public class IncomeReportsTests
     [Fact]
     public async Task GetAllRecordsAsync_ShouldReturnAllIncomeRecords_OrderByDescendingDate()
     {
-        string userId = "User Id";
-        var returnResult = new List<IncomeRecord> {
-            new() { UserId = userId, IncomeDate = DateTime.UtcNow.AddMonths(-1)},
-            new() { UserId = userId, IncomeDate = DateTime.UtcNow.AddMonths(-2)},
-            new() { UserId = userId, IncomeDate = DateTime.UtcNow.AddMonths(-3)},
-            new() { UserId = userId, IncomeDate = DateTime.UtcNow.AddMonths(-4)}
+        string userId = "user123";
+        int page = 1;
+        var incomeReports = new List<IncomeRecord>
+        {
+            new()
+            {
+                Amount = 100, CategoryName = "salary", Currency = Currencies.GEL, IncomeDate = DateTime.UtcNow,
+                UserId = userId
+            },
+            new()
+            {
+                Amount = 100, CategoryName = "business", Currency = Currencies.GEL, IncomeDate = DateTime.UtcNow,
+                UserId = userId
+            }
         };
-        _mockedUnitOfWork.Setup(x => x.IncomeRecords.IncomeRecordsAsync(userId))
-            .ReturnsAsync(returnResult);
-
-        var result = await _incomeReportsService.GetAllRecordsAsync(userId);
+        var expectedRecords = (incomeReports, page);
+        _mockedUnitOfWork.Setup(x => x.IncomeRecords.AllIncomeRecordsAsync(userId, page)).ReturnsAsync(expectedRecords);
+        var result = await _incomeReportsService.GetAllRecordsAsync(userId, page);
         Assert.NotNull(result);
-        Assert.Equal(returnResult.OrderByDescending(x => x.IncomeDate), result);
-
-        _mockedUnitOfWork.Verify(x => x.IncomeRecords.IncomeRecordsAsync(userId), Times.Once);
+        Assert.Equal(expectedRecords.incomeReports, result?.records); 
+        Assert.Equal(expectedRecords.page, result?.pageAmount);
     }
 
     [Fact]
