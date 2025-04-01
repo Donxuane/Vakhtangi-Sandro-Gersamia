@@ -11,15 +11,21 @@ public class ExpenseManageServiceTests
 {
     private readonly Mock<IUnitOfWork> _mockUnitOfWork;
     private readonly Mock<ILogger<ExpenseManageService>> _mockLogger;
-    private readonly Mock<ILimitNotificationService> _mockeLimitNotificationService;
+    private readonly Mock<ILimitNotificationService> _mockLimitNotificationService;
+    private readonly Mock<IExpenseAddedNotificationService> _mockExpenseAddedNotificationService;
     private readonly ExpenseManageService _service;
 
     public ExpenseManageServiceTests()
     {
         _mockUnitOfWork = new Mock<IUnitOfWork>();
         _mockLogger = new Mock<ILogger<ExpenseManageService>>();
-        _mockeLimitNotificationService = new Mock<ILimitNotificationService>();
-        _service = new ExpenseManageService(_mockUnitOfWork.Object, _mockLogger.Object, _mockeLimitNotificationService.Object);
+        _mockExpenseAddedNotificationService = new Mock<IExpenseAddedNotificationService>();
+        _mockLimitNotificationService = new Mock<ILimitNotificationService>();
+        _service = new ExpenseManageService(
+            _mockUnitOfWork.Object,
+            _mockLogger.Object,
+            _mockLimitNotificationService.Object,
+            _mockExpenseAddedNotificationService.Object );
     }
 
     [Fact]
@@ -56,12 +62,13 @@ public class ExpenseManageServiceTests
     public async Task DeleteExpenseAsync_ShouldDelete_Record()
     {
         int expenseId = 12;
-        _mockUnitOfWork.Setup(x => x.ExpenseManage.DeleteAsync(expenseId))
+        string userId = "user id";
+        _mockUnitOfWork.Setup(x => x.ExpenseManage.DeleteAsync(expenseId, userId))
             .GetType();
-        var result = await _service.DeleteExpenseAsync(expenseId);
+        var result = await _service.DeleteExpenseAsync(expenseId,userId);
         Assert.True(result);
         _mockUnitOfWork.Verify(x => x.BeginTransactionAsync(), Times.Once);
-        _mockUnitOfWork.Verify(x => x.ExpenseManage.DeleteAsync(expenseId), Times.Once);
+        _mockUnitOfWork.Verify(x => x.ExpenseManage.DeleteAsync(expenseId, userId), Times.Once);
         _mockUnitOfWork.Verify(x => x.SaveChangesAsync(), Times.Once);
     }
 
