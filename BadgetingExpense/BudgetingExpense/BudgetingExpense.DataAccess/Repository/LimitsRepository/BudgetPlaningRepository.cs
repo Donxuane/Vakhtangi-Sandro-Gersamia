@@ -6,7 +6,6 @@ using Dapper;
 namespace BudgetingExpense.DataAccess.Repository.LimitsRepository;
 
 public class BudgetPlaningRepository : IBudgetPlaningRepository
-
 {
     private readonly DbConnection _connection;
 

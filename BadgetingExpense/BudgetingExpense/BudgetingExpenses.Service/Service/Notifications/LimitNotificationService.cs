@@ -66,8 +66,6 @@ public class LimitNotificationService : ILimitNotificationService
                     {
                         await _unitOfWork.LimitsRepository.DeleteLimitsAsync(budgetItem.Id, budgetItem.UserId);
                     }
-                }
-               
             }
             return true;
         }catch(Exception ex)
