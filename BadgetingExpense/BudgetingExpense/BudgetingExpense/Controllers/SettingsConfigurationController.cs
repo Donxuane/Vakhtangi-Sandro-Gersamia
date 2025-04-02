@@ -24,8 +24,8 @@ public class SettingsConfigurationController : BaseControllerExstention
             notification);
         if (result)
         {
-            return Ok("notification alert updated");
+            return Ok(new { message = "Notification alert updated" });
         }
-        return BadRequest();
+        return BadRequest(new { message = "Couldn't set" });
     }
 }

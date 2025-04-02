@@ -1,4 +1,4 @@
-using BudgetingExpense.Domain.Contracts.IServices.IAuthentication;
+﻿using BudgetingExpense.Domain.Contracts.IServices.IAuthentication;
 using BudgetingExpense.Domain.Models.AuthenticationModels;
 using BudgetingExpenses.Service.DtoModels;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +22,7 @@ public class AuthenticationController : ControllerBase
         {
             return Ok(new { token });
         }
-        return BadRequest("Couldn't Process Login");
+        return BadRequest(new { message = "Can't login" });
     }
 
     [HttpPost("RegisterWithValidation")]
@@ -31,9 +31,9 @@ public class AuthenticationController : ControllerBase
         var result = _auth.CacheNewUserCredentialsInMemory(user);
         if (result)
         {
-            return Ok("Check email for verification!");
+            return Ok(new { message = "Check email for verification!" });
         }
-        return BadRequest("Code can't be generated fro now!\nTry later");
+        return BadRequest(new { message = "Code can't be generated fro now!\nTry later" });
     }
 
     [HttpPost("ValidateEmail")]
@@ -42,8 +42,8 @@ public class AuthenticationController : ControllerBase
         var result = await _auth.VerifyUserEmailAsync(model.Email, model.Code);
         if (result)
         {
-            return Ok("You registered successfully!");
+            return Ok(new { message = "You registered successfully!" });
         }
-        return BadRequest("Code does not match!\nTry again");
+        return BadRequest(new { message = "Code does not match!\nTry again" });
     }
 }

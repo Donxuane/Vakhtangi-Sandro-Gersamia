@@ -72,7 +72,7 @@ public class LimitNotificationService : ILimitNotificationService
         }catch(Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
-            return false;
+            throw;
         }
     }
 
