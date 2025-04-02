@@ -29,7 +29,7 @@ public class SavingsAnalyticService : ISavingsAnalyticService
             var currencies = await _currencyRateService.GetCurrencyRates();
             var savingPeriod = new SavingsPeriod
             {
-                Currency = Currencies.GEL,
+                Currency = Currencies.GEL
             };
 
             foreach (var item in records)
