@@ -8,11 +8,9 @@ namespace BudgetingExpenses.Service.Service.ApiService;
 
 public class CurrencyRateService : ICurrencyRateService
 {
-    private readonly IConfiguration _configuration;
     private readonly IMemoryCache _memoryCache;
     public CurrencyRateService(IConfiguration configuration,IMemoryCache memoryCache)
     {
-        _configuration = configuration;
         _memoryCache  = memoryCache;
     }
 
@@ -48,7 +46,6 @@ public class CurrencyRateService : ICurrencyRateService
 
           }
           _memoryCache.Set(key, collection);
-         
         }
 
         var result =  _memoryCache.TryGetValue(key, out Dictionary<string, decimal> currenciesValue);  
@@ -60,8 +57,5 @@ public class CurrencyRateService : ICurrencyRateService
 
             throw;
         }
-        
-      
     } 
-    
 }

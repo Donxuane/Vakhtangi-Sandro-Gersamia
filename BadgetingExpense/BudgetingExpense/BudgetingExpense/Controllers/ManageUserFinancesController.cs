@@ -4,7 +4,6 @@ using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
 using BudgetingExpense.Domain.Contracts.IServices.ILimitations;
 using BudgetingExpenses.Service.DtoModels;
 using BudgetingExpenses.Service.MapService;
-using BudgetingExpenses.Service.Service.ApiService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,14 +17,12 @@ public class ManageUserFinancesController : BaseControllerExstention
     private readonly IIncomeManageService _incomeService;
     private readonly IExpenseManageService _expenseManageService;
     private readonly ILimitsManageService _limitsManageService;
-    private readonly CurrencyRateService _currencyRateService;
     public ManageUserFinancesController(IIncomeManageService incomeService, 
         IExpenseManageService expenseManageService, ILimitsManageService limitsManageService, CurrencyRateService currencyRateService)
     {
         _incomeService = incomeService;
         _expenseManageService = expenseManageService;
         _limitsManageService = limitsManageService;
-        _currencyRateService = currencyRateService;
     }
 
     /// <summary>
@@ -203,18 +200,5 @@ public class ManageUserFinancesController : BaseControllerExstention
             return Ok(model);
         }
         return BadRequest("Records not found");
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetCurrencies()
-    {
-        
-      var result1 =   await _currencyRateService.GetCurrencyRates();
-        
-       
-            return Ok(result1);
-        
-
-        return BadRequest();
     }
 }

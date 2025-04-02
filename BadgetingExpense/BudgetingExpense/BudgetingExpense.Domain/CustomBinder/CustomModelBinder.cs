@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Globalization;
 
 namespace BudgetingExpense.Domain.CustomBinder;
 
@@ -18,8 +17,6 @@ public class CustomModelBinder<T> : IModelBinder where T : class, new()
             {
                 if (propertyResult.Length != 0)
                 {
-                    if (!string.IsNullOrEmpty(result))
-                    {
                         if (!result.Contains('@') && !property.Name.Equals("Password", StringComparison.OrdinalIgnoreCase)
                            && !property.Name.Equals("RepeatPassword", StringComparison.OrdinalIgnoreCase))
                         {
@@ -29,19 +26,14 @@ public class CustomModelBinder<T> : IModelBinder where T : class, new()
                         {
                             valueToSet = result;
                         }
-                        
-                    }
-                }
             }
             else
             {
                 valueToSet = result;
             }
-            property.SetValue(model, valueToSet);
         }
 
         bindingContext.Result = ModelBindingResult.Success(model);
-       
         return Task.CompletedTask;
     }
 }
