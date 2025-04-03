@@ -20,10 +20,6 @@ public class RefreshExpiredTokensMiddleware
     public async Task InvokeAsync(HttpContext context)
     {
         var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-        
-        if (token != null)
-        {
-            
             var jwtHeandler = new JwtSecurityTokenHandler();
             var jwt = jwtHeandler.ReadJwtToken(token);
             if(jwt.ValidTo < DateTime.UtcNow)
