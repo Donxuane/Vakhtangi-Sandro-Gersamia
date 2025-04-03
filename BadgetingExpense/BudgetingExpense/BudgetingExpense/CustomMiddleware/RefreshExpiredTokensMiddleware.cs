@@ -1,6 +1,5 @@
 ﻿using BudgetingExpense.DataAccess.Repository.Identity;
 using BudgetingExpense.Domain.Contracts.IServices.IAuthentication;
-using BudgetingExpenses.Service.Service.Authentication;
 using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
