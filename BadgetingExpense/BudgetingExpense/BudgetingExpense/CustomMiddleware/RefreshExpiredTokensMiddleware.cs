@@ -19,29 +19,47 @@ public class RefreshExpiredTokensMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        var actualRefreshToken = context.Request.Cookies["refreshToken"];
+        if (actualRefreshToken != null)
+        { 
+            var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             var jwtHeandler = new JwtSecurityTokenHandler();
-            var jwt = jwtHeandler.ReadJwtToken(token);
-            if(jwt.ValidTo < DateTime.UtcNow)
+            if (token != null)
             {
-                var userId = jwt.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
-                var actualRefreshToken = context.Request.Cookies["refreshToken"];
-                var scope = _service.CreateScope();
-                if (scope != null)
+                var jwt = jwtHeandler.ReadJwtToken(token);
+                if (jwt.ValidTo > DateTime.UtcNow)
                 {
-                    var manager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityModel>>();
-                    var authentication = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
-                    var refreshToken = authentication.GenerateRefreshToken(userId);
-                    if (refreshToken == actualRefreshToken)
-                    {
-                        var user = await manager.FindByIdAsync(userId);
-                        var role = await manager.GetRolesAsync(user);
-                        var jwtToken = await authentication.GenerateJwtTokenAsync(userId, role.FirstOrDefault());
-                        context.Response.Headers["Authorization"] = jwtToken;
-                    }
+                    var userId = jwt.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+                    var refreshTokenUserId = jwtHeandler.ReadJwtToken(actualRefreshToken).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+                    var jwtToken = await GenerateToken(userId, refreshTokenUserId);
+                    context.Response.Headers.Authorization = jwtToken;
                 }
+            }
+            else
+            {
+                var refreshTokenUserId = jwtHeandler.ReadJwtToken(actualRefreshToken).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+                var jwtToken = await GenerateToken(refreshTokenUserId, refreshTokenUserId);
+                context.Response.Headers.Authorization = jwtToken;
             }
         }
         await _next(context);
+    }
+
+    private async Task<string?> GenerateToken(string userId,string refreshTokenUserId)
+    {
+        var scope = _service.CreateScope();
+        if (scope != null)
+        {
+            var manager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityModel>>();
+            var authentication = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
+            if (userId == refreshTokenUserId)
+            {
+                var user = await manager.FindByIdAsync(userId);
+                var role = await manager.GetRolesAsync(user);
+                var jwtToken = await authentication.GenerateJwtTokenAsync(userId, role.FirstOrDefault());
+                return jwtToken;
+            }
+        }
+        return null;
     }
 }

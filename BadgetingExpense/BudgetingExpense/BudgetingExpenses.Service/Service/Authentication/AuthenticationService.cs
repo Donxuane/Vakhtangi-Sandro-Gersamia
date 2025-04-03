@@ -202,13 +202,14 @@ public class AuthenticationService : IAuthenticationService
     {
         try
         {
-            byte[] bytes = SHA256.HashData(Encoding.UTF8.GetBytes(userId));
-            StringBuilder builder = new();
-            foreach (var b in bytes)
-            {
-                builder.Append(b.ToString("x2"));
-            }
-            return builder.ToString();
+            var tokenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("Jwt")["Key"]));
+            var claim =new[] { new Claim(ClaimTypes.Name, userId) };
+            var token = new JwtSecurityToken
+            (
+                claims: claim,
+                signingCredentials: new SigningCredentials(tokenKey, SecurityAlgorithms.HmacSha256)
+            );
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
         catch (Exception ex)
         {
