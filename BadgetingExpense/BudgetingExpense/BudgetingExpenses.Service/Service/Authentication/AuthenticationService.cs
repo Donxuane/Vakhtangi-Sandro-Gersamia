@@ -12,6 +12,7 @@ using Microsoft.Extensions.Caching.Memory;
 using BudgetingExpense.Domain.Contracts.IServices.IMessaging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
+using System.Security.Cryptography;
 
 namespace BudgetingExpenses.Service.Service.Authentication;
 
@@ -201,10 +202,15 @@ public class AuthenticationService : IAuthenticationService
     {
         try
         {
-            var hasher = new PasswordHasher<string>();
-            return hasher.HashPassword(null, userId);
+            byte[] bytes = SHA256.HashData(Encoding.UTF8.GetBytes(userId));
+            StringBuilder builder = new();
+            foreach (var b in bytes)
+            {
+                builder.Append(b.ToString("x2"));
+            }
+            return builder.ToString();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
             throw;
