@@ -36,7 +36,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<RefreshExpiredTokensMiddleware>();
 app.UseAuthentication();
 app.UseMiddleware<UserCredentialsMiddleware>();
 app.UseAuthorization();

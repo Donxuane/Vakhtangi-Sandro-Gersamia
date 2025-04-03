@@ -10,6 +10,8 @@ using BudgetingExpense.Domain.Contracts.IServices.IAuthentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Caching.Memory;
 using BudgetingExpense.Domain.Contracts.IServices.IMessaging;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 
 namespace BudgetingExpenses.Service.Service.Authentication;
 
@@ -20,14 +22,17 @@ public class AuthenticationService : IAuthenticationService
     private readonly ILogger<AuthenticationService> _logger;
     private readonly IMemoryCache _cache;
     private readonly IEmailService _emailService;
+    private readonly IHttpContextAccessor _httpContext;
     public AuthenticationService(IUnitOfWork unitOfWork, IConfiguration configuration,
-        ILogger<AuthenticationService> logger, IMemoryCache cache, IEmailService emailService)
+        ILogger<AuthenticationService> logger, IMemoryCache cache, IEmailService emailService,
+        IHttpContextAccessor httpContext)
     {
         _unitOfWork = unitOfWork;
         _configuration = configuration;
         _logger = logger;
         _cache = cache;
         _emailService = emailService;
+        _httpContext = httpContext;
     }
 
     public async Task AddUserRolesAsync(string email, string role)
@@ -51,9 +56,17 @@ public class AuthenticationService : IAuthenticationService
             var check = await _unitOfWork.Authentication.CheckUserAsync(user.Email, user.Password);
             if (check)
             {
-                var userModel = await GetUserAsync(user.Email);
-                var roles = await GetRoleAsync(user.Email);
-                var token = await GenerateJwtTokenAsync(userModel.Id, roles.FirstOrDefault());
+                var model = await _unitOfWork.Authentication.GetUserByEmailAsync(user.Email);
+                var roles =  await _unitOfWork.Authentication.GetUserRolesAsync(user.Email);
+                var token = await GenerateJwtTokenAsync(model.Id, roles.FirstOrDefault());
+                var refreshToken = GenerateRefreshToken(model.Id);
+                _httpContext.HttpContext.Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddDays(7)
+                });
                 _logger.LogInformation("Logged in user {email}", user.Email);
                 return token;
             }
@@ -150,7 +163,7 @@ public class AuthenticationService : IAuthenticationService
             throw;
         }
     }
-    private async Task<string>? GenerateJwtTokenAsync(string userId, string userRole)
+    public async Task<string>? GenerateJwtTokenAsync(string userId, string userRole)
     {
         try
         {
@@ -180,6 +193,20 @@ public class AuthenticationService : IAuthenticationService
         catch (Exception ex)
         {
             _logger.LogError("Exception {ex}", ex.Message);
+            throw;
+        }
+    }
+
+    public string GenerateRefreshToken(string userId)
+    {
+        try
+        {
+            var hasher = new PasswordHasher<string>();
+            return hasher.HashPassword(null, userId);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError("Exception ex:{ex}", ex.Message);
             throw;
         }
     }

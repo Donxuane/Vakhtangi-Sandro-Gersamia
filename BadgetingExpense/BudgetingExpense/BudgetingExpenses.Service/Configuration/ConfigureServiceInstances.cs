@@ -37,5 +37,6 @@ public static class ConfigureServiceInstances
         services.AddScoped<IExpenseAddedNotificationService, ExpenseAddedNotificationService>();
         services.AddScoped<ICurrencyRateService,CurrencyRateService>();
         services.AddHostedService<LimitsCleanupService>();
+        services.AddHttpContextAccessor();
     }
 }
