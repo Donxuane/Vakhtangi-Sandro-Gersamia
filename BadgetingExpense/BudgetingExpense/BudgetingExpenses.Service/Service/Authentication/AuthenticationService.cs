@@ -183,32 +183,4 @@ public class AuthenticationService : IAuthenticationService
             throw;
         }
     }
-
-    private async Task<IList<string>?> GetRoleAsync(string email)
-    {
-        try
-        {
-            var roles = await _unitOfWork.Authentication.GetUserRolesAsync(email);
-            return roles;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError("Getting roles {ex}", ex.Message);
-            throw;
-        }
-    }
-
-    private async Task<User?> GetUserAsync(string email)
-    {
-        try
-        {
-            var user = await _unitOfWork.Authentication.GetUserByEmailAsync(email);
-            return user;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError("Getting user {ex}", ex.Message);
-            throw;
-        }
-    }
 }
