@@ -42,10 +42,6 @@ public class RefreshExpiredTokensMiddleware
                 context.Response.Headers.Authorization = jwtToken;
             }
         }
-        else
-        {
-            throw new UnauthorizedAccessException();
-        }
         await _next(context);
     }
 

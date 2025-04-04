@@ -10,9 +10,7 @@ using BudgetingExpense.Domain.Contracts.IServices.IAuthentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Caching.Memory;
 using BudgetingExpense.Domain.Contracts.IServices.IMessaging;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
-using System.Security.Cryptography;
 
 namespace BudgetingExpenses.Service.Service.Authentication;
 
