@@ -11,7 +11,6 @@ public class SettingsConfigurationController : BaseControllerExstention
 {
     private readonly IToggleNotificationsService _toggleNotificationsService;
 
-
     public SettingsConfigurationController(IToggleNotificationsService toggleNotificationsRepository)
     {
         _toggleNotificationsService = toggleNotificationsRepository;
