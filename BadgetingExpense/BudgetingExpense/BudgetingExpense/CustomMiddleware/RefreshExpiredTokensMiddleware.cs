@@ -22,12 +22,12 @@ public class RefreshExpiredTokensMiddleware
         var actualRefreshToken = context.Request.Cookies["refreshToken"];
         if (actualRefreshToken != null)
         { 
-            var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var token = context.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
             var jwtHeandler = new JwtSecurityTokenHandler();
             if (token != null)
             {
                 var jwt = jwtHeandler.ReadJwtToken(token);
-                if (jwt.ValidTo > DateTime.UtcNow)
+                if (jwt.ValidTo < DateTime.UtcNow)
                 {
                     var userId = jwt.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
                     var refreshTokenUserId = jwtHeandler.ReadJwtToken(actualRefreshToken).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
@@ -41,6 +41,10 @@ public class RefreshExpiredTokensMiddleware
                 var jwtToken = await GenerateToken(refreshTokenUserId, refreshTokenUserId);
                 context.Response.Headers.Authorization = jwtToken;
             }
+        }
+        else
+        {
+            throw new UnauthorizedAccessException();
         }
         await _next(context);
     }

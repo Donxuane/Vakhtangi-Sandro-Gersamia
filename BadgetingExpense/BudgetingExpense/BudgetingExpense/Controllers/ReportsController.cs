@@ -64,7 +64,7 @@ public class ReportsController : BaseControllerExstention
         if (result != null && result.Value.records.Any())
         {
             var records = result.Value.records.Select(x => x.Map());
-            return Ok(new { result.Value.pageAmount, records });
+            return Ok(new { result.Value.pageAmount, currentPage = page, records });
         }
         return BadRequest(new { message = "Records not found" });
     }
