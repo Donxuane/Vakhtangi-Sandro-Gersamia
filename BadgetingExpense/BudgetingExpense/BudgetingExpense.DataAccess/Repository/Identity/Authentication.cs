@@ -30,8 +30,8 @@ public class Authentication : IAuthentication
         var user = await GetUserPrivatelyForCheckingPurposes(email);
         if (user != null)
         {
-            var checkedPassword = _userManager.CheckPasswordAsync(user, password);
-            if (checkedPassword != null)
+            var checkedPassword = await _userManager.CheckPasswordAsync(user, password);
+            if (checkedPassword)
                 return true;
         }
         return false;

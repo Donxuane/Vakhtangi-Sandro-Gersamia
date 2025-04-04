@@ -59,14 +59,16 @@ public class AuthenticationService : IAuthenticationService
                 var roles =  await _unitOfWork.Authentication.GetUserRolesAsync(user.Email);
                 var token = await GenerateJwtTokenAsync(model.Id, roles.FirstOrDefault());
                 var refreshToken = GenerateRefreshToken(model.Id);
-                if (_httpContext.HttpContext.Request.Cookies["refreshToken"] != null)
+                var cookies = _httpContext.HttpContext.Request.Cookies["refreshToken"];
+                var handler = new JwtSecurityTokenHandler();
+                if (cookies == null || handler.ReadJwtToken(cookies).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value != model.Id)
                 {
                     _httpContext.HttpContext.Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
                     {
                         HttpOnly = true,
                         Secure = true,
                         SameSite = SameSiteMode.Strict,
-                        Expires = DateTime.UtcNow.AddDays(7)
+                        Expires = DateTime.Now.AddDays(7)
                     });
                 }
                 _logger.LogInformation("Logged in user {email}", user.Email);
@@ -184,7 +186,7 @@ public class AuthenticationService : IAuthenticationService
                     issuer: tokenConfiguration["Issuer"],
                     audience: tokenConfiguration["Audience"],
                     claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(tokenConfiguration["ExpiryMinutes"])),
+                    expires: DateTime.Now.AddMinutes(Convert.ToInt32(tokenConfiguration["ExpiryMinutes"])),
                     signingCredentials: new SigningCredentials(tokenKey, SecurityAlgorithms.HmacSha256)
                 );
                 _logger.LogInformation("Token generated for {userId}", userId);

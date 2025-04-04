@@ -29,7 +29,7 @@ public class ExpenseReportsService : IExpenseReportsService
             if (records != null)
             {
                 var check = int.TryParse(_configuration.GetSection("TopExpenseAmounts")["Amount"], out int amount);
-                var period = DateTime.UtcNow.AddMonths(-model.Period);
+                var period = DateTime.Now.AddMonths(-model.Period);
                 var final = records.Where(x => x.Date >= period && x.Currency == model.Currency)
                     .OrderByDescending(x => x.Amount).Take(check ? amount : 10).ToList();
                 return final;
@@ -68,7 +68,7 @@ public class ExpenseReportsService : IExpenseReportsService
             var records = await _unitOfWork.ExpenseRecords.ExpenseRecordsAsync(model.UserId);
             if (records != null)
             {
-                var period = DateTime.UtcNow.AddMonths(-model.Period);
+                var period = DateTime.Now.AddMonths(-model.Period);
                 if (model.Period == 0 && model.Category != null)
                 {
                     return records.Where(x => x.CategoryName == model.Category).OrderByDescending(x => x.Date);
@@ -91,7 +91,7 @@ public class ExpenseReportsService : IExpenseReportsService
             var records = await _unitOfWork.ExpenseRecords.ExpenseRecordsAsync(model.UserId);
             if (records != null)
             {
-                var period = DateTime.UtcNow.AddMonths(-model.Period);
+                var period = DateTime.Now.AddMonths(-model.Period);
                 if (model.Currency > 0 && model.Period == 0)
                 {
                     return records.Where(x => x.Currency == model.Currency).OrderByDescending(x => x.Date);

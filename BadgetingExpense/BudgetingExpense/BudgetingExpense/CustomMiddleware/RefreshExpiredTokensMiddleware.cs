@@ -27,7 +27,7 @@ public class RefreshExpiredTokensMiddleware
             if (token != null)
             {
                 var jwt = jwtHeandler.ReadJwtToken(token);
-                if (jwt.ValidTo < DateTime.UtcNow)
+                if (jwt.ValidTo < DateTime.Now)
                 {
                     var userId = jwt.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
                     var refreshTokenUserId = jwtHeandler.ReadJwtToken(actualRefreshToken).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
