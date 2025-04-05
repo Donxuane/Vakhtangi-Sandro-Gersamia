@@ -68,7 +68,7 @@ public class AuthenticationService : IAuthenticationService
                         HttpOnly = true,
                         Secure = true,
                         SameSite = SameSiteMode.Strict,
-                        Expires = DateTime.Now.AddDays(7)
+                        Expires = DateTime.UtcNow.AddDays(7)
                     });
                 }
                 _logger.LogInformation("Logged in user {email}", user.Email);

@@ -27,4 +27,12 @@ public class SettingsConfigurationController : BaseControllerExstention
         }
         return BadRequest(new { message = "Couldn't set" });
     }
+
+    [HttpDelete("LogOut")]
+    public IActionResult LogOut()
+    {
+        HttpContext.Response.Cookies.Delete("refreshToken");
+        HttpContext.Response.Headers.Remove("Authorization");
+        return Ok(new { message = "Logged out" });
+    }
 }

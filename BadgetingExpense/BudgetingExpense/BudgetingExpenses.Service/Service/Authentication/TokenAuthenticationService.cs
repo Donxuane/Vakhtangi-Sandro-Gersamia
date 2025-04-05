@@ -12,13 +12,11 @@ public class TokenAuthenticationService : ITokenAuthenticationService
 {
     private readonly IConfiguration _configuration;
     private readonly ILogger<TokenAuthenticationService> _logger;
-    private readonly LiteDatabase _liteDatabase;
 
-    public TokenAuthenticationService(IConfiguration configuration, ILogger<TokenAuthenticationService> logger,LiteDatabase liteDatabase)
+    public TokenAuthenticationService(IConfiguration configuration, ILogger<TokenAuthenticationService> logger)
     {
         _configuration = configuration;
         _logger = logger;
-        _liteDatabase = liteDatabase;
     }
 
     public Task<string>? GenerateJwtTokenAsync(string userId, string userRole)
@@ -38,7 +36,7 @@ public class TokenAuthenticationService : ITokenAuthenticationService
                 issuer: tokenConfiguration["Issuer"],
                 audience: tokenConfiguration["Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(Convert.ToInt32(tokenConfiguration["ExpiryMinutes"])),
+                expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(tokenConfiguration["ExpiryMinutes"])),
                 signingCredentials: new SigningCredentials(tokenKey, SecurityAlgorithms.HmacSha256)
             );
             _logger.LogInformation("Token generated for {userId}", userId);
@@ -70,18 +68,5 @@ public class TokenAuthenticationService : ITokenAuthenticationService
             _logger.LogError("Exception ex:{ex}", ex.Message);
             throw;
         }
-    }
-    public Task<bool> SaveTokensInMemory(string token, string refreshToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> ValidateTokens(string token, string refreshToken)
-    {
-        throw new NotImplementedException();
-    }
-    public Task DeleteTokens(string refreshToken)
-    {
-        throw new NotImplementedException();
     }
 }
