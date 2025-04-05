@@ -22,7 +22,6 @@ public class RefreshExpiredTokensMiddleware
         var actualRefreshToken = context.Request.Cookies["refreshToken"];
         if (actualRefreshToken != null)
         { 
-            var token = context.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
             var jwtHeandler = new JwtSecurityTokenHandler();
             if (token != null)
             {

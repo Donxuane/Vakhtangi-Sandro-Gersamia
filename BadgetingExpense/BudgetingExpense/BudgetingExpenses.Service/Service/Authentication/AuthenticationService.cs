@@ -171,8 +171,6 @@ public class AuthenticationService : IAuthenticationService
     {
         try
         {
-            return await Task.Run(() =>
-            {
                 var tokenConfiguration = _configuration.GetSection("Jwt");
                 var tokenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration["Key"]));
 
