@@ -20,9 +20,10 @@ public class AuthenticationService : IAuthenticationService
     private readonly IMemoryCache _cache;
     private readonly IEmailService _emailService;
     private readonly IHttpContextAccessor _httpContext;
+    private readonly ITokenAuthenticationService _tokenAuthService;
     public AuthenticationService(IUnitOfWork unitOfWork, IConfiguration configuration,
         ILogger<AuthenticationService> logger, IMemoryCache cache, IEmailService emailService,
-        IHttpContextAccessor httpContext)
+        IHttpContextAccessor httpContext, ITokenAuthenticationService tokenAuthService)
     {
         _unitOfWork = unitOfWork;
         _configuration = configuration;
@@ -30,6 +31,7 @@ public class AuthenticationService : IAuthenticationService
         _cache = cache;
         _emailService = emailService;
         _httpContext = httpContext;
+        _tokenAuthService = tokenAuthService;
     }
 
     public async Task AddUserRolesAsync(string email, string role)
@@ -55,8 +57,8 @@ public class AuthenticationService : IAuthenticationService
             {
                 var model = await _unitOfWork.Authentication.GetUserByEmailAsync(user.Email);
                 var roles =  await _unitOfWork.Authentication.GetUserRolesAsync(user.Email);
-                var token = await GenerateJwtTokenAsync(model.Id, roles.FirstOrDefault());
-                var refreshToken = await GenerateRefreshToken(model.Id);
+                var token = await _tokenAuthService.GenerateJwtTokenAsync(model.Id, roles.FirstOrDefault());
+                var refreshToken = await _tokenAuthService.GenerateRefreshToken(model.Id);
                 var cookies = _httpContext.HttpContext.Request.Cookies["refreshToken"];
                 var handler = new JwtSecurityTokenHandler();
                 if (cookies == null || handler.ReadJwtToken(cookies).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value != model.Id)

@@ -13,6 +13,7 @@ using BudgetingExpenses.Service.Service.ManageFinances;
 using BudgetingExpenses.Service.Service.Messaging.Email;
 using BudgetingExpenses.Service.Service.Notifications;
 using BudgetingExpenses.Service.Service.Reports;
+using LiteDB;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BudgetingExpenses.Service.Configuration;
@@ -35,8 +36,14 @@ public static class ConfigureServiceInstances
         services.AddScoped<IToggleNotificationsService, ToggleNotificationService>();
         services.AddScoped<ILimitNotificationService, LimitNotificationService>();
         services.AddScoped<IExpenseAddedNotificationService, ExpenseAddedNotificationService>();
+        services.AddScoped<ITokenAuthenticationService, TokenAuthenticationService>();
         services.AddScoped<ICurrencyRateService,CurrencyRateService>();
         services.AddHostedService<LimitsCleanupService>();
         services.AddHttpContextAccessor();
+        services.AddSingleton<LiteDatabase>(_=>
+        {
+            var path = Path.Combine(AppContext.BaseDirectory, "TokenTable.db");
+            return new LiteDatabase(path);
+        });
     }
 }

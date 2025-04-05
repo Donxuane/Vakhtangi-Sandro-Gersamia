@@ -55,12 +55,12 @@ public class RefreshExpiredTokensMiddleware
         if (scope != null)
         {
             var manager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityModel>>();
-            var authentication = scope.ServiceProvider.GetRequiredService<IAuthenticationService>();
+            var tokenAuthentication = scope.ServiceProvider.GetRequiredService<ITokenAuthenticationService>();
             if (userId == refreshTokenUserId)
             {
                 var user = await manager.FindByIdAsync(userId);
                 var role = await manager.GetRolesAsync(user);
-                var jwtToken = await authentication.GenerateJwtTokenAsync(userId, role.FirstOrDefault());
+                var jwtToken = await tokenAuthentication.GenerateJwtTokenAsync(userId, role.FirstOrDefault());
                 return jwtToken;
             }
         }
