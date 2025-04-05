@@ -9,6 +9,6 @@ public interface IAuthenticationService
     public Task AddUserRolesAsync(string email, string role);
     public Task<bool> VerifyUserEmailAsync(string email, string verificationCode);
     public bool CacheNewUserCredentialsInMemory(Register user);
-    public string GenerateRefreshToken(string userId);
+    public Task<string> GenerateRefreshToken(string userId);
     public Task<string>? GenerateJwtTokenAsync(string userId, string userRole);
 }

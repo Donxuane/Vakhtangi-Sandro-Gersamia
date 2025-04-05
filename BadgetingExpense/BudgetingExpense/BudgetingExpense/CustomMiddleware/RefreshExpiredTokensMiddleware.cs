@@ -19,9 +19,10 @@ public class RefreshExpiredTokensMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        var actualRefreshToken = context.Request.Cookies["refreshToken"];
-        if (actualRefreshToken != null)
-        { 
+        var token = context.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
+        var refreshToken = context.Request.Cookies["refreshToken"];
+        if (refreshToken != null)
+        {
             var jwtHeandler = new JwtSecurityTokenHandler();
             if (token != null)
             {
@@ -29,17 +30,21 @@ public class RefreshExpiredTokensMiddleware
                 if (jwt.ValidTo < DateTime.Now)
                 {
                     var userId = jwt.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
-                    var refreshTokenUserId = jwtHeandler.ReadJwtToken(actualRefreshToken).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+                    var refreshTokenUserId = jwtHeandler.ReadJwtToken(refreshToken).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
                     var jwtToken = await GenerateToken(userId, refreshTokenUserId);
                     context.Response.Headers.Authorization = jwtToken;
                 }
             }
             else
             {
-                var refreshTokenUserId = jwtHeandler.ReadJwtToken(actualRefreshToken).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+                var refreshTokenUserId = jwtHeandler.ReadJwtToken(refreshToken).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
                 var jwtToken = await GenerateToken(refreshTokenUserId, refreshTokenUserId);
                 context.Response.Headers.Authorization = jwtToken;
             }
+        }
+        if(token!=null && refreshToken == null)
+        {
+            throw new UnauthorizedAccessException();
         }
         await _next(context);
     }

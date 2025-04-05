@@ -58,7 +58,7 @@ public class AuthenticationService : IAuthenticationService
                 var model = await _unitOfWork.Authentication.GetUserByEmailAsync(user.Email);
                 var roles =  await _unitOfWork.Authentication.GetUserRolesAsync(user.Email);
                 var token = await GenerateJwtTokenAsync(model.Id, roles.FirstOrDefault());
-                var refreshToken = GenerateRefreshToken(model.Id);
+                var refreshToken = await GenerateRefreshToken(model.Id);
                 var cookies = _httpContext.HttpContext.Request.Cookies["refreshToken"];
                 var handler = new JwtSecurityTokenHandler();
                 if (cookies == null || handler.ReadJwtToken(cookies).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value != model.Id)
@@ -167,30 +167,28 @@ public class AuthenticationService : IAuthenticationService
             throw;
         }
     }
-    public async Task<string>? GenerateJwtTokenAsync(string userId, string userRole)
+    public Task<string>? GenerateJwtTokenAsync(string userId, string userRole)
     {
         try
         {
-                var tokenConfiguration = _configuration.GetSection("Jwt");
-                var tokenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration["Key"]));
+            var tokenConfiguration = _configuration.GetSection("Jwt");
+            var tokenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration["Key"]));
 
-                var claims = new[]
-                {
+            var claims = new[]
+            {
                     new Claim(ClaimTypes.Name, userId),
                     new Claim(ClaimTypes.Role, userRole)
-                };
-                var token = new JwtSecurityToken
-                (
-                    issuer: tokenConfiguration["Issuer"],
-                    audience: tokenConfiguration["Audience"],
-                    claims: claims,
-                    expires: DateTime.Now.AddMinutes(Convert.ToInt32(tokenConfiguration["ExpiryMinutes"])),
-                    signingCredentials: new SigningCredentials(tokenKey, SecurityAlgorithms.HmacSha256)
-                );
-                _logger.LogInformation("Token generated for {userId}", userId);
-                return new JwtSecurityTokenHandler().WriteToken(token);
-            });
-
+            };
+            var token = new JwtSecurityToken
+            (
+                issuer: tokenConfiguration["Issuer"],
+                audience: tokenConfiguration["Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(Convert.ToInt32(tokenConfiguration["ExpiryMinutes"])),
+                signingCredentials: new SigningCredentials(tokenKey, SecurityAlgorithms.HmacSha256)
+            );
+            _logger.LogInformation("Token generated for {userId}", userId);
+            return Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
         }
         catch (Exception ex)
         {
@@ -199,18 +197,19 @@ public class AuthenticationService : IAuthenticationService
         }
     }
 
-    public string GenerateRefreshToken(string userId)
+    public Task<string> GenerateRefreshToken(string userId)
     {
         try
         {
             var tokenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("Jwt")["Key"]));
-            var claim =new[] { new Claim(ClaimTypes.Name, userId) };
+            var claim = new[] { new Claim(ClaimTypes.Name, userId) };
             var token = new JwtSecurityToken
             (
                 claims: claim,
                 signingCredentials: new SigningCredentials(tokenKey, SecurityAlgorithms.HmacSha256)
             );
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
+          
         }
         catch (Exception ex)
         {
