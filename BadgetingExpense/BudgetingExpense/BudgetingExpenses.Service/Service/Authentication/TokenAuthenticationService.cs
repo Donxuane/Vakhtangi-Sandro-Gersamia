@@ -1,5 +1,4 @@
 ﻿using BudgetingExpense.Domain.Contracts.IServices.IAuthentication;
-using LiteDB;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;

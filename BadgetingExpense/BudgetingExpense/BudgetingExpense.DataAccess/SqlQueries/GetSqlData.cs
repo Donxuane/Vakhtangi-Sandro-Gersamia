@@ -23,9 +23,6 @@ public class GetSqlData
                     {
                         var data = reader.ReadToEnd();
                         return data;
-                    }
-                }
-            }
             return null;
         }
         catch (Exception ex)
