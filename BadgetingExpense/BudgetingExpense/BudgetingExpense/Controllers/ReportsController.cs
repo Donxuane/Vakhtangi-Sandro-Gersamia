@@ -20,12 +20,12 @@ public class ReportsController : BaseControllerExstention
     private readonly ISavingsAnalyticService _analyticsService;
 
     public ReportsController(IIncomeReportsService service, IExpenseReportsService expenseReportsService,
-        IForecastService<IncomeRecord> forecastService, IForecastService<ExpenseRecord> expenseForcastService
+        IForecastService<IncomeRecord> forecastService, IForecastService<ExpenseRecord> expenseForecastService
         , ISavingsAnalyticService analyticsService)
     {
         _service = service;
         _forecastService = forecastService;
-        _expenseForecastService = expenseForcastService;
+        _expenseForecastService = expenseForecastService;
         _expenseRecordsService = expenseReportsService;
         _analyticsService = analyticsService;
     }
