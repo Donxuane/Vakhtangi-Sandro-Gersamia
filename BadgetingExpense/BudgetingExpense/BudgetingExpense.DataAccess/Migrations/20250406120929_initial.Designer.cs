@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetingExpense.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250331144654_Update")]
-    partial class Update
+    [Migration("20250406120929_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

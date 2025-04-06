@@ -15,5 +15,9 @@ public class AppDbContext : IdentityDbContext<IdentityModel>
         builder.Entity<IdentityModel>()
             .HasIndex(x => x.Email)
             .IsUnique();
+
+        builder.Entity<IdentityModel>()
+            .Property(x => x.Notifications)
+            .HasDefaultValue(true);
     }
 }
