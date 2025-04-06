@@ -14,7 +14,7 @@ public class ExpenseReportsTests
     private readonly Mock<IUnitOfWork> _mockedUnitOfWork;
     private readonly Mock<ILogger<ExpenseReportsService>> _mockedLogger;
     private readonly Mock<IConfiguration> _mockConfiguration;
-    private readonly IExpenseReportsService _expenseReportsService;
+    private readonly ExpenseReportsService _expenseReportsService;
 
     public ExpenseReportsTests()
     {
@@ -38,6 +38,7 @@ public class ExpenseReportsTests
         };
         _mockedUnitOfWork.Setup(x => x.ExpenseRecords.ExpenseRecordsAsync(modelPass.UserId))
             .ReturnsAsync(modelReturn);
+        _mockConfiguration.Setup(x => x.GetSection("TopExpenseAmounts")["Amount"]).Returns("10");
 
         var result = await _expenseReportsService.BiggestExpensesBasedPeriodAsync(modelPass);
         Assert.NotNull(result);
@@ -49,14 +50,14 @@ public class ExpenseReportsTests
     }
 
     [Fact]
-    public async Task RecordsBasedCategoryPeriodAsync_ShouldReturnNull_ExceptionThrown()
+    public async Task RecordsBasedCategoryPeriodAsync_ShouldThrow_ExceptionThrown()
     {
         var model = new RecordCategory { Category = "Category", Period = 5, UserId = "User Id" };
 
         _mockedUnitOfWork.Setup(x => x.ExpenseRecords.ExpenseRecordsAsync(model.UserId))
             .ThrowsAsync(new Exception());
 
-        var result = await _expenseReportsService.RecordsBasedCategoryPeriodAsync(model);
+        var result = await Assert.ThrowsAsync<Exception>(()=>_expenseReportsService.RecordsBasedCategoryPeriodAsync(model));
 
         _mockedUnitOfWork.Verify(x => x.ExpenseRecords.ExpenseRecordsAsync(model.UserId), Times.Once);
         _mockedLogger.Verify(x => x.Log(

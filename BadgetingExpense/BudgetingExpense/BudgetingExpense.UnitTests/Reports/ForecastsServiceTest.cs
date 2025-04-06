@@ -15,8 +15,8 @@ public class ForecastsServiceTest
     private readonly Mock<IUnitOfWork> _mockedUnitOfWork;
     private readonly Mock<ILogger<IncomeForecastService>> _mockedIncomeForecastLogger;
     private readonly Mock<ILogger<ExpenseForecastService>> _mockedExpenseForecastLogger;
-    private readonly IForecastService<IncomeRecord> _incomeForecastService;
-    private readonly IForecastService<ExpenseRecord> _expenseForecastService;
+    private readonly IncomeForecastService _incomeForecastService;
+    private readonly ExpenseForecastService _expenseForecastService;
     private readonly Mock<IConfiguration> _configuration;
 
     public ForecastsServiceTest()
@@ -60,19 +60,22 @@ public class ForecastsServiceTest
     }
 
     [Fact]
-    public async Task GetForecastCategoriesAsync_ShouldReturnNull_WhileException()
+    public async Task GetForecastCategoriesAsync_Throws_WhileException()
     {
         string userId = "User Id";
         _mockedUnitOfWork.Setup(x => x.ExpenseRecords.ExpenseRecordsAsync(userId))
-            .ThrowsAsync(new Exception());
-
-        var result = await _expenseForecastService.GetForecastCategoriesAsync(userId);
-        _mockedUnitOfWork.Verify(x => x.ExpenseRecords.ExpenseRecordsAsync(userId), Times.Never);
-        _mockedExpenseForecastLogger.Verify(x=>x.Log(LogLevel.Error,
+            .ThrowsAsync(new Exception("Database exception"));
+        _configuration.Setup(x => x.GetSection("ConfigureForcastCounts")["ExpenseForecastCount"])
+            .Returns("2");
+        var result = await Assert.ThrowsAsync<Exception>(() => _expenseForecastService.GetForecastCategoriesAsync(userId));
+        Assert.Equal("Database exception", result.Message);
+        _mockedUnitOfWork.Verify(x => x.ExpenseRecords.ExpenseRecordsAsync(userId), Times.Once);
+        _mockedExpenseForecastLogger.Verify(x => x.Log(LogLevel.Error,
             It.IsAny<EventId>(),
             It.Is<It.IsAnyType>((o, t) => true),
             It.IsAny<Exception>(),
-            It.IsAny<Func<It.IsAnyType, Exception?, string>>()), Times.Once);
+            It.IsAny<Func<It.IsAnyType, Exception?, string>>()), Times.Once
+        );
     }
     
 }

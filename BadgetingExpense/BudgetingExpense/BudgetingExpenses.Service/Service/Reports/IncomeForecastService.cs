@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace BudgetingExpenses.Service.Service.Reports;
 
-public class IncomeForecastService : IForecastService<IncomeRecord>
+public class IncomeForecastService : IncomeForecastService<IncomeRecord>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<IncomeForecastService> _logger;

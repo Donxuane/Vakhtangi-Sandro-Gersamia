@@ -30,8 +30,8 @@ public static class ConfigureServiceInstances
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<ISavingsAnalyticService, SavingsAnalyticService>();
         services.AddScoped<IIncomeReceiveNotificationService, IncomeReceiveNotificationService>();
-        services.AddScoped<IForecastService<IncomeRecord>,IncomeForecastService>();
-        services.AddScoped<IForecastService<ExpenseRecord>, ExpenseForecastService>();
+        services.AddScoped<IncomeForecastService<IncomeRecord>,IncomeForecastService>();
+        services.AddScoped<IncomeForecastService<ExpenseRecord>, ExpenseForecastService>();
         services.AddScoped<IToggleNotificationsService, ToggleNotificationService>();
         services.AddScoped<ILimitNotificationService, LimitNotificationService>();
         services.AddScoped<IExpenseAddedNotificationService, ExpenseAddedNotificationService>();

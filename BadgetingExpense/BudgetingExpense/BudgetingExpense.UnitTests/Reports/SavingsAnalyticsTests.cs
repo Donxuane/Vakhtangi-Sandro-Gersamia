@@ -1,3 +1,4 @@
+using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
 using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpenses.Service.Service.Reports;
@@ -10,13 +11,15 @@ public class SavingsAnalyticsTests
 {
     private readonly Mock<IUnitOfWork> _mockedUnitOfWork;
     private readonly Mock<ILogger<SavingsAnalyticService>> _mockedLogger;
+    private readonly Mock<ICurrencyRateService> _mockedCurrencyRateService;
     private readonly ISavingsAnalyticService _savingsAnalyticsService;
 
     public SavingsAnalyticsTests()
     {
         _mockedUnitOfWork = new Mock<IUnitOfWork>();
         _mockedLogger = new Mock<ILogger<SavingsAnalyticService>>();
-        _savingsAnalyticsService = new SavingsAnalyticService(_mockedUnitOfWork.Object,_mockedLogger.Object);
+        _mockedCurrencyRateService = new Mock<ICurrencyRateService>();
+        _savingsAnalyticsService = new SavingsAnalyticService(_mockedUnitOfWork.Object,_mockedLogger.Object, _mockedCurrencyRateService.Object);
     }
 
     [Fact]
@@ -25,7 +28,7 @@ public class SavingsAnalyticsTests
         string userId = "userId";
         int month = 1;
         _mockedUnitOfWork.Setup(x=>x.SavingsRepository.GetSavingsAnalyticsAsync(userId,month))
-            .ReturnsAsync(expectedValues);
+            .ReturnsAsync([]);
         var result = await _savingsAnalyticsService.GetSavingsAnalyticsAsync(userId, month);
 
         Assert.NotNull(result);
@@ -42,7 +45,8 @@ public class SavingsAnalyticsTests
         _mockedUnitOfWork.Setup(x => x.SavingsRepository.GetSavingsAnalyticsAsync(userId, month))
             .ThrowsAsync(new Exception("Exception"));
 
-        var result = await _savingsAnalyticsService.GetSavingsAnalyticsAsync(userId, month);
+        var result = await Assert.ThrowsAsync<Exception>(() => _savingsAnalyticsService.GetSavingsAnalyticsAsync(userId, month));
+        Assert.Equal("Exception", result.Message);
         _mockedUnitOfWork.Verify(x => x.RollBackAsync(), Times.Once);
         _mockedLogger.Verify(
         x => x.Log(

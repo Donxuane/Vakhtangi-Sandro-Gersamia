@@ -50,14 +50,11 @@ namespace BudgetingExpense.UnitTests.ManageFinances
         }
 
         [Fact]
-        public async Task AddIncomeCategoryAsync_ShouldNotAddCategory_WhileExceptionThrown_ShouldReturnZero()
+        public async Task AddIncomeCategoryAsync_ShouldNotAddCategory_WhileExceptionThrown()
         {
-            _mockUnitOfWork.Setup(x => x.IncomeManage.AddCategoryAsync(It.IsAny<Category>())).ThrowsAsync(new Exception());
-            var result =await _IncomeManageService.AddIncomeCategoryAsync(It.IsAny<string>());
-
-            Assert.NotNull(result);
-           
-            _mockUnitOfWork.Verify(x=>x.BeginTransactionAsync(),Times.Once);
+            _mockUnitOfWork.Setup(x => x.IncomeManage.AddCategoryAsync(It.IsAny<Category>()))
+                .ThrowsAsync(new Exception());
+            var result = await Assert.ThrowsAsync<Exception>(() => _IncomeManageService.AddIncomeCategoryAsync(It.IsAny<string>()));
             _mockUnitOfWork.Verify(x => x.IncomeManage.AddCategoryAsync(It.IsAny<Category>()), Times.Once);
             _mockUnitOfWork.Verify(x => x.RollBackAsync(),Times.Once);
             _mockIncomeManageServiceLogger.Verify(x => x.Log(
@@ -164,8 +161,7 @@ namespace BudgetingExpense.UnitTests.ManageFinances
         public async Task GetAllIncomeRecordsAsync_ShouldNotReturnAllIncomeCategoryRecords_WhileExceptionThrown_BasedUserId()
         {
             _mockUnitOfWork.Setup(x => x.IncomeManage.GetAllAsync(It.IsAny<string>())).ThrowsAsync(new Exception());
-            var result = await _IncomeManageService.GetAllIncomeRecordsAsync(It.IsAny<string>());
-            Assert.Null(result);
+            var result = await Assert.ThrowsAsync<Exception>(() => _IncomeManageService.GetAllIncomeRecordsAsync(It.IsAny<string>()));
             _mockUnitOfWork.Verify(x => x.IncomeManage.GetAllAsync(It.IsAny<string>()), Times.Once);
             VerifyLogError(_mockIncomeManageServiceLogger);
         }

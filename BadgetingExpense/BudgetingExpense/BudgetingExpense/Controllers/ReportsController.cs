@@ -14,13 +14,13 @@ namespace BudgetingExpense.Api.Controllers;
 public class ReportsController : BaseControllerExstention
 {
     private readonly IIncomeReportsService _service;
-    private readonly IForecastService<IncomeRecord> _forecastService;
+    private readonly IncomeForecastService<IncomeRecord> _forecastService;
     private readonly IExpenseReportsService _expenseRecordsService;
-    private readonly IForecastService<ExpenseRecord> _expenseForecastService;
+    private readonly IncomeForecastService<ExpenseRecord> _expenseForecastService;
     private readonly ISavingsAnalyticService _analyticsService;
 
     public ReportsController(IIncomeReportsService service, IExpenseReportsService expenseReportsService,
-        IForecastService<IncomeRecord> forecastService, IForecastService<ExpenseRecord> expenseForecastService
+        IncomeForecastService<IncomeRecord> forecastService, IncomeForecastService<ExpenseRecord> expenseForecastService
         , ISavingsAnalyticService analyticsService)
     {
         _service = service;

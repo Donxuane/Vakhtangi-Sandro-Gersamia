@@ -13,7 +13,7 @@ public class IncomeReportsTests
 {
     private readonly Mock<IUnitOfWork> _mockedUnitOfWork;
     private readonly Mock<ILogger<IncomeReportsService>> _mockedLogger;
-    private readonly IIncomeReportsService _incomeReportsService;
+    private readonly IncomeReportsService _incomeReportsService;
 
     public IncomeReportsTests()
     {
@@ -61,18 +61,18 @@ public class IncomeReportsTests
     }
 
     [Fact]
-    public async Task RecordsBasedCurrencyPeriodAsync_ShouldReturnNull_WhileException()
+    public async Task RecordsBasedCurrencyPeriodAsync_ShouldThrow_WhileException()
     {
-        var model = new RecordCurrency { UserId = "User Id" };
-        _mockedUnitOfWork.Setup(x => x.IncomeRecords.IncomeRecordsAsync(model.UserId))
-            .ThrowsAsync(new Exception());
+        _mockedUnitOfWork.Setup(x => x.IncomeRecords.IncomeRecordsAsync(It.IsAny<string>()))
+            .ThrowsAsync(new NullReferenceException());
 
-        var result = await _incomeReportsService.RecordsBasedCurrencyPeriodAsync(model);
-        Assert.Null(result);
-        _mockedLogger.Verify(x=>x.Log(LogLevel.Error,
+        var result = await Assert.ThrowsAsync<NullReferenceException>(()=>_incomeReportsService.RecordsBasedCurrencyPeriodAsync(It.IsAny<RecordCurrency>()));
+        _mockedUnitOfWork.Verify(x => x.IncomeRecords.IncomeRecordsAsync(It.IsAny<string>()), Times.Never);
+        _mockedLogger.Verify(x => x.Log(LogLevel.Error,
             It.IsAny<EventId>(),
             It.Is<It.IsAnyType>((o, t) => true),
             It.IsAny<Exception>(),
-            It.IsAny<Func<It.IsAnyType, Exception?, string>>()),Times.Once);
+            It.IsAny<Func<It.IsAnyType, Exception?, string>>()), Times.Once
+        );
     }
 }

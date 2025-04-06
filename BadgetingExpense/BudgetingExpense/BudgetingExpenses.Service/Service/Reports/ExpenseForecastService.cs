@@ -8,7 +8,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace BudgetingExpenses.Service.Service.Reports;
 
-public class ExpenseForecastService : IForecastService<ExpenseRecord>
+public class ExpenseForecastService : IncomeForecastService<ExpenseRecord>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ExpenseForecastService> _logger;

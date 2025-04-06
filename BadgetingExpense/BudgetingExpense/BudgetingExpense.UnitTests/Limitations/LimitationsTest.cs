@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BudgetingExpense.Domain.Contracts.IRepository.IGet;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.Service.Limitations;
@@ -15,13 +16,16 @@ namespace BudgetingExpense.UnitTests.Limitations
     {
         private readonly Mock<IUnitOfWork> _mockUnitOfWork;
         private readonly Mock<ILogger<LimitsService>> _mockLimitsServiceLogger;
+        private readonly Mock<IGetRepository> _mockedGetRepository;
         private readonly LimitsService _limitsService;
 
         public LimitationsTest()
         {
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _mockLimitsServiceLogger = new Mock<ILogger<LimitsService>>();
-            _limitsService = new LimitsService(_mockUnitOfWork.Object, _mockLimitsServiceLogger.Object);
+            _mockedGetRepository = new Mock<IGetRepository>();
+            _limitsService = new LimitsService(_mockUnitOfWork.Object, _mockLimitsServiceLogger.Object
+                , _mockedGetRepository.Object);
         }
 
         [Fact]
@@ -38,7 +42,7 @@ namespace BudgetingExpense.UnitTests.Limitations
             _mockUnitOfWork.Verify(x => x.BeginTransactionAsync(), Times.Once);
             _mockUnitOfWork.Verify(x => x.LimitsRepository.AddLimitAsync(limit), Times.Once);
             _mockUnitOfWork.Verify(x=>x.SaveChangesAsync(),Times.Once);
-            _mockUnitOfWork.Verify(x=>x.RollBackAsync(),Times.Once);
+            _mockUnitOfWork.Verify(x => x.RollBackAsync(), Times.Never);
             VerifyLogInformation(_mockLimitsServiceLogger);
         }
 
