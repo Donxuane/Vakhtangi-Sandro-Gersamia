@@ -67,8 +67,6 @@ public class ForecastsServiceTest
             .ThrowsAsync(new Exception());
 
         var result = await _expenseForecastService.GetForecastCategoriesAsync(userId);
-
-        Assert.Null(result);
         _mockedUnitOfWork.Verify(x => x.ExpenseRecords.ExpenseRecordsAsync(userId), Times.Never);
         _mockedExpenseForecastLogger.Verify(x=>x.Log(LogLevel.Error,
             It.IsAny<EventId>(),

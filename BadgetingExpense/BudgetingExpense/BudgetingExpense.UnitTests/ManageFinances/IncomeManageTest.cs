@@ -168,8 +168,6 @@ namespace BudgetingExpense.UnitTests.ManageFinances
             Assert.Null(result);
             _mockUnitOfWork.Verify(x => x.IncomeManage.GetAllAsync(It.IsAny<string>()), Times.Once);
             VerifyLogError(_mockIncomeManageServiceLogger);
-
-
         }
 
         [Fact]

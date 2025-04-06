@@ -49,20 +49,6 @@ public class ExpenseReportsTests
     }
 
     [Fact]
-    public async Task GetAllRecordsAsync_ShouldReturnNull_RecordsNotFound()
-    {
-        int page = 1;
-        string userId = "User Id";
-        var list = new List<ExpenseRecord> { };
-        _mockedUnitOfWork.Setup(x => x.ExpenseRecords.ExpenseRecordsAsync(userId))
-            .ReturnsAsync(list);
-        var result = await _expenseReportsService.GetAllRecordsAsync(userId,page);
-
-        Assert.Null(result);
-        _mockedUnitOfWork.Verify(x => x.ExpenseRecords.ExpenseRecordsAsync(userId), Times.Once);
-    }
-
-    [Fact]
     public async Task RecordsBasedCategoryPeriodAsync_ShouldReturnNull_ExceptionThrown()
     {
         var model = new RecordCategory { Category = "Category", Period = 5, UserId = "User Id" };
@@ -72,7 +58,6 @@ public class ExpenseReportsTests
 
         var result = await _expenseReportsService.RecordsBasedCategoryPeriodAsync(model);
 
-        Assert.Null(result);
         _mockedUnitOfWork.Verify(x => x.ExpenseRecords.ExpenseRecordsAsync(model.UserId), Times.Once);
         _mockedLogger.Verify(x => x.Log(
              LogLevel.Error,

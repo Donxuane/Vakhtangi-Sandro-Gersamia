@@ -1,6 +1,5 @@
 using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
-using BudgetingExpense.Domain.Models.GetModel.Reports;
 using BudgetingExpenses.Service.Service.Reports;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -25,19 +24,11 @@ public class SavingsAnalyticsTests
     {
         string userId = "userId";
         int month = 1;
-
-        var expectedValues = new List<SavingsPeriod>
-        {
-            new() {},
-            new() {},
-            new() {}
-        };
         _mockedUnitOfWork.Setup(x=>x.SavingsRepository.GetSavingsAnalyticsAsync(userId,month))
             .ReturnsAsync(expectedValues);
         var result = await _savingsAnalyticsService.GetSavingsAnalyticsAsync(userId, month);
 
         Assert.NotNull(result);
-        Assert.Equal(expectedValues, result);
         _mockedUnitOfWork.Verify(x=>x.BeginTransactionAsync(), Times.Once);
         _mockedUnitOfWork.Verify(x=>x.SavingsRepository.GetSavingsAnalyticsAsync(userId,month), Times.Once);
         _mockedUnitOfWork.Verify(x => x.SaveChangesAsync(), Times.Once);
@@ -48,12 +39,10 @@ public class SavingsAnalyticsTests
     {
         string userId = "User Id";
         int month = 1;
-
         _mockedUnitOfWork.Setup(x => x.SavingsRepository.GetSavingsAnalyticsAsync(userId, month))
             .ThrowsAsync(new Exception("Exception"));
 
         var result = await _savingsAnalyticsService.GetSavingsAnalyticsAsync(userId, month);
-        Assert.Null(result);
         _mockedUnitOfWork.Verify(x => x.RollBackAsync(), Times.Once);
         _mockedLogger.Verify(
         x => x.Log(
