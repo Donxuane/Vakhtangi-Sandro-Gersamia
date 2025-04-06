@@ -22,6 +22,10 @@ builder.Services.AddScoped<ConfigureSeeding>();
 builder.Services.AddScoped<CategoryValidationFilter>();
 builder.Services.AddScoped<PropertyNormalizationFilter>();
 builder.Services.AddMemoryCache();
+builder.Services.AddHttpClient("Api",client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration.GetSection("CurrencyRate")["Url"]);
+});
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
@@ -32,7 +36,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<RefreshExpiredTokensMiddleware>();
 app.UseAuthentication();
 app.UseMiddleware<UserCredentialsMiddleware>();
 app.UseAuthorization();

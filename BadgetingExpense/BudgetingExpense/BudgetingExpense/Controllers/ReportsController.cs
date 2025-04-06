@@ -40,9 +40,9 @@ public class ReportsController : BaseControllerExstention
         if (result != null && result.Any())
         {
             var finalRecords = result.Select(x => x.Map());
-            return Ok(finalRecords.ToList());
+            return Ok(finalRecords);
         }
-        return BadRequest("Records Not Found");
+        return BadRequest(new { message = "Records not found" });
     }
 
     [HttpGet("IncomeRecordsBasedCategory")]
@@ -54,7 +54,7 @@ public class ReportsController : BaseControllerExstention
             var finalRecords = result.Select(x => x.Map());
             return Ok(finalRecords);
         }
-        return BadRequest("Records Not Found");
+        return BadRequest(new { message = "Records not found" });
     }
 
     [HttpGet("IncomeRecords")]
@@ -64,9 +64,9 @@ public class ReportsController : BaseControllerExstention
         if (result != null && result.Value.records.Any())
         {
             var records = result.Value.records.Select(x => x.Map());
-            return Ok(new { result.Value.pageAmount, records });
+            return Ok(new { result.Value.pageAmount, currentPage = page, records });
         }
-        return BadRequest("Records Not Found");
+        return BadRequest(new { message = "Records not found" });
     }
     [HttpGet("IncomeForecast")]
     public async Task<IActionResult> IncomeForecastAsync()
@@ -74,9 +74,9 @@ public class ReportsController : BaseControllerExstention
         var result = await _forecastService.GetForecastCategoriesAsync(UserId);
         if (result != null)
         {
-            return Ok(new { result });
+            return Ok(result);
         }
-        return BadRequest();
+        return BadRequest(new { message = "Unfortunatelly theres nothing to predict" });
     }
 
     /// <summary>
@@ -89,9 +89,9 @@ public class ReportsController : BaseControllerExstention
         if (result != null && result.Any())
         {
             var finalResult = result.Select(x => x.Map());
-            return Ok(finalResult.ToList());
+            return Ok(finalResult);
         }
-        return BadRequest("Records Not Found");
+        return BadRequest(new { message = "Records not found" });
     }
     [HttpGet("ExpensesBasedCategoryPeriod")]
     public async Task<IActionResult> GetExpensesBasedCategoryPeriodAsync([FromQuery] GetRecordsCategoryDto model)
@@ -103,7 +103,7 @@ public class ReportsController : BaseControllerExstention
             var finalRecord = records.Select(x => x.Map());
             return Ok(finalRecord);
         }
-        return BadRequest("Records Not Found");
+        return BadRequest(new { message = "Records not found" });
     }
     [HttpGet("ExpensesBasedCurrencyPeriod")]
     public async Task<IActionResult> GetExpensesBasedCurrencyPeriodAsync([FromQuery] GetRecordsCurrencyDto model)
@@ -115,7 +115,7 @@ public class ReportsController : BaseControllerExstention
             var final = records.Select(x => x.Map());
             return Ok(final);
         }
-        return BadRequest("Records Not Found");
+        return BadRequest(new { message = "Records not found" });
     }
     [HttpGet("ExpenseRecords")]
     public async Task<IActionResult> GetAllExpenseRecordsAsync(int page)
@@ -126,7 +126,7 @@ public class ReportsController : BaseControllerExstention
             var final = records.Value.records.Select(x => x.Map());
             return Ok(new { PageAmount = records.Value.pageAmount, final });
         }
-        return BadRequest("Records Not Found");
+        return BadRequest(new { message = "Records not found" });
     }
 
     [HttpGet("ExpenseForecast")]
@@ -137,7 +137,7 @@ public class ReportsController : BaseControllerExstention
         {
             return Ok(result);
         }
-        return BadRequest("Records Not Found");
+        return BadRequest(new { message = "Records not found" });
     }
 
     /// <summary>
@@ -151,7 +151,7 @@ public class ReportsController : BaseControllerExstention
         {
             return Ok(new{value.Item1,value.Item2});
         }
-        return BadRequest("Records Not Found");
+        return BadRequest(new { message = "Records not found" });
     }
 }
 

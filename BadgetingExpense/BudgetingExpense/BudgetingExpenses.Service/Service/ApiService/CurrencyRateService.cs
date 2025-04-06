@@ -2,66 +2,59 @@
 using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
 using BudgetingExpense.Domain.Models.ApiModels;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace BudgetingExpenses.Service.Service.ApiService;
 
 public class CurrencyRateService : ICurrencyRateService
 {
-    private readonly IConfiguration _configuration;
     private readonly IMemoryCache _memoryCache;
-    public CurrencyRateService(IConfiguration configuration,IMemoryCache memoryCache)
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly ILogger<CurrencyRateService> _logger;
+    public CurrencyRateService(IMemoryCache memoryCache, ILogger<CurrencyRateService> logger,
+        IHttpClientFactory httpClientFactory)
     {
-        _configuration = configuration;
         _memoryCache  = memoryCache;
+        _httpClientFactory = httpClientFactory;
+        _logger = logger;
     }
 
-  private  async Task<List<CurrenciesRate>> GetCurrencies()
+    private async Task<List<CurrenciesRate>>? GetCurrencies()
     {
-        var url = _configuration.GetSection("CurrencyRate")["Url"];
-        using HttpClient client = new HttpClient();
-        string json = await client.GetStringAsync(url);
-
-        var data = JsonSerializer.Deserialize<List<CurrenciesRate>>(json);
-
-
-        return data;
+        try
+        {
+            var client = _httpClientFactory.CreateClient("Api");
+            var jsonData = await client.GetStringAsync(client.BaseAddress);
+            var data = JsonSerializer.Deserialize<List<CurrenciesRate>>(jsonData);
+            return data;
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError("Exception ex:{ex}", ex.Message);
+            throw;
+        }
     }
   
     public async Task<Dictionary<string  ,decimal>> GetCurrencyRates()
     {
         try
         {
-         string key = "Currencies";
-        var time  = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(2));
-       
-        if (!_memoryCache.TryGetValue(key, out Dictionary<string,decimal> Currencies))
-        {
-            Dictionary<string,decimal> collection = new Dictionary<string,decimal>();
-          var getCurrencies = await  GetCurrencies();
-          foreach (var item in getCurrencies)
-          {
-              foreach (var VARIABLE in item.Currencies)
-              {
-                  collection.Add(VARIABLE.Code,VARIABLE.Rate);
-              }
-
-          }
-          _memoryCache.Set(key, collection);
-         
-        }
-
-        var result =  _memoryCache.TryGetValue(key, out Dictionary<string, decimal> currenciesValue);  
-        return currenciesValue;
+            string key = "Currencies";
+            var time = new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromHours(2));
+            if (!_memoryCache.TryGetValue(key, out Dictionary<string, decimal> currencies))
+            {
+                var getCurrencies = await GetCurrencies();
+                var collection = getCurrencies.SelectMany(x => x.Currencies)
+                    .ToDictionary(x => x.Code, x => x.Rate);
+                _memoryCache.Set(key, collection);
+            }
+            var result = _memoryCache.TryGetValue(key, out Dictionary<string, decimal> currenciesValue);
+            return currenciesValue;
         }
         catch (Exception e)
         {
-            Console.WriteLine(e.Message);
-
+            _logger.LogError("Exception ex:{ex}",e.Message);
             throw;
         }
-        
-      
     } 
-    
 }

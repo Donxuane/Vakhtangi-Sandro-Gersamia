@@ -138,6 +138,15 @@ public class ConfigureDatabase : IHostedService
                     queries.Add(query);
                 }
             }
+            var triggers = new GetSqlData("Triggers").GetData();
+            if(triggers != null)
+            {
+                var triggersQueries = triggers.Split("Go", StringSplitOptions.RemoveEmptyEntries);
+                foreach(var query in triggersQueries)
+                {
+                    queries.Add(query);
+                }
+            }
             return queries;
         }
         catch (Exception ex)

@@ -59,7 +59,7 @@ BEGIN
         ISNULL(i.IncomeAvg, 0) - ISNULL(e.ExpenseAvg, 0) AS Savings,
 		CASE
 		    WHEN i.IncomeAvg IS NULL OR i.IncomeAvg = 0 THEN NULL
-		    ELSE (ISNULL(i.IncomeAvg, 0) - ISNULL(e.ExpenseAvg, 0))*100/ISNULL(i.IncomeAvg, 1) 
+		    ELSE i.IncomeAvg - e.ExpenseAvg*100/i.IncomeAvg 
 		END As [Percentage]
     FROM IncomeData i
     FULL JOIN ExpenseData e ON i.Currency = e.Currency;

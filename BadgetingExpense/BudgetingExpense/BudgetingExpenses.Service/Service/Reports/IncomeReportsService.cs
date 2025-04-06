@@ -38,7 +38,7 @@ public class IncomeReportsService : IIncomeReportsService
             var records = await _unitOfWork.IncomeRecords.IncomeRecordsAsync(model.UserId);
             if (records != null && records.Any())
             {
-                var period = DateTime.UtcNow.AddMonths(-model.Period);
+                var period = DateTime.Now.AddMonths(-model.Period);
                 if (model.Period == 0 && model.Category != null)
                 {
                     return records.Where(x => x.CategoryName == model.Category).OrderByDescending(x => x.IncomeDate);
@@ -61,7 +61,7 @@ public class IncomeReportsService : IIncomeReportsService
             var records = await _unitOfWork.IncomeRecords.IncomeRecordsAsync(model.UserId);
             if (records != null)
             {
-                var period = DateTime.UtcNow.AddMonths(-model.Period);
+                var period = DateTime.Now.AddMonths(-model.Period);
                 if (model.Period == 0 && model.Currency >= 0)
                 {
                     return records.Where(x => x.Currency == model.Currency).OrderByDescending(x => x.IncomeDate);

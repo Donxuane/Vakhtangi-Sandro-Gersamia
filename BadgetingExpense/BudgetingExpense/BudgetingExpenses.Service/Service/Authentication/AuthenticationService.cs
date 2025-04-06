@@ -1,15 +1,14 @@
 ﻿using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using BudgetingExpense.Domain.Models.AuthenticationModels;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpense.Domain.Contracts.IServices.IAuthentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Caching.Memory;
 using BudgetingExpense.Domain.Contracts.IServices.IMessaging;
+using Microsoft.AspNetCore.Http;
 
 namespace BudgetingExpenses.Service.Service.Authentication;
 
@@ -20,14 +19,19 @@ public class AuthenticationService : IAuthenticationService
     private readonly ILogger<AuthenticationService> _logger;
     private readonly IMemoryCache _cache;
     private readonly IEmailService _emailService;
+    private readonly IHttpContextAccessor _httpContext;
+    private readonly ITokenAuthenticationService _tokenAuthService;
     public AuthenticationService(IUnitOfWork unitOfWork, IConfiguration configuration,
-        ILogger<AuthenticationService> logger, IMemoryCache cache, IEmailService emailService)
+        ILogger<AuthenticationService> logger, IMemoryCache cache, IEmailService emailService,
+        IHttpContextAccessor httpContext, ITokenAuthenticationService tokenAuthService)
     {
         _unitOfWork = unitOfWork;
         _configuration = configuration;
         _logger = logger;
         _cache = cache;
         _emailService = emailService;
+        _httpContext = httpContext;
+        _tokenAuthService = tokenAuthService;
     }
 
     public async Task AddUserRolesAsync(string email, string role)
@@ -51,9 +55,22 @@ public class AuthenticationService : IAuthenticationService
             var check = await _unitOfWork.Authentication.CheckUserAsync(user.Email, user.Password);
             if (check)
             {
-                var userModel = await GetUserAsync(user.Email);
-                var roles = await GetRoleAsync(user.Email);
-                var token = await GenerateJwtTokenAsync(userModel.Id, roles.FirstOrDefault());
+                var model = await _unitOfWork.Authentication.GetUserByEmailAsync(user.Email);
+                var roles =  await _unitOfWork.Authentication.GetUserRolesAsync(user.Email);
+                var token = await _tokenAuthService.GenerateJwtTokenAsync(model.Id, roles.FirstOrDefault());
+                var refreshToken = await _tokenAuthService.GenerateRefreshToken(model.Id);
+                var cookies = _httpContext.HttpContext.Request.Cookies["refreshToken"];
+                var handler = new JwtSecurityTokenHandler();
+                if (cookies == null || handler.ReadJwtToken(cookies).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value != model.Id)
+                {
+                    _httpContext.HttpContext.Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
+                    {
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict,
+                        Expires = DateTime.UtcNow.AddDays(7)
+                    });
+                }
                 _logger.LogInformation("Logged in user {email}", user.Email);
                 return token;
             }
@@ -147,67 +164,6 @@ public class AuthenticationService : IAuthenticationService
         catch (Exception ex)
         {
             _logger.LogError("Register new user {ex}", ex.Message);
-            throw;
-        }
-    }
-    private async Task<string>? GenerateJwtTokenAsync(string userId, string userRole)
-    {
-        try
-        {
-            return await Task.Run(() =>
-            {
-                var tokenConfiguration = _configuration.GetSection("Jwt");
-                var tokenKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfiguration["Key"]));
-
-                var claims = new[]
-                {
-                    new Claim(ClaimTypes.Name, userId),
-                    new Claim(ClaimTypes.Role, userRole)
-                };
-                var token = new JwtSecurityToken
-                (
-                    issuer: tokenConfiguration["Issuer"],
-                    audience: tokenConfiguration["Audience"],
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(Convert.ToInt32(tokenConfiguration["ExpiryMinutes"])),
-                    signingCredentials: new SigningCredentials(tokenKey, SecurityAlgorithms.HmacSha256)
-                );
-                _logger.LogInformation("Token generated for {userId}", userId);
-                return new JwtSecurityTokenHandler().WriteToken(token);
-            });
-
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError("Exception {ex}", ex.Message);
-            throw;
-        }
-    }
-
-    private async Task<IList<string>?> GetRoleAsync(string email)
-    {
-        try
-        {
-            var roles = await _unitOfWork.Authentication.GetUserRolesAsync(email);
-            return roles;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError("Getting roles {ex}", ex.Message);
-            throw;
-        }
-    }
-
-    private async Task<User?> GetUserAsync(string email)
-    {
-        try
-        {
-            var user = await _unitOfWork.Authentication.GetUserByEmailAsync(email);
-            return user;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError("Getting user {ex}", ex.Message);
             throw;
         }
     }

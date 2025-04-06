@@ -4,7 +4,6 @@ using BudgetingExpense.Domain.Contracts.IServices.IFinanceManage;
 using BudgetingExpense.Domain.Contracts.IServices.ILimitations;
 using BudgetingExpenses.Service.DtoModels;
 using BudgetingExpenses.Service.MapService;
-using BudgetingExpenses.Service.Service.ApiService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,14 +17,12 @@ public class ManageUserFinancesController : BaseControllerExstention
     private readonly IIncomeManageService _incomeService;
     private readonly IExpenseManageService _expenseManageService;
     private readonly ILimitsManageService _limitsManageService;
-    private readonly CurrencyRateService _currencyRateService;
     public ManageUserFinancesController(IIncomeManageService incomeService, 
-        IExpenseManageService expenseManageService, ILimitsManageService limitsManageService, CurrencyRateService currencyRateService)
+        IExpenseManageService expenseManageService, ILimitsManageService limitsManageService)
     {
         _incomeService = incomeService;
         _expenseManageService = expenseManageService;
         _limitsManageService = limitsManageService;
-        _currencyRateService = currencyRateService;
     }
 
     /// <summary>
@@ -38,9 +35,9 @@ public class ManageUserFinancesController : BaseControllerExstention
         var result = await _incomeService.AddIncomeCategoryAsync(category);
         if (result > 0)
         {
-            return Ok($"ID: {result}; {category} Category added Successfully");
+            return Ok(new { Id = result, message = $"Category: {category} added Successfully" });
         }
-        return BadRequest("Couldn't Process Add");
+        return BadRequest(new { message = "Couldn't Add" });
     }
 
     [HttpGet("IncomeCategories")]
@@ -51,7 +48,7 @@ public class ManageUserFinancesController : BaseControllerExstention
         {
             return Ok(result);
         }
-        return BadRequest("Records not found!");
+        return BadRequest(new { message = "Records not found!" });
     }
 
     [ServiceFilter(typeof(CategoryValidationFilter))]
@@ -61,9 +58,9 @@ public class ManageUserFinancesController : BaseControllerExstention
         var result = await _incomeService.AddIncomeAsync(dtoModel.Map(UserId));
         if (result)
         {
-            return Ok("Income Added Successfully");
+            return Ok(new { message = "Income added successfully" });
         }
-        return BadRequest("Couldn't Process Add");
+        return BadRequest(new { message = "Couldn't add" });
     }
 
     [HttpDelete("Income")]
@@ -72,9 +69,9 @@ public class ManageUserFinancesController : BaseControllerExstention
         var result = await _incomeService.DeleteIncomeAsync(incomeTypeId, UserId);
         if (result)
         {
-            return Ok("Income Source Deleted Successfully");
+            return Ok(new { message = "Income deleted successfully" });
         }
-        return BadRequest("Could not Process Delete");
+        return BadRequest(new { message = "Could not delete" });
     }
     [ServiceFilter(typeof(CategoryValidationFilter))]
     [HttpPut("UpdateIncome")]
@@ -85,9 +82,9 @@ public class ManageUserFinancesController : BaseControllerExstention
             model.Map(UserId));
         if (incomeUpdated)
         {
-            return Ok("Successfully Updated");
+            return Ok(new { message = "Successfully updated" });
         }
-        return BadRequest("Couldn't Process Update");
+        return BadRequest(new { message = "Couldn't update" });
     }
     /// <summary>
     /// Manage Expenses
@@ -100,9 +97,9 @@ public class ManageUserFinancesController : BaseControllerExstention
         var result = await _expenseManageService.AddExpenseCategoryAsync(category);
         if (result > 0)
         {
-            return Ok($"{result} Category Added Successfully");
+            return Ok(new { Id = result, message = $"Category: {category} Added successfully" });
         }
-        return BadRequest("Couldn't Process Add");
+        return BadRequest(new { message = "Couldn't add" });
     }
 
     [HttpGet("AllExpenseCategories")]
@@ -113,7 +110,7 @@ public class ManageUserFinancesController : BaseControllerExstention
         {
             return Ok(result);
         }
-        return BadRequest("Records not found!");
+        return BadRequest(new { message = "Records not found!" });
     }
 
     [ServiceFilter(typeof(CategoryValidationFilter))]
@@ -124,9 +121,9 @@ public class ManageUserFinancesController : BaseControllerExstention
             expenseDto.Map(UserId));
         if (result)
         {
-            return Ok("Added Successfully");
+            return Ok(new { message = "Added Successfully" });
         }
-        return BadRequest("Couldn't Process Add");
+        return BadRequest(new { message = "Couldn't Process Add" });
     }
 
     [HttpDelete("Expenses")]
@@ -135,9 +132,9 @@ public class ManageUserFinancesController : BaseControllerExstention
         var result = await _expenseManageService.DeleteExpenseAsync(expenseId, UserId);
         if (result)
         {
-            return Ok("deleted successfully");
+            return Ok(new { message = "Deleted successfully" });
         }
-        return BadRequest("Couldn't Process Delete");
+        return BadRequest(new { message = "Couldn't delete" });
     }
     [ServiceFilter(typeof(CategoryValidationFilter))]
     [HttpPut("UpdateExpenses")]
@@ -147,9 +144,9 @@ public class ManageUserFinancesController : BaseControllerExstention
             model.Map(UserId));
         if (result)
         {
-            return Ok("Updated Successfully");
+            return Ok(new { message = "Updated successfully" });
         }
-        return BadRequest("Couldn't Process Update");
+        return BadRequest(new { message = "Couldn't update" });
     }
 
     /// <summary>
@@ -164,9 +161,9 @@ public class ManageUserFinancesController : BaseControllerExstention
             limitDto.Map(UserId));
         if (result)
         {
-            return Ok("Limit added successfully");
+            return Ok(new { message = "Limit added successfully" });
         }
-        return BadRequest();
+        return BadRequest(new { message = "Couldn't add" });
     }
 
     [HttpDelete("DeleteLimit")]
@@ -175,9 +172,9 @@ public class ManageUserFinancesController : BaseControllerExstention
         var result = await _limitsManageService.DeleteLimitsAsync(limitId, UserId);
         if (result)
         {
-            return Ok("Limit deleted successfully");
+            return Ok(new { message = "Limit deleted successfully" });
         }
-        return BadRequest("something went wrong");
+        return BadRequest(new { message = "Couldn't delete" });
     }
     
     [ServiceFilter(typeof(CategoryValidationFilter))]
@@ -188,9 +185,9 @@ public class ManageUserFinancesController : BaseControllerExstention
             updateLimitDto.Map(UserId));
         if (result)
         {
-            return Ok(" limit updated successfully");
+            return Ok(new { message = "Limit updated successfully" });
         }
-        return BadRequest();
+        return BadRequest(new { message = "Couldn't update" });
     }
 
     [HttpGet("ActiveLimitsDetails")]
@@ -202,19 +199,6 @@ public class ManageUserFinancesController : BaseControllerExstention
         {
             return Ok(model);
         }
-        return BadRequest("Records not found");
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> GetCurrencies()
-    {
-        
-      var result1 =   await _currencyRateService.GetCurrencyRates();
-        
-       
-            return Ok(result1);
-        
-
-        return BadRequest();
+        return BadRequest(new { message = "Records not found" });
     }
 }

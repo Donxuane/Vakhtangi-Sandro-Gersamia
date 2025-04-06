@@ -1,5 +1,4 @@
 ﻿using BudgetingExpense.Domain.Models.AuthenticationModels;
-using BudgetingExpense.Domain.Models.MainModels;
 
 namespace BudgetingExpense.Domain.Contracts.IServices.IAuthentication;
 

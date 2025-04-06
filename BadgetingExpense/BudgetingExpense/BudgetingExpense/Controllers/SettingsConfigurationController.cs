@@ -11,7 +11,6 @@ public class SettingsConfigurationController : BaseControllerExstention
 {
     private readonly IToggleNotificationsService _toggleNotificationsService;
 
-
     public SettingsConfigurationController(IToggleNotificationsService toggleNotificationsRepository)
     {
         _toggleNotificationsService = toggleNotificationsRepository;
@@ -24,8 +23,16 @@ public class SettingsConfigurationController : BaseControllerExstention
             notification);
         if (result)
         {
-            return Ok("notification alert updated");
+            return Ok(new { message = $"Notification set to {notification}" });
         }
-        return BadRequest();
+        return BadRequest(new { message = "Couldn't set" });
+    }
+
+    [HttpDelete("LogOut")]
+    public IActionResult LogOut()
+    {
+        HttpContext.Response.Cookies.Delete("refreshToken");
+        HttpContext.Response.Headers.Remove("Authorization");
+        return Ok(new { message = "Logged out" });
     }
 }

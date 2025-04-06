@@ -27,31 +27,25 @@ public class SavingsAnalyticService : ISavingsAnalyticService
             
             await _unitOfWork.SaveChangesAsync();
             var currencies = await _currencyRateService.GetCurrencyRates();
-            var savingPeriod = new SavingsPeriod
+            var savingsInLocalCurrency = records.Select(x =>
             {
-                Currency = Currencies.GEL,
-            };
-
-            foreach (var item in records)
+                var currencyRate = currencies
+                .ContainsKey(x.Currency.ToString()) ? (double)currencies[x.Currency.ToString()] : 1.0;
+                return new
+                {
+                    AverageIncome = Math.Round((x.AverageIncome * currencyRate), 2),
+                    AverageExpense = Math.Round((x.AverageExpense * currencyRate), 2),
+                    Percentage = Math.Round((x.Percentage / records.Count()), 2)
+                };
+            }).Aggregate(new SavingsPeriod { Currency = Currencies.GEL }, (savingsPeriod, y) =>
             {
-
-                if (currencies.Any(x => x.Key == item.Currency.ToString()))
-                {
-                    var currencyRate = currencies.FirstOrDefault(x => x.Key == item.Currency.ToString()).Value;
-                    savingPeriod.AverageIncome +=Math.Round( (item.AverageIncome * (double)currencyRate),2);
-                    savingPeriod.AverageExpense +=Math.Round( (item.AverageExpense * (double)currencyRate),2);
-                  
-                }
-                else
-                {
-                    savingPeriod.AverageIncome +=Math.Round( item.AverageIncome,2);
-                    savingPeriod.AverageExpense +=Math.Round( item.AverageExpense,2);
-                } 
-                savingPeriod.Percentage += Math.Round(item.Percentage,2);
-                
-            }
-            savingPeriod.Savings =  savingPeriod.AverageIncome - savingPeriod.AverageExpense;
-            return (records, savingPeriod);
+                savingsPeriod.AverageIncome += y.AverageIncome;
+                savingsPeriod.AverageExpense += y.AverageExpense;
+                savingsPeriod.Percentage += y.Percentage;
+                return savingsPeriod;
+            });
+            savingsInLocalCurrency.Savings = savingsInLocalCurrency.AverageIncome - savingsInLocalCurrency.AverageExpense;
+            return (records, savingsInLocalCurrency);
         }
         catch (Exception ex)
         {

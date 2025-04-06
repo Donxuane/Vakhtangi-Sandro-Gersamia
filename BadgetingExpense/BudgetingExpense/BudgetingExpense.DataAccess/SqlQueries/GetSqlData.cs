@@ -13,19 +13,10 @@ public class GetSqlData
     {
         try
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var recourses = $"BudgetingExpense.DataAccess.SqlQueries.{_tableName}.sql";
-            using(Stream? stream = assembly.GetManifestResourceStream(recourses))
-            {
-                if(stream != null)
-                {
-                    using(StreamReader reader = new StreamReader(stream))
-                    {
-                        var data = reader.ReadToEnd();
-                        return data;
-                    }
-                }
-            }
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"SqlQueries", _tableName+".sql");
+            var data = File.ReadAllText(path);
+            if (data != null)
+                return data;
             return null;
         }
         catch (Exception ex)
