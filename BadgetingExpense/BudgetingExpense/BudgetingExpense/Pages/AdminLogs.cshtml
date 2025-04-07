@@ -31,8 +31,8 @@
         }
 
        .controls label {
-                font-size: 16px;
-                color: #555;
+            font-size: 16px;
+            color: #333;
        }
 
         .logs-container {
@@ -42,7 +42,7 @@
         }
 
         #logs {
-            background: #222;
+            background: #333;
             color: white;
             padding: 20px;
             height: 500px;
@@ -67,14 +67,15 @@
         button {
             padding: 8px 16px;
             background-color: white;
-            color: white;
-            border: none;
+            color: #333;
+            border: #333;
             border-radius: 5px;
             cursor: pointer;
         }
 
         button:hover {
-            background-color: blue;
+            background-color: #333;
+            color: white;
         }
     </style>
 </head>
@@ -106,7 +107,13 @@
             }
 
             const logElement = document.createElement("div");
-            logElement.textContent = message;
+
+            let styledMessage = message
+               .replace(/Information/g, '<span class="log-info">Information</span>')
+               .replace(/Warning/g, '<span class="log-warning">Warning</span>')
+               .replace(/Error/g, '<span class="log-error">Error</span>');
+
+            logElement.innerHTML = styledMessage;
 
             const logsContainer = document.getElementById("logs");
             logsContainer.appendChild(logElement);

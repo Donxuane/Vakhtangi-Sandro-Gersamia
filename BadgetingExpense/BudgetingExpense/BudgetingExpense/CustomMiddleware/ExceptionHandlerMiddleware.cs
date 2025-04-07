@@ -25,20 +25,28 @@ public class ExceptionHandlerMiddleware
         }
         catch (SqlException sqlEx)
         {
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            context.Response.StatusCode = sqlEx.Number;
             var StatusCode = context.Response.StatusCode;
-            _logger.LogError("Sql Error Occurred: {error}", sqlEx.Message);
-            await context.Response.WriteAsJsonAsync(new { 
+            string sqlStringMessage = sqlEx.Number switch
+            {
+                2627 => "Duplicate record found. Please check your data.",
+                547 => "This record cannot be deleted because it is referenced by other data.",
+                1205 => "The transaction was deadlocked. Please try again.",
+                _ => "An unexpected error occurred while interacting with the database."
+            };
+            _logger.LogError("Sql Error Occurred: {error}", sqlStringMessage);
+            await context.Response.WriteAsJsonAsync(new
+            {
                 StatusCode,
-                Error = sqlEx.Errors.Cast<SqlError>().Select(x=> new
+                Error = sqlEx.Errors.Cast<SqlError>().Select(x => new
                 {
                     x.Number,
                     x.LineNumber,
                     x.State,
                     x.Server,
                     x.Procedure,
-                    x.Message
-                }) 
+                    Message = sqlStringMessage
+                })
             });
         }
         catch (Exception ex)
