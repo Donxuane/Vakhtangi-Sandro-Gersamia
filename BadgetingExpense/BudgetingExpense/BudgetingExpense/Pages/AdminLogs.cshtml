@@ -108,13 +108,6 @@
             const logElement = document.createElement("div");
             logElement.textContent = message;
 
-            if (message.includes("Information")) {
-                logElement.classList.add("log-info");
-            } else if (message.includes("Warning")) {
-                logElement.classList.add("log-warning");
-            } else if (message.includes("Error")) {
-                logElement.classList.add("log-error");
-            }
             const logsContainer = document.getElementById("logs");
             logsContainer.appendChild(logElement);
             logsContainer.scrollTop = logsContainer.scrollHeight;
