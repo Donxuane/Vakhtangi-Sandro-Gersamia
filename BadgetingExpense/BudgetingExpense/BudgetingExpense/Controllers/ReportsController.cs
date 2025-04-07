@@ -11,7 +11,7 @@ namespace BudgetingExpense.Api.Controllers;
 [Authorize(Roles = "User")]
 [ApiController]
 [Route("Api/[controller]")]
-public class ReportsController : BaseControllerExstention
+public class ReportsController : BaseControllerExstension
 {
     private readonly IIncomeReportsService _service;
     private readonly IncomeForecastService<IncomeRecord> _forecastService;
@@ -31,7 +31,7 @@ public class ReportsController : BaseControllerExstention
     }
 
     /// <summary>
-    /// Income Reports And Analitycs
+    /// Section Income Reports And Analitycs
     /// </summary>
     [HttpGet("IncomeRecordsBasedCurrency")]
     public async Task<IActionResult> IncomeRecordsBasedCurrencyAsync([FromQuery] GetRecordsCurrencyDto model)
@@ -80,7 +80,7 @@ public class ReportsController : BaseControllerExstention
     }
 
     /// <summary>
-    /// Expense Reports And Analitycs
+    /// Section Expense Reports And Analitycs
     /// </summary>
     [HttpGet("TopExpenses")]
     public async Task<IActionResult> GetMostExpenseRecordsAsync([FromQuery]TopExpenseDto model)

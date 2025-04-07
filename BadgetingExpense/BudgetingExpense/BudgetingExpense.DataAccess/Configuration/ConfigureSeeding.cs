@@ -53,6 +53,7 @@ public class ConfigureSeeding
 
     public async Task SeedData()
     {
+        var admin = _configuration.GetSection("Admin").Get<User>();
         var users = _configuration.GetSection("Users").Get<List<User>>();
         var category = _configuration.GetSection("Category").Get<List<Category>>();
         var incomes = _configuration.GetSection("Income").Get<List<Income>>();
@@ -61,6 +62,11 @@ public class ConfigureSeeding
         try
         {
             await _unitOfWork.BeginTransactionAsync();
+            var check = await _unitOfWork.Authentication.RegisterUserAsync(admin);
+            if (check)
+            {
+                await _unitOfWork.Authentication.AddUserRoleAsync(admin.Email, "Admin");
+            }
             foreach (var item in category)
             {
                 if (item.Type == 1)
@@ -76,7 +82,7 @@ public class ConfigureSeeding
 
                     await _unitOfWork.ExpenseManage.AddCategoryAsync(item);
 
-                    _logger.LogInformation("New expense category added {item}", item.Name);
+                    _logger.LogInformation("New expense category added: {item}", item.Name);
                 }
             }
 
@@ -108,7 +114,7 @@ public class ConfigureSeeding
                         item.UserId = userId;
                         await _unitOfWork.ExpenseManage.AddAsync(item);
 
-                        _logger.LogInformation("New expenses  added{item} ", item);
+                        _logger.LogInformation("New expenses  added: {item}", item);
                     }
 
                     foreach (var item in limits)
@@ -117,7 +123,7 @@ public class ConfigureSeeding
                         item.UserId = userId;
                         await _unitOfWork.LimitsRepository.AddLimitAsync(item);
 
-                        _logger.LogInformation("New limits  added{item} ", item);
+                        _logger.LogInformation("New limits added: {item}", item);
                     }
                 }
             }

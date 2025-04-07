@@ -14,7 +14,7 @@ public class AuthenticationController : ControllerBase
     {
         _auth = auth;
     }
-    [HttpPost("LoginUser")]
+    [HttpPost("LogIn")]
     public async Task<IActionResult> LogInUserAync([FromForm] Login user)
     {
         var token = await _auth.LoginUserServiceAsync(user);
@@ -22,7 +22,7 @@ public class AuthenticationController : ControllerBase
         {
             return Ok(new { token });
         }
-        return BadRequest(new { message = "Can't login" });
+        return BadRequest(new { message = "Password or Email is incorrect!" });
     }
 
     [HttpPost("RegisterWithValidation")]

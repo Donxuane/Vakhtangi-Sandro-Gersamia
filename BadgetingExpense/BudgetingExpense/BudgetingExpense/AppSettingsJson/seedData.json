@@ -3,6 +3,14 @@
     "Admin",
     "User"
   ],
+  "Admin": {
+    "Id": "Id",
+    "Name": "admin",
+    "Surname": "admin",
+    "Email": "admin@gmail.com",
+    "Password": "1234567",
+    "RegisterDate": "1 january 2025"
+  },
   "Users": [
     {
       "Id": "Id",
@@ -11,7 +19,6 @@
       "Email": "sandrogersamia77@gmail.com",
       "Password": "1234567",
       "RegisterDate": "19 june 2005"
-     
     },
     {
       "Id": "Id",

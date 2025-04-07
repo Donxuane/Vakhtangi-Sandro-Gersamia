@@ -51,7 +51,7 @@ public class ExceptionHandlerMiddleware
                 _ => (int)HttpStatusCode.InternalServerError
             };
             var StatusCode = context.Response.StatusCode;
-            _logger.LogError("Status Code:{code}", StatusCode);
+            _logger.LogError("Status Code:{code}\n\tException: {ex}", StatusCode, ex.Message);
             await context.Response.WriteAsJsonAsync(new
             {
                 StatusCode,

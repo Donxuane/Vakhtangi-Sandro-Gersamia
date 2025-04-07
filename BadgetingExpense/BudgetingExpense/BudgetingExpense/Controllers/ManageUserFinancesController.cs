@@ -12,7 +12,7 @@ namespace BudgetingExpense.api.Controllers;
 [Authorize(Roles = "User")]
 [ApiController]
 [Route("api/[controller]")]
-public class ManageUserFinancesController : BaseControllerExstention
+public class ManageUserFinancesController : BaseControllerExstension
 {
     private readonly IIncomeManageService _incomeService;
     private readonly IExpenseManageService _expenseManageService;
@@ -26,7 +26,7 @@ public class ManageUserFinancesController : BaseControllerExstention
     }
 
     /// <summary>
-    /// Manage Income
+    /// Section Manage Income
     /// </summary>
     [ServiceFilter(typeof(PropertyNormalizationFilter))]
     [HttpPost("AddIncomeCategory")]
@@ -87,7 +87,7 @@ public class ManageUserFinancesController : BaseControllerExstention
         return BadRequest(new { message = "Couldn't update" });
     }
     /// <summary>
-    /// Manage Expenses
+    /// Section Manage Expenses
     /// </summary>
 
     [ServiceFilter(typeof(PropertyNormalizationFilter))]
@@ -150,7 +150,7 @@ public class ManageUserFinancesController : BaseControllerExstention
     }
 
     /// <summary>
-    /// Manage Limits On Expenses
+    /// Section Manage Limits On Expenses
     /// </summary>
 
     [ServiceFilter(typeof(CategoryValidationFilter))]
