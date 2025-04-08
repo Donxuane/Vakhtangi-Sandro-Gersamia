@@ -18,7 +18,7 @@ namespace BudgetingExpense.DataAccess.Configuration;
 
 public static class ConfigureRepositoryInstances
 {
-    public static void AddRepositoryInstances(this IServiceCollection services)
+    public static IServiceCollection AddRepositoryInstances(this IServiceCollection services)
     {
         services.AddScoped<IAuthentication, Authentication>();
         services.AddScoped<IManageFinancesRepository<Expense>, ExpenseManageRepository>();
@@ -45,5 +45,7 @@ public static class ConfigureRepositoryInstances
         services.AddScoped<Func<IToggleNotificationsRepository>>(x => x.GetRequiredService<IToggleNotificationsRepository>);
         services.AddScoped<Func<IBudgetPlaningRepository>>(x => x.GetRequiredService<IBudgetPlaningRepository>);
         services.AddScoped<Func<ISavingsRepository>>(x => x.GetRequiredService<ISavingsRepository>);
+
+        return services;
     }
 }

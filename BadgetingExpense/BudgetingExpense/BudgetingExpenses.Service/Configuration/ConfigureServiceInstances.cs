@@ -19,7 +19,7 @@ namespace BudgetingExpenses.Service.Configuration;
 
 public static class ConfigureServiceInstances
 {
-    public static void AddServiceInstances(this IServiceCollection services)
+    public static IServiceCollection AddServiceInstances(this IServiceCollection services)
     {
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IIncomeManageService, IncomeManageService>();
@@ -39,5 +39,7 @@ public static class ConfigureServiceInstances
         services.AddScoped<ICurrencyRateService,CurrencyRateService>();
         services.AddHostedService<LimitsCleanupService>();
         services.AddHttpContextAccessor();
+
+        return services;
     }
 }

@@ -56,7 +56,7 @@
             color: lime;
         }
 
-        .log-warning {
+        .log-exception {
             color: yellow;
         }
 
@@ -108,8 +108,8 @@
 
             let styledMessage = message
                .replace(/Information/g, '<span class="log-info">Information</span>')
-               .replace(/Warning/g, '<span class="log-warning">Warning</span>')
-               .replace(/Error/g, '<span class="log-error">Error</span>');
+               .replace(/Error/g, '<span class="log-error">Error</span>')
+               .replace(/Exception/g,'<span class="log-exception">Exception</span>');
 
             logElement.innerHTML = styledMessage;
 

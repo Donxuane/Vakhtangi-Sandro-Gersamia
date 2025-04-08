@@ -8,7 +8,7 @@ namespace BudgetingExpenses.Service.Configuration;
 
 public static class ConfigureJwt
 {
-    public static void ConfigureJWTBearerToken(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection ConfigureJWTBearerToken(this IServiceCollection services, IConfiguration configuration)
     {
         var Jwt = configuration.GetSection("Jwt");
         var JwtKey = Encoding.UTF8.GetBytes(Jwt["Key"]);
@@ -31,5 +31,7 @@ public static class ConfigureJwt
                 };
             });
         services.AddAuthorization();
+
+        return services;
     }
 }
