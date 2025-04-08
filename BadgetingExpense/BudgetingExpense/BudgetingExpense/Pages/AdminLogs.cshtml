@@ -84,7 +84,6 @@
     <h2>Live Logs</h2>
     <div class="controls">
         <label><input type="checkbox" checked id="info" />Information</label>
-        <label><input type="checkbox" checked id="warning" />Warning</label>
         <label><input type="checkbox" checked id="error" />Error</label>
         <button onclick="document.getElementById('logs').textContent = ''">Clear Logs</button>
     </div>
@@ -100,7 +99,6 @@
 
         connection.on("ReceiveLog", message => {
             if ((message.includes("Information") && !document.getElementById("info").checked) ||
-                (message.includes("Warning") && !document.getElementById("warning").checked) ||
                 (message.includes("Error") && !document.getElementById("error").checked)) 
             {
                 return;
