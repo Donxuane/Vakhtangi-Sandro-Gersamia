@@ -10,7 +10,7 @@ using Moq;
 
 namespace BudgetingExpense.UnitTests;
 
-public class ForecastsServiceTest
+public class ForecastsServiceTest : VerifyLogs
 {
     private readonly Mock<IUnitOfWork> _mockedUnitOfWork;
     private readonly Mock<ILogger<IncomeForecastService>> _mockedIncomeForecastLogger;
@@ -70,12 +70,8 @@ public class ForecastsServiceTest
         var result = await Assert.ThrowsAsync<Exception>(() => _expenseForecastService.GetForecastCategoriesAsync(userId));
         Assert.Equal("Database exception", result.Message);
         _mockedUnitOfWork.Verify(x => x.ExpenseRecords.ExpenseRecordsAsync(userId), Times.Once);
-        _mockedExpenseForecastLogger.Verify(x => x.Log(LogLevel.Error,
-            It.IsAny<EventId>(),
-            It.Is<It.IsAnyType>((o, t) => true),
-            It.IsAny<Exception>(),
-            It.IsAny<Func<It.IsAnyType, Exception?, string>>()), Times.Once
-        );
+            VerifyLogError(_mockedExpenseForecastLogger);
+        
     }
     
 }

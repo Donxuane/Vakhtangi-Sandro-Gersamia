@@ -144,6 +144,6 @@ public class ExpenseManageService : IExpenseManageService
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
             throw;
-        }
+        } 
     }
 }

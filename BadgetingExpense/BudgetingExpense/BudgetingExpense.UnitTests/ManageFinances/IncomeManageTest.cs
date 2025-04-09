@@ -57,13 +57,7 @@ namespace BudgetingExpense.UnitTests.ManageFinances
             var result = await Assert.ThrowsAsync<Exception>(() => _IncomeManageService.AddIncomeCategoryAsync(It.IsAny<string>()));
             _mockUnitOfWork.Verify(x => x.IncomeManage.AddCategoryAsync(It.IsAny<Category>()), Times.Once);
             _mockUnitOfWork.Verify(x => x.RollBackAsync(),Times.Once);
-            _mockIncomeManageServiceLogger.Verify(x => x.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((o, t) => true),
-                It.IsAny<Exception>(),
-                It.IsAny<Func<It.IsAnyType, Exception?, string>>()
-            ), Times.Once);
+          VerifyLogError(_mockIncomeManageServiceLogger);
 
 
         }
@@ -90,7 +84,7 @@ namespace BudgetingExpense.UnitTests.ManageFinances
         public async Task addIncomeAsync_ShouldNotAddIncome_WhileExceptionThrown_ShouldReturnFalse()
         {
             _mockUnitOfWork.Setup(x => x.IncomeManage.AddAsync(It.IsAny<Income>())).ThrowsAsync(new Exception());
-            var result = _IncomeManageService.AddIncomeAsync(It.IsAny<Income>());
+            var result =await _IncomeManageService.AddIncomeAsync(It.IsAny<Income>());
 
             Assert.NotNull(result);
             _mockUnitOfWork.Verify(x=> x.BeginTransactionAsync(), Times.Once);
@@ -121,7 +115,7 @@ namespace BudgetingExpense.UnitTests.ManageFinances
         public async Task   DeleteIncomeAsync_ShouldNot_WhileExceptionThrown_ShouldReturnFalse()
         {
             _mockUnitOfWork.Setup(x => x.IncomeManage.DeleteAsync(It.IsAny<int>(),It.IsAny<string>())).ThrowsAsync(new Exception());
-            var result = _IncomeManageService.DeleteIncomeAsync(It.IsAny<int>(),It.IsAny<string>());
+            var result =await _IncomeManageService.DeleteIncomeAsync(It.IsAny<int>(),It.IsAny<string>());
             Assert.NotNull(result);
             _mockUnitOfWork.Verify(x => x.BeginTransactionAsync(), Times.Once);
             _mockUnitOfWork.Verify(x => x.IncomeManage.DeleteAsync(It.IsAny<int>(), It.IsAny<string>()), Times.Once);
