@@ -1,5 +1,6 @@
 ﻿ using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
+using BudgetingExpense.Domain.Enums;
 using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 using BudgetingExpenses.Service.Service.Reports;
@@ -94,5 +95,34 @@ public class ExpenseReportsTests
         _mockedUnitOfWork.Verify(x => x.ExpenseRecords.ExpenseRecordsAsync(model.UserId), Times.Once);
         _mockedUnitOfWork.VerifyNoOtherCalls();
     }
+
+    [Fact]
+    public async Task GetAllRecordsAsync_ShouldReturnAllRecords_BasedUserIdAndPage()
+    {
+        var userId = "userId";
+        var page = 1;
+        var expenseRecord = new List<ExpenseRecord>
+        {
+            new()
+            {
+                Amount = 100,CategoryName = "shopping",Currency = Currencies.GEL,Date = DateTime.UtcNow,UserId = userId
+            },
+            new()
+            {
+                Amount = 200,CategoryName = "betting",Currency = Currencies.GEL,Date = DateTime.UtcNow,UserId = userId
+            }
+            
+        };
+        var expectedRecords = (expenseRecord, page);
+        _mockedUnitOfWork.Setup(x => x.ExpenseRecords.AllExpenseRecordsAsync(userId, page))
+            .ReturnsAsync(expectedRecords);
+        var result = await _expenseReportsService.GetAllRecordsAsync(userId, page);
+        Assert.NotNull(result);
+        Assert.Equal(expectedRecords.expenseRecord,result?.records);
+        Assert.Equal(expectedRecords.page,result?.pageAmount);
+
+    }
+   
+    
 }
 

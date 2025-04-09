@@ -1,6 +1,7 @@
 ﻿using BudgetingExpense.Domain.Contracts.IRepository.IGet;
 using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Enums;
+using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.MainModels;
 using BudgetingExpenses.Service.Service.Limitations;
 using Microsoft.Extensions.Logging;
@@ -112,6 +113,31 @@ namespace BudgetingExpense.UnitTests.Limitations
             _mockUnitOfWork.Verify(x => x.LimitsRepository.UpdateLimitsAsync(It.IsAny<Limits>()), Times.Once);
             _mockUnitOfWork.Verify(x => x.RollBackAsync(), Times.Once);
             VerifyLogError(_mockLimitsServiceLogger);
+        }
+
+        [Fact]
+        public async Task GetLimitsDetails_ShouldReturnCategoryNameWithLimitations()
+        {
+            var userId = "123213";
+            var categoryName = "food";
+            var limitations = new List<LimitationsView>()
+            {
+                new() { CategoryId = 1 }
+               
+            };
+            _mockUnitOfWork.Setup(x => x.BudgetPlaningRepository.GetLimitsInfo(userId)).ReturnsAsync(limitations);
+           _mockedGetRepository.Setup(x=>x.GetCategoryNameAsync(1)).ReturnsAsync(categoryName);
+
+            var result = await _limitsService.GetLimitsDetails(userId);
+
+            var resultList= result.ToList();
+            Assert.Equal(1,resultList.Count);
+            Assert.Equal(categoryName, resultList[0].Item2);
+
+            _mockUnitOfWork.Verify(x=>x.BudgetPlaningRepository.GetLimitsInfo(userId),Times.Once);
+            _mockedGetRepository.Verify(x => x.GetCategoryNameAsync(It.IsAny<int>()), Times.Once);
+            
+
         }
 
         

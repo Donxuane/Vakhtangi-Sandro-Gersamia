@@ -7,7 +7,7 @@ using Moq;
 
 namespace BudgetingExpense.UnitTests;
 
-public class SavingsAnalyticsTests
+public class SavingsAnalyticsTests :VerifyLogs
 {
     private readonly Mock<IUnitOfWork> _mockedUnitOfWork;
     private readonly Mock<ILogger<SavingsAnalyticService>> _mockedLogger;
@@ -48,13 +48,6 @@ public class SavingsAnalyticsTests
         var result = await Assert.ThrowsAsync<Exception>(() => _savingsAnalyticsService.GetSavingsAnalyticsAsync(userId, month));
         Assert.Equal("Exception", result.Message);
         _mockedUnitOfWork.Verify(x => x.RollBackAsync(), Times.Once);
-        _mockedLogger.Verify(
-        x => x.Log(
-            LogLevel.Error,
-            It.IsAny<EventId>(),
-            It.Is<It.IsAnyType>((o, t) => true),
-            It.IsAny<Exception>(),
-            It.IsAny<Func<It.IsAnyType, Exception?, string>>()
-        ), Times.Once);
+       VerifyLogError(_mockedLogger);
     }
 }

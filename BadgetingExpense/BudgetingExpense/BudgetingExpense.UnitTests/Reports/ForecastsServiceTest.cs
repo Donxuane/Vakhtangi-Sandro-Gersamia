@@ -58,7 +58,7 @@ public class ForecastsServiceTest : VerifyLogs
         });
         _mockedUnitOfWork.Verify(x=>x.IncomeRecords.IncomeRecordsAsync(userId), Times.Once);
     }
-
+    
     [Fact]
     public async Task GetForecastCategoriesAsync_Throws_WhileException()
     {
@@ -73,5 +73,6 @@ public class ForecastsServiceTest : VerifyLogs
             VerifyLogError(_mockedExpenseForecastLogger);
         
     }
+    
     
 }
