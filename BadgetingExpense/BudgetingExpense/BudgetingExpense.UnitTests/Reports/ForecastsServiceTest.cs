@@ -49,7 +49,7 @@ public class ForecastsServiceTest
 
         var result = await _incomeForecastService.GetForecastCategoriesAsync(userId);
 
-        Assert.NotNull(result);
+        
         Assert.Equal(expectedResult.Count,result.Count());
         Assert.All(expectedResult, expected =>
         {

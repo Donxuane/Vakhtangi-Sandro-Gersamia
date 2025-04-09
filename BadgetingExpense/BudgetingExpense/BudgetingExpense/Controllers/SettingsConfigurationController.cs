@@ -34,7 +34,7 @@ public class SettingsConfigurationController : BaseControllerExstension
     }
 
     /// <summary>
-    /// Delets Cookies and Headers
+    /// Delete Cookies and Headers
     /// </summary>
     /// <returns>message</returns>
     [HttpDelete("LogOut")]
