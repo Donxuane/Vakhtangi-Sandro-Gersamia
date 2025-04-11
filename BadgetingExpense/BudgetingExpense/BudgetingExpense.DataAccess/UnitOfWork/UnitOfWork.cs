@@ -7,6 +7,7 @@ using BudgetingExpense.Domain.Contracts.IUnitOfWork;
 using BudgetingExpense.Domain.Models.MainModels;
 using System.Data.Common;
 using BudgetingExpense.Domain.Contracts.IRepository.INotifications;
+using Microsoft.Extensions.Logging;
 
 namespace BudgetingExpense.DataAccess.UnitOfWork;
 
@@ -33,6 +34,7 @@ public class UnitOfWork : IUnitOfWork
     private IToggleNotificationsRepository? _toggleNotifications;
     private IBudgetPlaningRepository? _planing;
     private ISavingsRepository? _savings;
+    private readonly ILogger<UnitOfWork> _logger;
 
     private readonly DbConnection _connection;
     private DbTransaction? _transaction;
@@ -42,7 +44,8 @@ public class UnitOfWork : IUnitOfWork
         Func<IIncomeRecordsRepository> incomeRecords, Func<IBudgetLimitsRepository> limits,
         Func<IExpenseRecordsRepository> expenseRecords,
         Func<IGetRepository> getRepository,Func<IToggleNotificationsRepository> toggleNotifications,
-        Func<IBudgetPlaningRepository> planing, Func<ISavingsRepository> savings)
+        Func<IBudgetPlaningRepository> planing, Func<ISavingsRepository> savings,ILogger<UnitOfWork> logger)
+
     {
         _expenseManageFactory = expenseManage;
         _incomeManageFactory = incomeManage;
@@ -55,6 +58,7 @@ public class UnitOfWork : IUnitOfWork
         _toggleNotificationsFactory = toggleNotifications;
         _planingFactory = planing;
         _savingsFactory = savings;
+        _logger = logger;
     }
 
     public IAuthentication Authentication => _authentication??=_authenticationFactory();
@@ -156,8 +160,9 @@ public class UnitOfWork : IUnitOfWork
             }
         }
         catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
+        { 
+            _logger.LogError(ex.Message);
+        throw;
         }
     }
 
@@ -174,7 +179,8 @@ public class UnitOfWork : IUnitOfWork
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.ToString());
+            _logger.LogError(ex.Message);
+            throw;
         }
     }
 
@@ -190,7 +196,7 @@ public class UnitOfWork : IUnitOfWork
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+           _logger.LogError(ex.Message);
             throw new InvalidOperationException("Database Connection Lost");
         }
     }

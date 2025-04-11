@@ -24,7 +24,7 @@ public class IncomeForecastService : IncomeForecastService<IncomeRecord>
     {
         try
         {
-            var count = _configuration.GetSection("ConfigureForcastCounts")["IncomeForecastCount"];
+            var count = _configuration.GetSection("ConfigureForecastCounts")["IncomeForecastCount"];
             var amount = int.Parse(count);
             var incomeRecords = await _unitOfWork.IncomeRecords.IncomeRecordsAsync(userId);
             var model = incomeRecords.GroupBy(x => new { x.Currency, x.CategoryName })

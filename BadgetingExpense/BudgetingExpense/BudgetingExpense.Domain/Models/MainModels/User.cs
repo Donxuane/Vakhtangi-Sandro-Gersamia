@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BudgetingExpense.Domain.CustomValidationAttributes;
+
 namespace BudgetingExpense.Domain.Models.MainModels;
 
 public class User
@@ -7,9 +9,11 @@ public class User
     public string Id { get; set; }
     [Length(2, 50)]
     [Required]
+    [ValidateInput]
     public required string Name { get; set; }
     [Length(2, 50)]
     [Required]
+    [ValidateInput]
     public required string Surname { get; set; }
     [EmailAddress]
     [Required]
