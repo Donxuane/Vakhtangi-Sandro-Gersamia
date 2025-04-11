@@ -14,7 +14,7 @@ public class ExpenseAddedNotificationService : IExpenseAddedNotificationService
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<ExpenseAddedNotificationService> _logger;
     public ExpenseAddedNotificationService(IConfiguration configuration, IEmailService emailService
-        ,IUnitOfWork unitOfWork, ILogger<ExpenseAddedNotificationService> logger)
+        ,ILogger<ExpenseAddedNotificationService> logger, IUnitOfWork unitOfWork)
     {
         _configuration = configuration;
         _emailService = emailService;

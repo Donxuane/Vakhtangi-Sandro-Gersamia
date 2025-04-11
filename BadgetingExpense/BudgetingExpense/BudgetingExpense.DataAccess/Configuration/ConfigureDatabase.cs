@@ -36,7 +36,7 @@ public class ConfigureDatabase : IHostedService
                 await dbContext.Database.MigrateAsync(cancellationToken);
                 _logger.LogInformation("Database Queries Execution Started");
                 var result = AddDatabaseContentAccordingly();
-                if (result == true)
+                if (result)
                 {
                     _logger.LogInformation("Database Setup Finished!");
 
