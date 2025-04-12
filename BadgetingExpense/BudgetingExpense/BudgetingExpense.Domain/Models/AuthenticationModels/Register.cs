@@ -1,14 +1,17 @@
 ﻿using BudgetingExpense.Domain.CustomBinder;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using BudgetingExpense.Domain.CustomValidationAttributes;
 
 namespace BudgetingExpense.Domain.Models.AuthenticationModels;
 [ModelBinder(typeof(CustomModelBinder<Register>))]
 public class Register
 {
     [Required(ErrorMessage ="Name is required!")]
+    [ValidateInput]
     public string Name { get; set; }
     [Required(ErrorMessage ="Surname is required!")]
+    [ValidateInput]
     public string Surname { get; set; }
     [Required(ErrorMessage ="Email is required!")]
     [EmailAddress]
