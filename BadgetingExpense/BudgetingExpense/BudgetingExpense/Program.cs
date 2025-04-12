@@ -14,7 +14,6 @@ builder.Services.AddSignalR();
 builder.Services.AddControllers();
 builder.Services.AddHostedService<ConfigureDatabase>();
 builder.AddMultipleJsonFileConfiguration();
-builder.Services.AddILoggerConfiguration();
 builder.Services.ConfigureDatabaseRules(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerAuthorization();
@@ -24,7 +23,6 @@ builder.Services.ConfigureJWTBearerToken(builder.Configuration)
 builder.Services.AddScoped<ConfigureSeeding>();
 builder.Services.AddScoped<CategoryValidationFilter>();
 builder.Services.AddScoped<PropertyNormalizationFilter>();
-builder.Services.AddSingleton<LiveLogsForwarder>();
 builder.Services.AddMemoryCache();
 builder.Services.AddHttpClient("Api",client =>
 {
@@ -35,7 +33,6 @@ var app = builder.Build();
 app.MapRazorPages();
 app.MapHub<AppLiveHub>("/logHub");
 app.UseMiddleware<ExceptionHandlerMiddleware>();
-app.Services.GetRequiredService<LiveLogsForwarder>().Start();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

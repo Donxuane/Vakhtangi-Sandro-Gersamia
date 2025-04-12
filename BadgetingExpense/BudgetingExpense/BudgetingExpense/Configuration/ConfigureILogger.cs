@@ -8,11 +8,6 @@ public static class ConfigureILogger
 {
     public static IServiceCollection AddILoggerConfiguration(this IServiceCollection services)
     {
-         Log.Logger = new LoggerConfiguration()
-            .WriteTo.Console(theme: AnsiConsoleTheme.Code)
-            .WriteTo.File("Logs/ErrorLogs.log", restrictedToMinimumLevel: LogEventLevel.Error)
-            //.WriteTo.File("Logs/InformationLogs.log", restrictedToMinimumLevel: LogEventLevel.Information)
-            .CreateLogger();
         services.AddLogging(options =>
         {
             options.ClearProviders();
