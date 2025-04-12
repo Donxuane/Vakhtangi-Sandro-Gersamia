@@ -9,6 +9,7 @@ using BudgetingExpenses.Service.Live;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
+builder.Services.AddILoggerConfiguration();
 builder.Services.AddRazorPages();
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
@@ -30,6 +31,7 @@ builder.Services.AddHttpClient("Api",client =>
 });
 
 var app = builder.Build();
+app.Services.AddLoggerDetails();
 app.MapRazorPages();
 app.MapHub<AppLiveHub>("/logHub");
 app.UseMiddleware<ExceptionHandlerMiddleware>();
