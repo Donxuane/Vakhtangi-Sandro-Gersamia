@@ -7,7 +7,7 @@ namespace BudgetingExpenses.Service.DtoModels;
 public  class LimitsDto
 {
     [Required]
-    [CategoryTypeValidation(FinancialTypes.Expense)]
+    [CategoryType(FinancialTypes.Expense)]
     public int CategoryId { get; set; }
     [Required]
     public double Amount { get; set; }

@@ -12,7 +12,7 @@ namespace BudgetingExpense.api.Controllers;
 [Authorize(Roles = "User")]
 [ApiController]
 [Route("api/[controller]")]
-public class ManageUserFinancesController : BaseControllerExstension
+public class ManageUserFinancesController : BaseControllerExtension
 {
     private readonly IIncomeManageService _incomeService;
     private readonly IExpenseManageService _expenseManageService;

@@ -11,7 +11,7 @@ public class IncomeDto
     [Required]
     public double Amount {  get; set; }
     [Required]
-    [CategoryTypeValidation(FinancialTypes.Income)]
+    [CategoryType(FinancialTypes.Income)]
     public int CategoryId {  get; set; }
     [Required]
     public DateTime Date { get; set; }

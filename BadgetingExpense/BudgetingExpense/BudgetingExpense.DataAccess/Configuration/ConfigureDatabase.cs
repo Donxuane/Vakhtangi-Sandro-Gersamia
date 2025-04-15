@@ -87,12 +87,11 @@ public class ConfigureDatabase : IHostedService
                         DbTransaction transaction = connection.BeginTransaction();
                         try
                         {
-                            if (query != null)
-                            {
+                            
 
                                 connection.Execute(query, null, transaction);
                                 transaction.Commit();
-                            }
+                            
                         }
                         catch (Exception)
                         {

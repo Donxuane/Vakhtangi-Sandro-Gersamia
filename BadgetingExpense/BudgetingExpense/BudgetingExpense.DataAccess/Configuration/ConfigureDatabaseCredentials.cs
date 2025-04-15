@@ -10,24 +10,24 @@ namespace BudgetingExpense.DataAccess.Configuration;
 
 public static class ConfigureDatabaseCredentials
 {
-    public static void ConfigureDatabaseRules(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddDbContext<AppDbContext>(options => 
-            options.UseSqlServer(configuration.GetConnectionString("default"), b => b.MigrationsAssembly("BudgetingExpense.DataAccess")));
-
-        services.AddIdentity<IdentityModel, IdentityRole>(options =>
+        public static void ConfigureDatabaseRules(this IServiceCollection services, IConfiguration configuration)
         {
-            options.Password.RequiredUniqueChars = 0;
-            options.Password.RequireNonAlphanumeric = false;
-            options.Password.RequireDigit = false;
-            options.Password.RequiredLength = 6;
-            options.Password.RequireUppercase = false;
-            options.Password.RequireLowercase = false;
-        })
-            .AddEntityFrameworkStores<AppDbContext>()
-            .AddDefaultTokenProviders();
+            services.AddDbContext<AppDbContext>(options => 
+                options.UseSqlServer(configuration.GetConnectionString("default"), b => b.MigrationsAssembly("BudgetingExpense.DataAccess")));
 
-        services.AddScoped<DbConnection>(options =>
-            new SqlConnection(configuration.GetConnectionString("default")));
-    }
+            services.AddIdentity<IdentityModel, IdentityRole>(options =>
+            {
+                options.Password.RequiredUniqueChars = 0;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+            })
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddScoped<DbConnection>(options =>
+                new SqlConnection(configuration.GetConnectionString("default")));
+        }
 }

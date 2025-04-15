@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace BudgetingExpense.Api.CustomFilters;
 
-public class CategoryValidationFilter : IActionFilter
+public class CategoryValidationFilter : IAsyncActionFilter
 {
     private readonly IGetCategory _getCategory;
     private readonly ILogger<CategoryValidationFilter> _logger;
@@ -15,8 +15,7 @@ public class CategoryValidationFilter : IActionFilter
         _getCategory = getCategory;
         _logger = logger;
     }
-
-    public void OnActionExecuting(ActionExecutingContext context) 
+    public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         try
         {
@@ -26,13 +25,13 @@ public class CategoryValidationFilter : IActionFilter
                 var properties = model.GetType().GetProperties();
                 foreach (var property in properties)
                 {
-                    var attribute = property.GetCustomAttribute<CategoryTypeValidationAttribute>();
+                    var attribute = property.GetCustomAttribute<CategoryTypeAttribute>();
                     if (attribute != null)
                     {
                         var value = property.GetValue(model);
                         if (value is int categoryId)
                         {
-                            var type = _getCategory.GetCategoryTypeAsync(categoryId);
+                            var type = await _getCategory.GetCategoryTypeAsync(categoryId);
                             if (type != (int)attribute.FinancialTypes)
                             {
                                 context.Result = new BadRequestObjectResult("Category Id Does Not Match The Context");
@@ -42,11 +41,12 @@ public class CategoryValidationFilter : IActionFilter
                     }
                 }
             }
+
+            await next();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError("Exception ex:{ex}", ex.Message);
         }
     }
-    public void OnActionExecuted(ActionExecutedContext context) { }
 }

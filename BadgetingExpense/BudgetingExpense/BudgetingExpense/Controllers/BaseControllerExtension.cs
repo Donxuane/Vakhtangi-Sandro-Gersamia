@@ -2,7 +2,7 @@
 
 namespace BudgetingExpense.Api.Controllers;
 
-public class BaseControllerExstension : ControllerBase
+public class BaseControllerExtension : ControllerBase
 {
     protected string? UserId
     {

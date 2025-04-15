@@ -2,5 +2,5 @@
 
 public interface IGetCategory
 {
-   public int GetCategoryTypeAsync(int categoryId);
+   public Task<int> GetCategoryTypeAsync(int categoryId);
 }

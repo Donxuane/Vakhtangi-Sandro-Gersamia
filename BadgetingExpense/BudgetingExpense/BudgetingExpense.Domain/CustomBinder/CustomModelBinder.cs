@@ -12,9 +12,9 @@ public class CustomModelBinder<T> : IModelBinder where T : class, new()
         { 
             var propertyResult = bindingContext.ValueProvider.GetValue(property.Name);
             var result = propertyResult.FirstOrDefault();
-            object? valueToSet = null;
+            object? valueToSet;
             if (property.PropertyType == typeof(string) && property.CanWrite &&
-                !string.IsNullOrEmpty(result) && propertyResult.Length != 0)
+                !string.IsNullOrEmpty(result))
             {
                 if (!result.Contains('@') && !property.Name.Equals("Password", StringComparison.OrdinalIgnoreCase)
                    && !property.Name.Equals("RepeatPassword", StringComparison.OrdinalIgnoreCase))

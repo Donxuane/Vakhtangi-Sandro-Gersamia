@@ -7,7 +7,7 @@ namespace BudgetingExpense.Api.Controllers;
 [Authorize(Roles = "Admin")]
 [ApiController]
 [Route("api/[controller]")]
-public class AdminController : BaseControllerExstension
+public class AdminController : BaseControllerExtension
 {
 
     /// <summary>

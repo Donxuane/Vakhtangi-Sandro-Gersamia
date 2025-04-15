@@ -7,7 +7,7 @@ namespace BudgetingExpense.Api.Controllers;
 [Authorize(Roles = "User,Admin")]
 [ApiController]
 [Route("notifications/[controller]")]
-public class SettingsConfigurationController : BaseControllerExstension
+public class SettingsConfigurationController : BaseControllerExtension
 {
     private readonly IToggleNotificationsService _toggleNotificationsService;
 

@@ -11,7 +11,7 @@ namespace BudgetingExpense.Api.Controllers;
 [Authorize(Roles = "User")]
 [ApiController]
 [Route("Api/[controller]")]
-public class ReportsController : BaseControllerExstension
+public class ReportsController : BaseControllerExtension
 {
     private readonly IIncomeReportsService _service;
     private readonly IncomeForecastService<IncomeRecord> _forecastService;

@@ -3,11 +3,11 @@
 namespace BudgetingExpense.Domain.CustomValidationAttributes;
 
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = true, Inherited = false)]
-public class CategoryTypeValidationAttribute : Attribute
+public class CategoryTypeAttribute : Attribute
 {
     public FinancialTypes FinancialTypes { get; }
 
-    public CategoryTypeValidationAttribute(FinancialTypes financialTypes)
+    public CategoryTypeAttribute(FinancialTypes financialTypes)
     {
         FinancialTypes = financialTypes;
     }

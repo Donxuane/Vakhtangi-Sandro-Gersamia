@@ -15,7 +15,7 @@ public class AuthenticationController : ControllerBase
         _auth = auth;
     }
     [HttpPost("LogIn")]
-    public async Task<IActionResult> LogInUserAync([FromForm] Login user)
+    public async Task<IActionResult> LogInUserAsync([FromForm] Login user)
     {
         var token = await _auth.LoginUserServiceAsync(user);
         if (token != null)
@@ -24,7 +24,7 @@ public class AuthenticationController : ControllerBase
         }
         return BadRequest(new { message = "Password or Email is incorrect!" });
     }
-
+  
     [HttpPost("RegisterWithValidation")]
     public IActionResult GenerateValidationCode([FromForm]Register user)
     {

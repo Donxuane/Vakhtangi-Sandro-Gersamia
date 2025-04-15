@@ -8,7 +8,7 @@ public class UpdateIncomeDto
     public int Id { get; set; }
     public Currencies? Currency { get; set; }
     public double? Amount { get; set; }
-    [CategoryTypeValidation(FinancialTypes.Income)]
+    [CategoryType(FinancialTypes.Income)]
     public int? CategoryId { get; set; }
     public DateTime? Date { get; set; }
 }

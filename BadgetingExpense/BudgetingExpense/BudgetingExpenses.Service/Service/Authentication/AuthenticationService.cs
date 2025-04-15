@@ -58,16 +58,15 @@ public class AuthenticationService : IAuthenticationService
                 var model = await _unitOfWork.Authentication.GetUserByEmailAsync(user.Email);
                 var roles =  await _unitOfWork.Authentication.GetUserRolesAsync(user.Email);
                 var token = await _tokenAuthService.GenerateJwtTokenAsync(model.Id, roles.FirstOrDefault());
-                var refreshToken = await _tokenAuthService.GenerateRefreshToken(model.Id);
                 var cookies = _httpContext.HttpContext.Request.Cookies["refreshToken"];
                 var handler = new JwtSecurityTokenHandler();
                 if (cookies == null || handler.ReadJwtToken(cookies).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value != model.Id)
-                {
+                { 
+                    var refreshToken = await _tokenAuthService.GenerateRefreshToken(model.Id);
                     _httpContext.HttpContext.Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
                     {
                         HttpOnly = true,
                         Secure = true,
-                        SameSite = SameSiteMode.Strict,
                         Expires = DateTime.UtcNow.AddDays(7)
                     });
                 }

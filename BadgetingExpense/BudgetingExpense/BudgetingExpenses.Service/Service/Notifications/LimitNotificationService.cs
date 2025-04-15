@@ -51,7 +51,7 @@ public class LimitNotificationService : ILimitNotificationService
 
                             if (budgetItem.TotalExpenses <= budgetItem.LimitAmount)
                             {
-                                message = message.Replace("{optional}", $"your expense exceeded {percentage}% of of your limit");
+                                message = message.Replace("{optional}", $"your expense exceeded {percentage}%  of your limit");
                             }
                             await _emailService.SendEmailAsync(new EmailModel()
                             {

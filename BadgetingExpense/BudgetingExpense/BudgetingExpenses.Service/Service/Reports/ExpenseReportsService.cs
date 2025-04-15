@@ -31,7 +31,7 @@ public class ExpenseReportsService : IExpenseReportsService
                 var check = int.TryParse(_configuration.GetSection("TopExpenseAmounts")["Amount"], out int amount);
                 var period = DateTime.Now.AddMonths(-model.Period);
                 var final = records.Where(x => x.Date >= period && x.Currency == model.Currency)
-                    .OrderByDescending(x => x.Amount).Take(check ? amount : 10).ToList();
+                    .OrderByDescending(x => x.Amount).Take(check ? amount : 10);
                 return final;
             }
             return null;

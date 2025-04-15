@@ -23,21 +23,21 @@ public class RefreshExpiredTokensMiddleware
         var refreshToken = context.Request.Cookies["refreshToken"];
         if (refreshToken != null)
         {
-            var jwtHeandler = new JwtSecurityTokenHandler();
+            var jwtHandler = new JwtSecurityTokenHandler();
             if (token != null)
             {
-                var jwt = jwtHeandler.ReadJwtToken(token);
+                var jwt = jwtHandler.ReadJwtToken(token);
                 if (jwt.ValidTo < DateTime.UtcNow)
                 {
                     var userId = jwt.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
-                    var refreshTokenUserId = jwtHeandler.ReadJwtToken(refreshToken).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+                    var refreshTokenUserId = jwtHandler.ReadJwtToken(refreshToken).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
                     var jwtToken = await GenerateToken(userId, refreshTokenUserId);
                     context.Response.Headers.Authorization = jwtToken;
                 }
             }
             else
             {
-                var refreshTokenUserId = jwtHeandler.ReadJwtToken(refreshToken).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
+                var refreshTokenUserId = jwtHandler.ReadJwtToken(refreshToken).Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
                 var jwtToken = await GenerateToken(refreshTokenUserId, refreshTokenUserId);
                 context.Response.Headers.Authorization = jwtToken;
             }
