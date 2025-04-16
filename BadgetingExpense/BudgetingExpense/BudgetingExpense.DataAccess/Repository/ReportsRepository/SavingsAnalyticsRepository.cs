@@ -1,5 +1,4 @@
 ﻿using BudgetingExpense.Domain.Contracts.IRepository.IReports;
-using BudgetingExpense.Domain.Contracts.IServices.IReports;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 using Dapper;
 using System.Data.Common;
