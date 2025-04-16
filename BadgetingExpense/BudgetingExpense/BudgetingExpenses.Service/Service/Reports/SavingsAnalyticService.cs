@@ -41,7 +41,7 @@ public class SavingsAnalyticService : ISavingsAnalyticService
             {
                 savingsPeriod.AverageIncome += y.AverageIncome;
                 savingsPeriod.AverageExpense += y.AverageExpense;
-                savingsPeriod.Percentage += y.Percentage / records.Count();
+                savingsPeriod.Percentage += y.Percentage;
                 return savingsPeriod;
             });
             savingsInLocalCurrency.Savings = savingsInLocalCurrency.AverageIncome - savingsInLocalCurrency.AverageExpense;
