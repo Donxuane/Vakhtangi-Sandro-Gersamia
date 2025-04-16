@@ -10,12 +10,12 @@ public class LimitsCleanupService : BackgroundService
 {
 
     private readonly ILogger<LimitsCleanupService> _logger;
-    private readonly IServiceScopeFactory _serviceProvider;
+    private readonly IServiceScopeFactory _serviceFactory;
     public LimitsCleanupService(ILogger<LimitsCleanupService> logger,
-        IServiceScopeFactory serviceProvider)
+        IServiceScopeFactory serviceFactory)
     {
         _logger = logger;
-        _serviceProvider = serviceProvider;
+        _serviceFactory = serviceFactory;
     }
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
@@ -39,7 +39,7 @@ public class LimitsCleanupService : BackgroundService
 
     private async Task CleanupLimitsAsync()
     {
-        var scope = _serviceProvider.CreateScope();
+        var scope = _serviceFactory.CreateScope();
         try
         {
             var notificationService = scope.ServiceProvider.GetRequiredService<ILimitNotificationService>();
