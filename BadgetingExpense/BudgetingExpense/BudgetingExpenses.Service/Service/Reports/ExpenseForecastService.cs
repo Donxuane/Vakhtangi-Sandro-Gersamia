@@ -4,7 +4,6 @@ using BudgetingExpense.Domain.Models.DatabaseViewModels;
 using BudgetingExpense.Domain.Models.GetModel.Reports;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System.Reflection.Metadata.Ecma335;
 
 namespace BudgetingExpenses.Service.Service.Reports;
 
