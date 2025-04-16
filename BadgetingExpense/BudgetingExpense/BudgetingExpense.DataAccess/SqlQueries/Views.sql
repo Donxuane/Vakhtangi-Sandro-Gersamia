@@ -38,3 +38,4 @@ LEFT JOIN Expenses ex
 	AND ex.Currency = l.Currency
 GROUP BY 
    l.Id, l.UserId, l.Amount, l.PeriodCategory, l.DateAdded, l.CategoryId,l.Currency;
+    
