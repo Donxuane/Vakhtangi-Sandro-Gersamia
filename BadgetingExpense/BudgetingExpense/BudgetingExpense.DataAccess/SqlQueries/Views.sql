@@ -6,7 +6,7 @@ i.Amount,
 i.Currency,
 Coalesce(NullIf(c.Name,''),'General') AS CategoryName
 FROM Incomes i
-LEFT JOIN Categories c ON i.CategoryId = c.Id WHERE c.Type = 1;
+LEFT JOIN Categories c ON i.CategoryId = c.Id AND c.Type = 1;
 Go
 CREATE VIEW ExpenseCategories AS
 SELECT
@@ -16,7 +16,7 @@ ex.Currency,
 ex.Date,
 Coalesce(NullIf(c.Name,''),'General') AS CategoryName
 FROM Expenses ex
-LEFT JOIN Categories c ON ex.CategoryId = c.Id WHERE c.Type = 0;
+LEFT JOIN Categories c ON ex.CategoryId = c.Id AND c.Type = 0;
 Go
 CREATE VIEW BudgetPlaning AS
  SELECT 
